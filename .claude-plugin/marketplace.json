@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "keel",
+  "description": "Keel: an engineering workflow plugin for Claude Code.",
+  "owner": {
+    "name": "l3lackcurtains"
+  },
+  "plugins": [
+    {
+      "name": "keel",
+      "description": "Plan → build → test → review → check → commit → ship, with engineering principles, existing-pattern discipline and calibrated review built in.",
+      "source": "./",
+      "category": "development"
+    }
+  ]
+}
