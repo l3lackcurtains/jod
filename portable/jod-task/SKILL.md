@@ -31,7 +31,7 @@ Arguments: the user's request
    - **Fixes re-run only what they touch** ([verify.md](../jod-engineering/verify.md) "Run the least that proves it"), and the live check only if the fix changed something a user can see.
    - **Restart instead of grinding.** After 2 failed rounds on the same problem, write a handoff into the plan file (save the plan now if it wasn't saved): what was tried, what each attempt showed, and the current best hypothesis. Then recommend `/clear` and a fresh `/jod-task build <slug>`. Don't make a third attempt in a polluted context.
    - The drift alarm (`jod-engineering` §2) can stop any step; the build checkpoint checks it.
-4. **The task ends at `done`.** Reviewing the change, committing, pushing, branches and releases are `/jod-commit`'s and `/jod-ship`'s jobs: don't do them here, and don't plan for them.
+4. **The task ends at `done`.** Reviewing the change, committing, pushing, branches and releases are `/jod-commit`'s and `/jod-ship`'s jobs: don't do them here, and don't plan for them. Git as a tool is fine (`jod-engineering` §2, "Git while working").
 5. **Post one status line per phase**, e.g. `✅ test · 1078 passed`, `⚠️ doubt (migration) · 1 fixed`. End the loop with the done report ([report.md](../jod-engineering/report.md)).
 
 Copy this checklist and keep it updated:

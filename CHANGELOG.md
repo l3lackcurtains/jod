@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.2
+- **Git while working** (`engineering` §2): `/jod:task` and `/jod:fix` (including the doubt pass) use git freely to look and isolate (diff, log, blame, bisect, stash, temporary worktrees), leaving the working tree exactly as they found it. Only commits, pushes, merges and branch changes stay with `/jod:commit` and `/jod:ship`.
+
 ## 1.11.1
 - **`/jod:task` focuses on the task, `/jod:fix` on the fix:** the task's `review` sub-command is gone; reviewing, committing, branches and releases are `/jod:commit`'s and `/jod:ship`'s jobs. The risky-step check is now `phases/doubt.md`, a quick doubt pass on one decision, not a review.
 

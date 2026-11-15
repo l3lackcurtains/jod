@@ -9,7 +9,7 @@ An engineering workflow plugin for [Claude Code](https://claude.com/claude-code)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)
 ![Agent Skills](https://img.shields.io/badge/Agent%20Skills-7-success)
-![Version](https://img.shields.io/badge/version-1.11.1-orange)
+![Version](https://img.shields.io/badge/version-1.11.2-orange)
 
 </div>
 
