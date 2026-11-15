@@ -37,9 +37,16 @@ Full gate (`/jod-ship`):
 ```
 
 ## Branches and release
-- Work branch: `<development>`. Release branch: `<main>`.
-- Release mode: `<merge>` (local `git merge --no-ff`) or `<pr>` (open a PR with `gh`).
-- Pushing the release branch deploys: `<yes, via CI → host / no>`. Confirm timing before release: `<yes/no>`.
+- Work on `<development>`; side branches merge into it. Only `/jod-ship` merges it into `<main>` (local `--no-ff`, no PRs).
+- Pushing `main` deploys: `<yes, via CI → host / no, deployed manually>`. Confirm timing before release: `<yes/no>`.
+
+## Production
+- Runtime: `<direct process | Docker Compose | Kubernetes | serverless/static>`. Definition: `<docker-compose.prod.yml / k8s/overlays/prod / Procfile / …>`.
+- Start command: `<node dist/main.js | docker compose -f … up | the Deployment's command>`.
+- Health: `<GET /health on :3000>`. Smoke requests: `<one key request per app>`.
+- Production env example: `<.env.production.example>`.
+- Migrations: `<how and when they run: on boot, a Job, a manual step>`.
+- Cluster access for dry runs: `<none | kubectl context X, read-only>`.
 - Commit style: `<feat(scope): …>`; references: `<roadmap id / issue #>`.
 - Never stage: `<.env*, generated files, worktrees, …>`.
 

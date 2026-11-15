@@ -31,7 +31,7 @@ Arguments: the user's request
 3. **Build big work step by step** (A, B, C…), each one shippable. After building a step, run test → review → check. If any of them changes code, go round again.
    - **Restart instead of grinding.** After 2 failed rounds on the same problem, write a handoff into the plan file: what was tried, what each attempt showed, and the current best hypothesis. Then recommend `/clear` and a fresh `/jod-task build <slug>`. Don't make a third attempt in a polluted context.
    - The drift alarm (`jod-engineering` §2) can stop any step; the build checkpoint checks it.
-4. **Never commit, push or merge here.** `done` hands over to `/jod-commit`; `/jod-ship` releases.
+4. **Never commit, push or merge here.** Work happens on `development` (or a side branch that `/jod-commit` merges into it). `done` hands over to `/jod-commit`; only `/jod-ship` touches `main`.
 5. **Post one short line per phase**, e.g. "tests: 1078 passed", "review: 3 fixed, 1 skipped".
 
 Copy this checklist and keep it updated:

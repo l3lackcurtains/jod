@@ -56,7 +56,7 @@ A change isn't done until every layer/surface listed in the profile has it (API,
 The command you ran **in this turn**, its exit code and the counts. "Should work", "probably", an earlier run, or a subagent saying it passed is not evidence: re-run it. Lint passing doesn't prove a typecheck; a typecheck doesn't prove behaviour; unit tests don't prove the e2e.
 
 ## 6. Never, unless the user says so in this conversation
-- Commit, push, merge or deploy outside `/jod:commit` and `/jod:ship`.
+- Commit, push, merge or deploy outside `/jod:commit` and `/jod:ship`. Work goes to `development`; side branches merge into `development`; **only `/jod:ship` touches `main`**. No PRs.
 - Write to a shared or production database, send real emails/posts/payments, or call paid external services.
 - Start dev servers when the profile says the user runs them.
 - Edit generated code or vendored UI primitives the profile marks as off-limits.

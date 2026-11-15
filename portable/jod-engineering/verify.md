@@ -23,6 +23,40 @@ Run every check and collect the results; don't stop at the first failure:
 
 Run long commands in the background with generous timeouts.
 
+## Production check (`/jod-ship`)
+**Goal:** prove the release starts and serves the way production runs it, not just that it compiles. The runtime and commands come from the profile's "Production" section. Run everything locally, and never against production systems.
+
+### In every runtime
+1. **Clean checkout.** `git worktree add <tmp> development`, then a frozen install and the production build there. This catches files missing from git and builds that only work on your machine. Remove the worktree at the end.
+2. **Production-like config.** Start from the production env example. Use safe dummy secrets and local services, set `NODE_ENV=production` (or the stack's equivalent), and leave out dev-only overrides.
+   - Every env var the code reads must exist in the example.
+   - A missing required variable must stop startup with a clear error.
+3. **Migrations.** Run them on a fresh local database, and check they're safe to re-run. If the deploy order matters (expand → deploy → contract), say so in the report.
+4. **Start, smoke, stop.** Start it exactly as production does (see below), then:
+   - wait for the health or readiness check;
+   - hit the health endpoint, plus one real request per area changed in this release;
+   - read the logs for errors or warnings in the first ~30 seconds;
+   - send SIGTERM and confirm a clean shutdown.
+
+### By runtime
+- **Direct process** (node, pm2, systemd, uvicorn, a binary): run the profile's production start command against the built output, not the dev command. Check that the process-manager config (`ecosystem.config.*`, unit file, `Procfile`) points to the right entry file, port and env.
+- **Docker Compose:**
+  - `docker compose -f <prod file> config`: validates the file and fills in env vars. Any warning about an unset variable is a finding.
+  - `docker compose -f <prod file> -p jod-ship-check up -d --build --wait` (`--wait` makes compose wait until the services are healthy), with production-like env. Smoke-test, then `docker compose -p jod-ship-check down -v`.
+  - Check the file: every long-running service has a health check and a restart policy; no source folders are bind-mounted; image tags are pinned; ports follow the profile's rules.
+- **Kubernetes:**
+  - Render the manifests (`kustomize build` or `helm lint` + `helm template`), then validate them: `kubectl apply --dry-run=server` if the profile allows cluster access, otherwise `--dry-run=client` or `kubeconform`.
+  - Check:
+    - images use the tag being built, never `latest`;
+    - readiness and liveness probes hit real endpoints;
+    - resource requests and limits are set;
+    - every env, ConfigMap and Secret reference exists;
+    - migrations run as a Job or init container, ordered before the new pods.
+  - Build each image, and run it locally with the Deployment's `command`/`args`, env and port, then smoke-test it.
+- **Serverless or static:** the production build, function bundle size and runtime limits, and env vars per environment. If the provider has a local emulator, smoke-test with it.
+
+If any step can't run here (no Docker, no cluster access, a missing tool), report exactly what wasn't verified. It's a BLOCK unless the user accepts the risk.
+
 ## Reporting
 - **Report exact counts**, e.g. `api: tsc ok, 1078 passed · web: 272 passed`.
 - **Never claim a pass you didn't see in this turn.** If a check wasn't run, say so.
