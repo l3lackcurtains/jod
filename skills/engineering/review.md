@@ -1,9 +1,9 @@
 # How we review
 
-One procedure: `/jod:commit` runs it on every change (from `/jod:task` or `/jod:fix`), `/jod:task review` on demand, `/jod:ship` across commits. The goal is to find real bugs, not to produce comments. A reviewer asked to find problems will always find *something*, so calibrate.
+One procedure: `/jod:commit` runs it on every change (from `/jod:task` or `/jod:fix`), `/jod:ship` across commits. The goal is to find real bugs, not to produce comments. A reviewer asked to find problems will always find *something*, so calibrate.
 
-## 0. Skip what's already reviewed
-- `/jod:commit`: if `/jod:task review` already ran on this diff in this session, don't review again; run only §3–§4 on what changed after it. The task loop's doubt passes don't replace this review (each looked at one decision), but you can spend less time on what they already questioned.
+## 0. What was already looked at
+- `/jod:commit`: the task loop's doubt passes don't replace this review (each looked at one decision), but you can spend less time on what they already questioned.
 - `/jod:ship`: don't re-review commits one by one; look only for cross-commit issues (step 4).
 
 ## 1. Triage by risk

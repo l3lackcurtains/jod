@@ -9,7 +9,7 @@ An engineering workflow plugin for [Claude Code](https://claude.com/claude-code)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)
 ![Agent Skills](https://img.shields.io/badge/Agent%20Skills-7-success)
-![Version](https://img.shields.io/badge/version-1.11.0-orange)
+![Version](https://img.shields.io/badge/version-1.11.1-orange)
 
 </div>
 
@@ -125,7 +125,7 @@ flowchart LR
 |---|---|
 | `/jod:setup [refresh]` | Scan the repo, ask how you work, write or update the profile, offer hard guards (deny rules and hooks) |
 | `/jod:task <task>` | The full loop: plan (split into as many steps as the work needs) → you choose "run all steps" or "step by step" (no answer means run all) → each step goes build → test → check (a doubt pass for risky steps) → done. The full review happens in `/jod:commit` |
-| `/jod:task plan\|build\|test\|review\|check\|done …` | Run one phase on its own; `build <slug>` resumes a saved plan in a fresh session |
+| `/jod:task plan\|build\|test\|check\|done …` | Run one phase on its own; `build <slug>` resumes a saved plan in a fresh session |
 | `/jod:fix <symptom>` | Reproduce, trace the root cause backward, write a regression test that fails first, fix, hunt the same bug across the repo, verify |
 | `/jod:cleanup [area] [kind]` | Find bad comments, unused code, unused files, dependencies and config; ask what to remove; remove it in behaviour-neutral groups with before/after test counts; record the date. The task, commit and ship reports remind you when the cadence chosen in setup has passed |
 | `/jod:commit` | Step 1: review the uncommitted diff, verify, commit in logical groups to `development` (merging any side branch into it), push. Never touches `main` |

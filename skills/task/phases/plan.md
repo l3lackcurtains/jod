@@ -30,7 +30,7 @@ Everything that waits follows the steps below.
      - Each step is one coherent, verifiable piece: it builds, its tests pass, and it leaves the app working. Examples: "tidy: extract the CSV writer", "API: export endpoint + permission", "web: export button".
      - For each step, give its goal, its files (inside the scope fence) and its check, and tag it:
        - **user-visible** (UI, an API response a client shows, CLI output): live check right after it ([check.md](check.md));
-       - **risky** (as defined in [review.md](review.md) "In the loop"): a doubt pass after its tests;
+       - **risky** (as defined in [doubt.md](doubt.md)): a doubt pass after its tests;
        - **built by** you or a specialist agent ([agents.md](../../engineering/agents.md)).
      - A one-step plan is fine for a focused change. Split when a step would mix concerns (tidy + behaviour, API + UI + migration), or would be too big to review in one go.
      - Order them so each builds on the last: tidying and data first, then the API, the UI, and the docs. Within that, put the riskiest step as early as possible, so a wrong assumption shows up before the rest is built on it.

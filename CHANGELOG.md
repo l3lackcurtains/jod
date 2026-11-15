@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.1
+- **`/jod:task` focuses on the task, `/jod:fix` on the fix:** the task's `review` sub-command is gone; reviewing, committing, branches and releases are `/jod:commit`'s and `/jod:ship`'s jobs. The risky-step check is now `phases/doubt.md`, a quick doubt pass on one decision, not a review.
+
 ## 1.11.0
 - **Faster `/jod:task`:** steps go build → test → check. The full review runs once, in `/jod:commit`, over the whole change; only risky steps (a HIGH file, a migration, a public contract, money, permissions, idempotency) get a short independent doubt pass in the loop. The live check runs after user-visible steps and at least every 3 steps. A pass on unchanged files isn't re-run, and fixes re-run only what they touch.
 - **Three sizes of test run** (`engineering/verify.md`): focused (one file, while building), affected (per step), full (once per change). Setup records the focused test command.

@@ -1,7 +1,7 @@
 {
   "name": "jod",
   "description": "Engineering workflow for small, senior teams, adapting to new, growing or established projects: plan → build → test → review → check → commit → ship, with architecture boundaries, scalability, reliability, security and existing-pattern discipline built in. Project-agnostic; each repo gets a short profile.",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "author": {
     "name": "l3lackcurtains"
   },
