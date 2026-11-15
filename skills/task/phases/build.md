@@ -2,7 +2,9 @@
 
 Goal: the approved plan (or the current step) implemented on every layer, tests first.
 
-1. **Pin, then test** (timing per the profile's "Tests"; test-first is the default). If you'll change code that has no tests, first write characterization tests: call it, assert whatever it returns today (even if it's odd), name each test after what the code does, and see them pass. They stay green through the change, except for the behaviour the plan changes on purpose. Surprising results get raised, not "fixed". Then write the tests for the new behaviour, in the location and style the profile and the sibling tests use, and see them fail for the right reason, not with a setup error.
+**A step the plan gives to a specialist agent:** brief it with this phase's rules ([agents.md](../../engineering/agents.md) §3), then take its work back through the checkpoint (step 8) as if you'd written it. Steps 1–7 below are what the brief asks of it.
+
+1. **Pin, then test** (timing per the profile's "Tests"; test-first is the default). If you'll change code that has no tests, first write characterization tests: call it, assert whatever it returns today (even if it's odd), name each test after what the code does, and see them pass. They stay green through the change, except for the behaviour the plan changes on purpose. Surprising results get raised, not "fixed". Then write the tests for the new behaviour, in the location and style the profile and the sibling tests use, and see them fail for the right reason, not with a setup error. While building, run only the test files you're working on (the focused command, [verify.md](../../engineering/verify.md)).
 2. **Implement every row of the impact map, in the profile's layer order.** A surface you discover that the map doesn't have is drift: stop and ask, or add it to the plan.
    - Rebuild shared and generated code (shared packages, codegen) as soon as its source changes, before compiling the code that uses it.
    - If existing data needs it, add a migration or backfill script.
@@ -32,5 +34,5 @@ Goal: the approved plan (or the current step) implemented on every layer, tests 
    - Keep the file's line endings.
    - Respect the profile's "Hands-off" list.
 7. **Make the new tests pass.**
-8. **Checkpoint.** Run `git diff --stat` and `git status --short`, and compare them with the plan's scope fence using the drift alarm list (`engineering` §2). If any item fires, stop and ask. Otherwise tick the step in the plan file and hand over to the test phase.
+8. **Checkpoint.** Run `git diff --stat` and `git status --short`, and compare them with the plan's scope fence using the drift alarm list (`engineering` §2). If any item fires, stop and ask. Otherwise hand over to the test phase.
 9. **One status line** ([report.md](../../engineering/report.md)), e.g. `✅ build · 4 files, inside the fence · modelled on orders-export.ts`: what was built per layer, which layers were skipped and why, and which existing files the new code is modelled on.

@@ -22,9 +22,9 @@ Conventions docs: <CLAUDE.md, docs/…>. Package manager: <pnpm 9, only>.
 6. <public docs, marketing site, internal docs/roadmap to update>
 
 ## Verify commands
-| Package | Typecheck/compile | Tests | Notes |
-|---|---|---|---|
-| <api> | <cmd> | <cmd> (full: <cmd>, ~<time>) | <lint: changed files only, no --fix> |
+| Package | Typecheck/compile | Focused test (one file) | Tests | Notes |
+|---|---|---|---|---|
+| <api> | <cmd> | <cmd path/to/file.spec.ts> | <cmd> (full: <cmd>, ~<time>) | <lint: changed files only, no --fix> |
 
 Full gate (`/jod:ship`):
 ```
@@ -60,6 +60,13 @@ Full gate (`/jod:ship`):
 ## Parallel sessions
 - Worktree setup: `<.worktreeinclude: .env files>`, `<install cmd>`.
 - Shared between sessions: `<ports, database, cache/queue>`. Run in parallel only on separate areas; never two sessions running dev servers or migrations.
+
+## Agents
+<!-- Specialist agents that build or review work in an area (engineering/agents.md). Empty: jod picks from what's available. -->
+- <apps/api → nestjs-developer>
+- <migrations, slow queries → postgres-pro>
+- <review of auth/billing → security-auditor>
+- Don't use: `<agent: why>`
 
 ## Architecture to keep
 <!-- Extend these; changing one is a decision for the user. -->

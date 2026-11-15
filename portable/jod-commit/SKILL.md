@@ -26,6 +26,7 @@ Step 1 of 2: `/jod-commit` keeps `development` clean and reviewed; `/jod-ship` (
    - Read the full diff (`git diff`, plus `git status` for new files) and group it into logical units, one per feature or fix.
    - Changes you didn't make in this session aren't yours (another session's work in progress, or accidental edits): list them and ask before including them.
 3. **Review properly** with [review.md](../jod-engineering/review.md): risk triage, a calibrated review, then the pattern, principles, silent-failure, test and surface checks.
+   - This is the full review of work from `/jod-task` (which only doubts its risky steps) and `/jod-fix`. Review against its plan: the matching file in `.claude/plans/`, or the plan in this conversation.
    - If `/jod-task review` already covered this exact diff in this session, review only what changed since (review.md §0).
    - Fix what's real, with a regression test per bug. Skip the rest with a one-line reason.
 4. **Verify** ([verify.md](../jod-engineering/verify.md) "Per change"): typecheck and the full suites of every touched package, rebuilding shared or generated code first.
@@ -43,6 +44,7 @@ Step 1 of 2: `/jod-commit` keeps `development` clean and reviewed; `/jod-ship` (
 8. **Land on `development`.**
    - On a side branch: `git checkout development && git pull --ff-only`, then `git merge --no-ff <branch>`. Resolve conflicts here; if they're beyond trivial, stop and ask. Re-run the affected tests after the merge, then delete the side branch, locally and on the remote if it was pushed.
    - Push `development` unless `no-push`. Never force-push. Never open a PR. **Never touch `main` here.**
+9. **Close the plans:** delete the `.claude/plans/` files whose work is now committed (a task marked done, a fix note), and the folder if it's empty. Keep plans with unticked steps.
 
 ## Report
 Report as a commit log ([report.md](../jod-engineering/report.md) → `/jod-commit`):

@@ -31,8 +31,9 @@ Gather facts quietly. Use one Explore agent for a large monorepo.
   - dev ports and scripts;
   - where logs go;
   - how to see sent emails and queued jobs locally.
-- **Testing:** the frameworks, where tests live, and any e2e setup (seeded DB, replica set, emulators).
+- **Testing:** the frameworks, where tests live, and any e2e setup (seeded DB, replica set, emulators). Find the command that runs a single test file or test name in each package (a checked-in wrapper or script if there is one; don't assume `npm test`), and how long the full suite takes.
 - **Hands-off:** generated code, vendored UI primitives.
+- **Specialist agents** (if the tool can start subagents): the agent types available, read from their descriptions. Map each one that fits to the area it would own (`apps/api → nestjs-developer`, `migrations → postgres-pro`); leave out generic ones. Show the mapping in step 2 so the user can correct it.
 - **Cleanup debt:** a rough count of tracker ids or history in comments, commented-out code, TODOs without an owner, and obviously orphaned files. Report it; don't fix it here.
 - **Patterns in use.** For each kind of thing (module or endpoint, validation, data access, error handling, list pagination, jobs, forms, tables, data hooks, state, styling, tests), find the best example. Note where the repo does the same thing two different ways, e.g. two form libraries, or two styles of data fetching.
 - **High-risk areas:** auth, permissions, payments or billing, money or stock, personal data, webhooks, crypto, outbound fetches.
@@ -50,6 +51,7 @@ Before asking anything, give a short summary (≤12 lines):
 - the verify commands;
 - the release flow;
 - the main patterns, with their example files;
+- the specialist agents and the area each would own (if any);
 - any inconsistencies;
 - the risky areas;
 - the maturity you read from the signals.

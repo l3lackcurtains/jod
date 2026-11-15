@@ -1,9 +1,9 @@
 # How we review
 
-One procedure, used by `/jod:task review`, `/jod:commit` and `/jod:ship`. The goal is to find real bugs, not to produce comments. A reviewer asked to find problems will always find *something*, so calibrate.
+One procedure: `/jod:commit` runs it on every change (from `/jod:task` or `/jod:fix`), `/jod:task review` on demand, `/jod:ship` across commits. The goal is to find real bugs, not to produce comments. A reviewer asked to find problems will always find *something*, so calibrate.
 
 ## 0. Skip what's already reviewed
-- `/jod:commit`: if `/jod:task review` already ran on this exact diff in this session and nothing changed since, don't review again; run only §3–§4 on what changed after it.
+- `/jod:commit`: if `/jod:task review` already ran on this diff in this session, don't review again; run only §3–§4 on what changed after it. The task loop's doubt passes don't replace this review (each looked at one decision), but you can spend less time on what they already questioned.
 - `/jod:ship`: don't re-review commits one by one; look only for cross-commit issues (step 4).
 
 ## 1. Triage by risk
@@ -15,7 +15,10 @@ Read HIGH files line by line as an attacker would, as a second instance or a con
 
 ## 2. Independent review
 - **Scale it by risk.** Run one independent pass (the `code-review` skill, or a fresh subagent given the diff, the plan file if there is one, and these standards) when the diff has a HIGH file or more than ~200 changed lines. Otherwise our own checks (§3–§4) are enough. Its scope is correctness, security, data integrity, missed surfaces and gaps against the plan; style is out of scope.
-- **Keep only findings you'd bet on (confidence ≥80).** Before fixing one, confirm it in the code.
+- **Pick the reviewer by risk:** for a HIGH file in one domain, a specialist agent for it (security for auth, database for a migration) when one is available ([agents.md](agents.md)); never the agent that built the change.
+- **Don't brief it with your conclusions.** Give it the diff, the plan and these standards, not your reasoning or "this should be fine": a reviewer told what to believe tends to confirm it. Ask it to find what's wrong, not to summarise.
+- **Keep only findings you'd bet on (confidence ≥80).** Before fixing one, confirm it in the code. Zero findings is a valid result.
+- **Introduced or pre-existing?** Check with `git diff`/`git blame` whether this change caused the problem. A pre-existing defect goes under "Noticed, not done" unless the change makes it worse or depends on it; fixing it here is drift.
 - **Don't build robustness nobody needs (YAGNI).** If a finding suggests a "more robust" feature, Grep for real callers first. No callers means skip it.
 
 ## 3. Our own checks (always, whatever the reviewer said)
@@ -37,9 +40,8 @@ Read HIGH files line by line as an attacker would, as a second instance or a con
 - **Gamed tests.** Grep the added lines for `.skip`, `.only`, `xit`, `@ts-ignore`, `eslint-disable`, `as any`. Check `git diff` for deleted test cases, loosened assertions, enlarged snapshots, and mocks of the code under test.
 - **Tests that bite.** Would each new test fail if the code broke? Name the change that would turn it red. A test that only mirrors the implementation doesn't count.
 - **Coverage** ([impact.md](impact.md) §5). Re-run the impact searches. Any hit on the old value or name outside intentional compatibility code needs fixing or a reason. Is every row of the impact map done with evidence, or explicitly n/a? Is every layer the profile lists covered?
-
 ## 4. Against the plan, and across commits
-- **Check against the plan** (`.claude/plans/<slug>.md`, if there is one): is every item done, and every listed edge case tested? Do it yourself, or as part of the independent pass in §2; never as a second subagent.
+- **Check against the plan** (`.claude/plans/<slug>.md`, if there is one): is every item done, and every listed edge case tested? A plan with steps left unticked means the task isn't finished: say so, and review what's there. Do it yourself, or as part of the independent pass in §2; never as a second subagent.
 - **Across the whole release (`/jod:ship`):**
   - interactions between commits
   - leftovers (debug code, TODOs, stray files)

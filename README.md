@@ -9,7 +9,7 @@ An engineering workflow plugin for [Claude Code](https://claude.com/claude-code)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)
 ![Agent Skills](https://img.shields.io/badge/Agent%20Skills-7-success)
-![Version](https://img.shields.io/badge/version-1.10.0-orange)
+![Version](https://img.shields.io/badge/version-1.11.0-orange)
 
 </div>
 
@@ -48,7 +48,7 @@ To install for a single tool or into one project only, see [Other AI tools](#oth
 
 ```
 /jod:setup        → scan the stack + patterns, ask how you work, write the profile
-/jod:task <task>  → plan → build → test → review → check → done, with a drift alarm
+/jod:task <task>  → plan → build → test → check → done, with a drift alarm (risky steps get a doubt pass)
 /jod:fix <bug>    → reproduce → root cause → failing test → fix → hunt the same bug
 /jod:cleanup      → scan → ask what to remove → remove in behaviour-neutral groups → record
 /jod:commit       → calibrated review → verify → commit in logical groups → push
@@ -78,7 +78,7 @@ jod puts the habits of small, high-output teams into the agent instead:
 - **Change it everywhere.** Each plan maps the change's impact across every app, package, SDK, CLI, doc, test and piece of stored data. Before "done", the searches run again, and any place the change missed fails the check.
 - **Look like the codebase.** Before writing a file, study its 2–3 closest siblings, reuse before you create, and extract only when something would be duplicated.
 - **Build it right, in proportion.** Simplicity first, then boundaries, scalability, reliability and security, each applied where it matters. A payment flow gets idempotency; an admin toggle doesn't.
-- **Evidence, not vibes.** "Done" means a command run in this turn, with its exit code and counts. Review is calibrated: risk triage, findings it would bet on, and checks for silent failures and gamed tests.
+- **Evidence, not vibes.** "Done" means a command run this session on the code as it is now, with its exit code and counts. Review is calibrated: risk triage, findings it would bet on, and checks for silent failures and gamed tests.
 - **Comments that age well.** Comments explain the *why*, never a ticket id, a plan step or the change history; review checks every added line.
 - **Clean up on a rhythm.** `/jod:cleanup` removes dead code, stale comments and orphaned files in its own commits, with proof nothing changed, and the other commands remind you when it's due.
 - **Learn.** Corrections become one-line additions to the project profile. A rule broken twice becomes a hook.
@@ -90,9 +90,9 @@ flowchart LR
     subgraph each ["🔁 each step"]
         direction LR
         B["🔨 build"] --> C{"🚧 in the<br/>fence?"}
-        C -- yes --> T["🧪 test"] --> R["🔍 review"] --> K["👀 check"]
+        C -- yes --> T["🧪 test"] --> K["👀 check"]
         C -. drift .-> Q["✋ ask"] -.-> B
-        R -. fixes .-> T
+        T -. risky step .-> R["🤔 doubt"] -.-> K
     end
     S["⚙️ setup"] --> P["📝 plan"] --> B
     K --> D["✅ done"] --> CM["📦 commit"] --> SH["🚀 ship"]
@@ -104,9 +104,9 @@ flowchart LR
 | ⚙️ **setup** | Scan the repo, ask how you work, write `.claude/jod.md`. |
 | 📝 **plan** | Appetite, scope fence, patterns to copy, impact map. Then run all steps (the default) or go step by step. |
 | 🔨 **build** → 🚧 | Tests first, copying the closest siblings. The checkpoint stops on drift (files outside the fence, a new dependency, 2× the size) and asks with two options and a recommendation. |
-| 🧪 🔍 👀 **test · review · check** | Affected tests and typecheck → risk-triaged review (drift, silent failures, gamed tests, comments) → see it working, as each role. Fixes loop back to test. |
+| 🧪 🤔 👀 **test · doubt · check** | Affected tests and typecheck → for a risky step only (a HIGH file, a migration, a contract, money, permissions), an independent doubt pass on that decision → see it working, as each role, after user-visible steps and at least every 3 steps. Fixes re-run only what they touch. |
 | ✅ **done** | Full suites once, coverage re-checked, lessons into the profile. |
-| 📦 **commit** | Logical commits on `development`. |
+| 📦 **commit** | The full review, once, over the whole change (drift, silent failures, gamed tests, comments, the plan); then logical commits on `development`. |
 | 🚀 **ship** | Release cleanup, full gate, production check, rollback plan, then `development` into `main`. |
 | 🧹 **cleanup** | On the cadence you chose: dead code, stale comments, orphaned files, asking before anything goes. |
 
@@ -124,7 +124,7 @@ flowchart LR
 | Command | What it does |
 |---|---|
 | `/jod:setup [refresh]` | Scan the repo, ask how you work, write or update the profile, offer hard guards (deny rules and hooks) |
-| `/jod:task <task>` | The full loop: plan (split into as many steps as the work needs) → you choose "run all steps" or "step by step" (no answer means run all) → each step goes build → test → review → check → done |
+| `/jod:task <task>` | The full loop: plan (split into as many steps as the work needs) → you choose "run all steps" or "step by step" (no answer means run all) → each step goes build → test → check (a doubt pass for risky steps) → done. The full review happens in `/jod:commit` |
 | `/jod:task plan\|build\|test\|review\|check\|done …` | Run one phase on its own; `build <slug>` resumes a saved plan in a fresh session |
 | `/jod:fix <symptom>` | Reproduce, trace the root cause backward, write a regression test that fails first, fix, hunt the same bug across the repo, verify |
 | `/jod:cleanup [area] [kind]` | Find bad comments, unused code, unused files, dependencies and config; ask what to remove; remove it in behaviour-neutral groups with before/after test counts; record the date. The task, commit and ship reports remind you when the cadence chosen in setup has passed |
@@ -155,10 +155,14 @@ plan    Appetite: half a day. Scope fence: invoices.controller, invoices.service
 > yes
 build   Wrote 4 failing tests → implemented → checkpoint: 4 files, all inside the fence.
 test    api: tsc ok, 312 passed · web: 88 passed
-review  1 HIGH file (permission). Fixed: export ignored the tenant filter on archived invoices
-        (+ regression test). Skipped: "add retry" (no caller needs it).
+doubt   Permission check (HIGH). Fixed: export ignored the tenant filter on archived invoices
+        (+ regression test).
 check   Exported as admin and as viewer (viewer gets 403). File opens in Excel.
 done    Profile: + "CSV exports stream through lib/csv.ts". Suggest /jod:commit.
+
+> /jod:commit
+review  Whole change, 4 files. Skipped: "add retry" (no caller needs it).
+commit  a1b2c3d feat(invoices): CSV export · pushed to development
 ```
 
 ## The profile
@@ -218,7 +222,7 @@ side branch ──merge──▶ development ──/jod:ship──▶ main ─�
 ## Design choices
 
 - **For one to three engineers.** Sign-offs, reviewer assignment, PR templates, RFCs for small changes and coverage targets are left out on purpose.
-- **Cheap by default.** Each step runs only the affected tests; the full suites run once. The independent review agent runs only on high-risk or large diffs. Guides load only when a phase needs them.
+- **Cheap by default.** Each step runs only the affected tests; the full suites run once. The full review runs once, in `/jod:commit`; during a task only risky steps get a short doubt pass, and the independent review agent runs only on high-risk or large diffs. Guides load only when a phase needs them.
 - **Restart instead of grinding.** After two failed rounds, Claude writes a handoff into the plan file and recommends a fresh session.
 - **Profile beats plugin.** When they disagree, your profile wins.
 

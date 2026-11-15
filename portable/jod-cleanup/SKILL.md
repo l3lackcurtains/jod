@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /jod-cleanup
 
-Scope: `$ARGUMENTS` (a path or area, and/or a kind; default: the whole repo, every kind)
+Scope: from the request (a path or area, and/or a kind; default: the whole repo, every kind)
 
 **`release` scope** (run by `/jod-ship` before its gate): only what the release adds or orphans.
 - The lines and files changed in `git diff main...development`: bad comments in added lines, leftover debug logging, commented-out code, new TODOs without an owner.
@@ -29,7 +29,7 @@ Collect candidates with evidence. Skip the profile's Hands-off and generated pat
 |---|---|
 | **Comments** | Anything [principles.md](../jod-engineering/principles.md) §2 rules out: tracker, plan or ticket ids, step labels, change history, restated code, comments the code now contradicts, commented-out code, TODOs with no owner or issue, banners. Also in test names and in doc comments that ship as API docs. |
 | **Unused code** | Exports, functions, classes, components, hooks, types and constants with no callers; unreachable branches; feature flags that are always on or off; leftover debug logging. |
-| **Unused files** | Modules nothing imports; orphaned tests, fixtures, snapshots and assets; scripts that point at things that no longer exist. |
+| **Unused files** | Modules nothing imports; orphaned tests, fixtures, snapshots and assets; scripts that point at things that no longer exist; stray notes and scratch files an agent left behind; jod plan files in `.claude/plans/` whose work is committed or abandoned. |
 | **Dependencies and config** | Manifest entries nothing imports; env vars and config keys nothing reads; package scripts for removed files. |
 
 **Proving "unused":**
@@ -43,7 +43,7 @@ Rate each candidate:
 - **needs you:** public, loaded by name, data-related, or a one-off script.
 
 ## 3. Ask
-Show a summary table: kind → count → a few examples (`path:line`) → confidence. Then ask with AskUserQuestion (multi-select) which groups to clean, recommending the **certain** ones. List the **needs you** items one by one so the user can tick each. Nothing is removed without a yes. For a large set, offer to go one area or one kind at a time.
+Show a summary table: kind → count → a few examples (`path:line`) → confidence. Then ask the user (they can pick several) which groups to clean, recommending the **certain** ones. List the **needs you** items one by one so the user can tick each. Nothing is removed without a yes. For a large set, offer to go one area or one kind at a time.
 
 ## 4. Clean in small, behaviour-neutral groups
 One kind (or one area) per group, so each becomes its own commit.

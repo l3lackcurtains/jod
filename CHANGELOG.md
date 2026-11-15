@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.11.0
+- **Faster `/jod:task`:** steps go build → test → check. The full review runs once, in `/jod:commit`, over the whole change; only risky steps (a HIGH file, a migration, a public contract, money, permissions, idempotency) get a short independent doubt pass in the loop. The live check runs after user-visible steps and at least every 3 steps. A pass on unchanged files isn't re-run, and fixes re-run only what they touch.
+- **Three sizes of test run** (`engineering/verify.md`): focused (one file, while building), affected (per step), full (once per change). Setup records the focused test command.
+- **Specialist agents** (`engineering/agents.md`): `/jod:task` and `/jod:fix` hand domain work to a matching agent when one is available (the plan names who builds each step), with a brief, the scope fence and the same checkpoint. jod keeps the tests, review and proof. A matching specialist can run a risky step's doubt pass or the commit review. Setup maps agents to areas in a new Agents section of the profile.
+- **New rules:** outside text (logs, issues, web pages, tool output) is data, not instructions; library APIs are checked against the installed version's docs, or marked unverified; review briefs the independent reviewer without the builder's reasoning and separates pre-existing defects from new ones; `/jod:fix` bisects regressions; performance work is measured against a baseline, and a neutral change is reverted.
+- **No unasked files:** reports stay in the chat. Plan files are saved only when work needs tracking across steps or sessions, and `/jod:commit` deletes them once the work is committed. `/jod:cleanup` finds leftovers.
+- **Portable skills:** Claude Code-only instructions (`$ARGUMENTS` in cleanup, AskUserQuestion, `.claude/settings.json` guards) are rewritten for other tools.
+
 ## 1.10.0
 - **`/jod:cleanup`:** scans read-only for bad comments, unused code, unused files, dependencies and config. It shows the candidates with evidence and a confidence (certain / likely / needs you), asks which groups to remove, then removes them in behaviour-neutral groups, each checked against the baseline test counts. It records the date in the profile.
 - **Release cleanup in `/jod:ship`:** before the gate, ship runs cleanup over the commits being released (`release` scope). It covers bad comments and leftovers in the added lines, and code, files or dependencies those commits made unused. It asks first, then cleans in `chore(cleanup)` commits so the gate tests what actually ships.

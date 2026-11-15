@@ -14,9 +14,9 @@ Each command reports in the shape that fits its job: a bug fix reads like an inc
 ### `/jod:task <phase>`: a status line
 One line per phase or step, with a short table only when something failed or was found. In "run all steps" mode, prefix each line with the step (`2/4`):
 ```
-✅ 1/3 tidy · extracted lib/csv.ts · tests green before and after
-✅ 2/3 api · build, test (312 passed), review (1 fixed), check (403 for viewer) ✓
-⚠️ 3/3 web · review: 2 fixed, 1 skipped (table below)
+✅ 1/3 tidy · extracted lib/csv.ts · tests green before and after · check pending
+✅ 2/3 api · build, test (312 passed), doubt (permission): 1 fixed, check (403 for viewer; covers 1/3) ✓
+⚠️ 3/3 web · check: export button missing for admin (table below)
 ```
 
 ### `/jod:task` done: a feature summary

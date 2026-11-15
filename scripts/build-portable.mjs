@@ -43,7 +43,20 @@ function transform(text) {
   t = t.replace(/Arguments: `\$ARGUMENTS`/g, "Arguments: the user's request")
   t = t.replace(/Bug report: `\$ARGUMENTS`/g, "Bug report: the user's description")
   t = t.replace(/Options: `\$ARGUMENTS`/g, 'Options: from the request')
+  t = t.replace(/Scope: `\$ARGUMENTS`/g, 'Scope: from the request')
+  t = t.replace(/`\$ARGUMENTS`/g, "the user's request")
   t = t.replace(/!`([^`]+)`/g, 'run `$1`')
+  // Claude Code's question tool: other tools just ask in chat
+  t = t.replace(/ask with AskUserQuestion \(multi-select\)/g, 'ask the user (they can pick several)')
+  t = t.replace(/ask with AskUserQuestion/g, 'ask the user')
+  t = t.replace(/ask one AskUserQuestion:/g, 'ask one question:')
+  t = t.replace(/Use AskUserQuestion:/g, 'Ask the user:')
+  t = t.replace(/AskUserQuestion/g, 'a question to the user')
+  // Claude Code permission settings: only where the tool has an equivalent
+  t = t.replace(
+    'Then offer the hard guards as ready `.claude/settings.json` snippets.',
+    "Then, if this tool has a permissions or hooks config (Claude Code's is `.claude/settings.json`), offer the hard guards as ready snippets for it; otherwise skip this.",
+  )
   return t
 }
 

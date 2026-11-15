@@ -50,6 +50,7 @@ Apply what's relevant: a copy change doesn't need a scalability plan, but every 
 - **Pagination.** Every list endpoint is paginated with a capped `limit`; no unbounded queries. Fetch only the fields you need. No N+1: batch the lookups, or join/aggregate. Large exports and reports stream or run as jobs.
 - **Async work.** Anything slow, external or retryable (sending, media processing, syncs, webhooks, email, imports, heavy recalculation) goes to the queue/job system with bounded retries and backoff, not inside the request. The request returns quickly with a status the client can poll.
 - **Outbound calls.** Every HTTP or RPC call has a timeout. Respect vendor rate limits and the product's plan limits.
+- **Performance work is measured.** When the task is "make it faster": record a baseline number first (the same command, data and conditions each time); change one thing at a time and re-measure; keep a change only if it beats the run-to-run noise. Neutral is a revert, not a keep, and a speed-up that needs a test changed is a revert too. Report baseline → result for each attempt, kept or not.
 - **Review asks:** Does this still work with two instances, 100× the data, and a slow dependency? Is any query missing an index, or any list missing a limit?
 
 ## 4. Reliability and resilience

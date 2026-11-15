@@ -2,6 +2,10 @@
 
 The commands come from the profile (`.claude/jod.md` → "Verify commands"). Without a profile, read the package scripts (`package.json`, `pyproject.toml`, `Makefile`, `go.mod`, `Cargo.toml`, CI workflow files) and use what CI runs.
 
+## Run the least that proves it
+- **Three sizes of test run:** *focused* (one test file or test name, while writing code: the profile's focused command), *affected* (the touched packages' related tests, per step), *full* (every suite of the touched packages, once per change). Use the smallest one that proves the claim you're making. A profile without a focused command (made before it had one): work it out from the test runner, and propose adding it to the profile.
+- **Don't re-run a pass.** A command that passed in this session counts as evidence until a file it covers changes (check with `git status`/`git diff`). After a change, re-run only the commands that cover the changed files.
+
 ## Per change (`/jod-task test`, `/jod-commit`)
 1. **Work out what you touched.** List the touched packages or apps from `git status --short` and `git diff --stat`.
 2. **Build what depends on it.** Rebuild shared or generated code first (shared packages, OpenAPI/GraphQL codegen, ORM clients) when its source changed.
@@ -59,7 +63,7 @@ If any step can't run here (no Docker, no cluster access, a missing tool), repor
 
 ## Reporting
 - **Report exact counts**, e.g. `api: tsc ok, 1078 passed · web: 272 passed`.
-- **Never claim a pass you didn't see in this turn.** If a check wasn't run, say so.
+- **Never claim a pass you didn't see.** It must be from this session, on the files as they are now; if it was reused rather than re-run, say "unchanged since <when>". If a check wasn't run, say so.
 - **Flaky tests:**
   - a one-off failure gets re-run in isolation;
   - a test that's flaky gets fixed, not ignored.
