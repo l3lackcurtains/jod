@@ -39,13 +39,13 @@ Run long commands in the background with generous timeouts.
    - send SIGTERM and confirm a clean shutdown.
 
 ### By runtime
-- **Direct process** (node, pm2, systemd, uvicorn, a binary): run the profile's production start command against the built output, not the dev command. Check that the process-manager config (`ecosystem.config.*`, unit file, `Procfile`) points to the right entry file, port and env.
+- **Direct process** (a runtime command, a process manager, a service unit, or a binary): run the profile's production start command against the built output, not the dev command. Check that the process-manager or service config points to the right entry file, port and env.
 - **Docker Compose:**
   - `docker compose -f <prod file> config`: validates the file and fills in env vars. Any warning about an unset variable is a finding.
   - `docker compose -f <prod file> -p jod-ship-check up -d --build --wait` (`--wait` makes compose wait until the services are healthy), with production-like env. Smoke-test, then `docker compose -p jod-ship-check down -v`.
   - Check the file: every long-running service has a health check and a restart policy; no source folders are bind-mounted; image tags are pinned; ports follow the profile's rules.
 - **Kubernetes:**
-  - Render the manifests (`kustomize build` or `helm lint` + `helm template`), then validate them: `kubectl apply --dry-run=server` if the profile allows cluster access, otherwise `--dry-run=client` or `kubeconform`.
+  - Render the manifests with the project's own tool (the profile says which), then validate them: `kubectl apply --dry-run=server` if the profile allows cluster access, otherwise a client-side dry run or schema validation.
   - Check:
     - images use the tag being built, never `latest`;
     - readiness and liveness probes hit real endpoints;
@@ -53,7 +53,7 @@ Run long commands in the background with generous timeouts.
     - every env, ConfigMap and Secret reference exists;
     - migrations run as a Job or init container, ordered before the new pods.
   - Build each image, and run it locally with the Deployment's `command`/`args`, env and port, then smoke-test it.
-- **Serverless or static:** the production build, function bundle size and runtime limits, and env vars per environment. If the provider has a local emulator, smoke-test with it.
+- **Serverless or static:** the production build, function bundle size and runtime limits, and env vars per environment. If the host offers a local emulator, smoke-test with it.
 
 If any step can't run here (no Docker, no cluster access, a missing tool), report exactly what wasn't verified. It's a BLOCK unless the user accepts the risk.
 
