@@ -1,15 +1,15 @@
 ---
 name: setup
-description: Create or refresh this repo's Keel profile (.claude/keel.md) by reading the codebase — layers to change, verify commands, branches, release mode, dev-server and database rules, high-risk areas, reference implementations and gotchas.
+description: Create or refresh this repo's Sip profile (.claude/sip.md) by reading the codebase — layers to change, verify commands, branches, release mode, dev-server and database rules, high-risk areas, reference implementations and gotchas.
 argument-hint: "[refresh]"
 disable-model-invocation: true
 ---
 
-# /keel:setup
+# /sip:setup
 
 Options: `$ARGUMENTS` (`refresh` = update an existing profile, keeping what the user wrote)
 
-The profile is how the rest of Keel stays project-agnostic: every skill reads `.claude/keel.md` first. Fill it from **evidence in the repo**, not guesses. Mark anything you couldn't confirm as `TODO (confirm)`.
+The profile is how the rest of Sip stays project-agnostic: every skill reads `.claude/sip.md` first. Fill it from **evidence in the repo**, not guesses. Mark anything you couldn't confirm as `TODO (confirm)`.
 
 ## 1. Read the repo
 - **Instructions:** `CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md`, `README*`, docs about conventions or architecture.
@@ -36,7 +36,7 @@ Use AskUserQuestion, at most 4 questions, each with a recommended option. Typica
 - **Dev servers:** whether Claude may start them.
 - **Shared database:** whether the local DB is shared or production (then it's read-only).
 
-## 3. Write `.claude/keel.md`
+## 3. Write `.claude/sip.md`
 Start from [template.md](template.md). Keep it short and specific. Every line should be something Claude couldn't have guessed. Link to existing docs instead of copying them.
 
 With `refresh`: read the existing profile first, keep what the user wrote, and update only what the repo shows has changed. Show a summary of what changed.
@@ -44,4 +44,4 @@ With `refresh`: read the existing profile first, keep what the user wrote, and u
 ## 4. Report
 Show the profile and list the `TODO (confirm)` lines. Then suggest the optional hard guards, as deny rules or hooks in `.claude/settings.json`, for rules that must never be broken (e.g. edits to vendored UI, a force push, the wrong package manager). Only add them if the user says yes.
 
-Don't commit the profile; `/keel:commit` will.
+Don't commit the profile; `/sip:commit` will.

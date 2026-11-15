@@ -1,12 +1,12 @@
 {
-  "name": "keel",
+  "name": "sip",
   "description": "Engineering workflow for small, senior teams: plan → build → test → review → check → commit → ship, with architecture boundaries, scalability, reliability, security and existing-pattern discipline built in. Project-agnostic; each repo gets a short profile.",
   "version": "1.0.0",
   "author": {
     "name": "l3lackcurtains"
   },
-  "homepage": "https://github.com/l3lackcurtains/keel",
-  "repository": "https://github.com/l3lackcurtains/keel",
+  "homepage": "https://github.com/l3lackcurtains/sip",
+  "repository": "https://github.com/l3lackcurtains/sip",
   "license": "MIT",
   "keywords": ["workflow", "code-review", "tdd", "debugging", "release", "engineering"]
 }

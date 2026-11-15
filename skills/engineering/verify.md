@@ -1,8 +1,8 @@
 # Verify
 
-The commands come from the profile (`.claude/keel.md` → "Verify commands"). Without a profile, read the package scripts (`package.json`, `pyproject.toml`, `Makefile`, `go.mod`, `Cargo.toml`, CI workflow files) and use what CI runs.
+The commands come from the profile (`.claude/sip.md` → "Verify commands"). Without a profile, read the package scripts (`package.json`, `pyproject.toml`, `Makefile`, `go.mod`, `Cargo.toml`, CI workflow files) and use what CI runs.
 
-## Per change (`/keel:task test`, `/keel:commit`)
+## Per change (`/sip:task test`, `/sip:commit`)
 1. **Work out what you touched.** List the touched packages or apps from `git status --short` and `git diff --stat`.
 2. **Build what depends on it.** Rebuild shared or generated code first (shared packages, OpenAPI/GraphQL codegen, ORM clients) when its source changed.
 3. **Check each touched package.** For each:
@@ -12,7 +12,7 @@ The commands come from the profile (`.claude/keel.md` → "Verify commands"). Wi
 4. **Lint only the files you changed**, without auto-fix. Fix only the errors on lines you changed; errors on other lines were already there.
 5. **On failure, fix the cause, not the test.** Change a test only when it encodes behaviour the change intentionally replaces, and say so.
 
-## Full gate (`/keel:ship`)
+## Full gate (`/sip:ship`)
 Run every check and collect the results; don't stop at the first failure:
 - **Clean install** against the lockfile (frozen).
 - **Typecheck everything.**

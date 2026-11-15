@@ -9,7 +9,7 @@ Goal: the approved plan (or the current step) implemented on every layer, tests 
 3. **Follow the plan's "Patterns to follow"** ([patterns.md](../../engineering/patterns.md)).
    - Open the model file next to the one you're writing and match its folder, naming, structure, UI pieces, classes, states and permission handling.
    - Grep before creating anything: reuse what exists. When something would now be duplicated, extract it and update the old callers.
-   - No plan (`/keel:task build` alone)? Do the pattern study first.
+   - No plan (`/sip:task build` alone)? Do the pattern study first.
 4. **Build it right** ([principles.md](../../engineering/principles.md)). Implement the plan's Engineering decisions now, not "later":
    - thin entry points
    - tenant-scoped queries

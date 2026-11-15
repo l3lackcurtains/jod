@@ -10,4 +10,4 @@ Goal: prove it's finished, record it, hand over.
    - bugs found and fixed on the way
    - checks with exact counts, and what was and wasn't seen live
    - anything outside code: env vars, migrations or backfills to run, vendor settings, deploy timing
-   - not committed: suggest `/keel:commit`, then `/keel:ship` when it's time to release.
+   - not committed: suggest `/sip:commit`, then `/sip:ship` when it's time to release.

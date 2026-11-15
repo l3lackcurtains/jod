@@ -5,11 +5,11 @@ argument-hint: "[verdict-only]"
 disable-model-invocation: true
 ---
 
-# /keel:ship
+# /sip:ship
 
 Options: `$ARGUMENTS` (`verdict-only` = run the review and gate, report, don't merge)
 
-Step 2 of 2. `/keel:commit` (step 1) reviews and commits work; `/keel:ship` releases it. The work branch, release branch, release mode (`merge` or `pr`) and whether the release deploys all come from `.claude/keel.md`. If there's no profile, detect the default branch (`git symbolic-ref refs/remotes/origin/HEAD`) and ask before merging.
+Step 2 of 2. `/sip:commit` (step 1) reviews and commits work; `/sip:ship` releases it. The work branch, release branch, release mode (`merge` or `pr`) and whether the release deploys all come from `.claude/sip.md`. If there's no profile, detect the default branch (`git symbolic-ref refs/remotes/origin/HEAD`) and ask before merging.
 
 ## Context
 - Branch: !`git branch --show-current`
@@ -18,7 +18,7 @@ Step 2 of 2. `/keel:commit` (step 1) reviews and commits work; `/keel:ship` rele
 
 ## 1. Preconditions
 - **Branch:** you must be on the work branch (or the feature branch being released). Otherwise stop and ask.
-- **Uncommitted changes:** stop and say "run `/keel:commit` first". Don't commit them here.
+- **Uncommitted changes:** stop and say "run `/sip:commit` first". Don't commit them here.
 - **In sync:** run `git fetch`. The branch must be pushed and level with its remote. If nothing is waiting for the release branch (`git log --oneline <release>..<work>`), say so and stop.
 
 ## 2. Final review
@@ -47,10 +47,10 @@ Run every check and collect the results; don't stop at the first failure. Use th
    - compliance items
    - fail-open defaults: grep for `env.X || '…'` / `?? '…'` on secrets, auth, CORS or URLs. They must fail at startup when missing.
 
-**Verdict:** a table of each check → pass/fail (with counts or the first error), then **RELEASE** or **BLOCK**. On BLOCK: list the fixes needed, offer `/keel:fix-bug`, and stop.
+**Verdict:** a table of each check → pass/fail (with counts or the first error), then **RELEASE** or **BLOCK**. On BLOCK: list the fixes needed, offer `/sip:fix-bug`, and stop.
 
 ## 4. Release (on RELEASE, unless `verdict-only`)
-If the profile says the release deploys, or asks for a timing confirmation, show the commits, the deploy audit and the post-deploy steps, and ask "Release to production now?". Proceed only on a yes. Otherwise, running `/keel:ship` is the go-ahead.
+If the profile says the release deploys, or asks for a timing confirmation, show the commits, the deploy audit and the post-deploy steps, and ask "Release to production now?". Proceed only on a yes. Otherwise, running `/sip:ship` is the go-ahead.
 
 **Mode `merge`:**
 ```
