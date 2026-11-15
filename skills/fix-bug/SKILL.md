@@ -5,11 +5,11 @@ argument-hint: "<symptom, error, pasted log, URL, screenshot path or issue id>"
 disable-model-invocation: true
 ---
 
-# /sip:fix-bug
+# /jod:fix-bug
 
 Bug report: `$ARGUMENTS`
 
-Read `.claude/sip.md` (the profile) and [verify.md](../engineering/verify.md). Fixes follow the surrounding code's patterns ([patterns.md](../engineering/patterns.md)): no new style or helper when one already exists. **No fix before the root cause is shown with evidence.**
+Read `.claude/jod.md` (the profile) and [verify.md](../engineering/verify.md). Fixes follow the surrounding code's patterns ([patterns.md](../engineering/patterns.md)): no new style or helper when one already exists. **No fix before the root cause is shown with evidence.**
 
 ## 1. Reproduce
 Pick the cheapest way that shows the bug, and record exactly what you saw:
@@ -49,4 +49,4 @@ Report:
 - live check result
 - anything the user must do outside code (a data fix, reconnecting an account, a setting).
 
-Not committed: suggest `/sip:commit`, then `/sip:ship` to release.
+Not committed: suggest `/jod:commit`, then `/jod:ship` to release.

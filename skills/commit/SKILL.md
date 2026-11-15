@@ -1,15 +1,15 @@
 ---
 name: commit
-description: Step 1 of 2. Review the uncommitted changes on the work branch properly, fix what holds up, verify, commit in logical groups and push, so the tree is clean and ready for a new task or /sip:ship.
+description: Step 1 of 2. Review the uncommitted changes on the work branch properly, fix what holds up, verify, commit in logical groups and push, so the tree is clean and ready for a new task or /jod:ship.
 argument-hint: "[no-push]"
 disable-model-invocation: true
 ---
 
-# /sip:commit
+# /jod:commit
 
 Options: `$ARGUMENTS` (`no-push` = commit but don't push)
 
-Step 1 of 2: `/sip:commit` keeps the work branch clean and reviewed; `/sip:ship` (step 2) releases it. The branch names, commit style and never-stage list come from `.claude/sip.md`.
+Step 1 of 2: `/jod:commit` keeps the work branch clean and reviewed; `/jod:ship` (step 2) releases it. The branch names, commit style and never-stage list come from `.claude/jod.md`.
 
 ## Context
 - Branch: !`git branch --show-current`
@@ -18,12 +18,12 @@ Step 1 of 2: `/sip:commit` keeps the work branch clean and reviewed; `/sip:ship`
 - Size: !`git diff --stat | tail -1 || true`
 
 ## Steps
-1. **Branch.** Check you're on the profile's work branch (or a feature branch, if that's the project's flow). On the release branch, stop and ask. Nothing uncommitted? Say "nothing to commit; ready for a new task or `/sip:ship`" and stop.
+1. **Branch.** Check you're on the profile's work branch (or a feature branch, if that's the project's flow). On the release branch, stop and ask. Nothing uncommitted? Say "nothing to commit; ready for a new task or `/jod:ship`" and stop.
 2. **Know the change.**
    - Read the full diff (`git diff`, plus `git status` for new files) and group it into logical units, one per feature or fix.
    - Changes you didn't make in this session aren't yours (another session's work in progress, or accidental edits): list them and ask before including them.
 3. **Review properly** with [review.md](../engineering/review.md): risk triage, a calibrated review, then the pattern, principles, silent-failure, test and surface checks.
-   - If `/sip:task review` already covered this exact diff in this session, review only what changed since (review.md §0).
+   - If `/jod:task review` already covered this exact diff in this session, review only what changed since (review.md §0).
    - Fix what's real, with a regression test per bug. Skip the rest with a one-line reason.
 4. **Verify** ([verify.md](../engineering/verify.md) "Per change"): typecheck and the full suites of every touched package, rebuilding shared or generated code first. Lint only the changed files, without auto-fix. **Never commit red.**
 5. **Overwrite check.** Run `git diff --numstat`. A file with big deletions and few additions may have been rewritten instead of edited, especially tests. Compare it with `git show HEAD:<file>` and restore anything lost.
@@ -41,4 +41,4 @@ Step 1 of 2: `/sip:commit` keeps the work branch clean and reviewed; `/sip:ship`
 - Checks with exact counts
 - Commits (`hash subject`), pushed or not
 - Uncommitted changes left alone (not yours)
-- What's waiting for release (`git log --oneline <release>..<work>`), and "Ready for a new task, or `/sip:ship` to release."
+- What's waiting for release (`git log --oneline <release>..<work>`), and "Ready for a new task, or `/jod:ship` to release."

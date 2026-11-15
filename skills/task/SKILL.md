@@ -5,7 +5,7 @@ argument-hint: "[plan|build|test|review|check|done] <task description, roadmap i
 disable-model-invocation: true
 ---
 
-# /sip:task
+# /jod:task
 
 Arguments: `$ARGUMENTS`
 
@@ -21,11 +21,11 @@ Arguments: `$ARGUMENTS`
 | `test` | [phases/test.md](phases/test.md) | Typecheck + tests of touched packages until green |
 | `review` | [phases/review.md](phases/review.md) | Calibrated review, fix what holds up |
 | `check` | [phases/check.md](phases/check.md) | See it working in the real app |
-| `done` | [phases/done.md](phases/done.md) | Final run, docs, summary; hands over to `/sip:commit` |
+| `done` | [phases/done.md](phases/done.md) | Final run, docs, summary; hands over to `/jod:commit` |
 
 ## Rules for the full loop
 1. **Read before starting:**
-   - `.claude/sip.md` (the project profile; missing → offer `/sip:setup`)
+   - `.claude/jod.md` (the project profile; missing → offer `/jod:setup`)
    - [principles.md](../engineering/principles.md) (build it right)
    - [patterns.md](../engineering/patterns.md) (copy the codebase)
    - [review.md](../engineering/review.md) (how we review)
@@ -34,7 +34,7 @@ Arguments: `$ARGUMENTS`
    - **Fast path:** a small change (≤3 files, no schema, API contract, permission, money/data-integrity or security change) gets a 3-line plan and goes straight to build.
 3. **Build big work step by step** (A, B, C…), each one shippable. After building a step, run test → review → check. If any of them changes code, go round again.
    - **Max 3 rounds** per step. If it's still failing, stop and show what's stuck and what you'd try, instead of guessing.
-4. **Never commit, push or merge here.** `done` hands over to `/sip:commit`; `/sip:ship` releases.
+4. **Never commit, push or merge here.** `done` hands over to `/jod:commit`; `/jod:ship` releases.
 5. **Post one short line per phase**, e.g. "tests: 1078 passed", "review: 3 fixed, 1 skipped".
 
 Copy this checklist and keep it updated:
@@ -52,4 +52,4 @@ Round: 1 / 3
 ## Current state
 - Branch: !`git branch --show-current`
 - Uncommitted: !`git status --short | head -20 || true`
-- Profile: !`test -f .claude/sip.md && echo "found" || echo "MISSING: offer /sip:setup"`
+- Profile: !`test -f .claude/jod.md && echo "found" || echo "MISSING: offer /jod:setup"`

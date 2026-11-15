@@ -1,10 +1,10 @@
 # How we review
 
-One procedure, used by `/sip:task review`, `/sip:commit` and `/sip:ship`. The goal is to find real bugs, not to produce comments. A reviewer asked to find problems will always find *something*, so calibrate.
+One procedure, used by `/jod:task review`, `/jod:commit` and `/jod:ship`. The goal is to find real bugs, not to produce comments. A reviewer asked to find problems will always find *something*, so calibrate.
 
 ## 0. Skip what's already reviewed
-- `/sip:commit`: if `/sip:task review` already ran on this exact diff in this session and nothing changed since, don't review again; run only steps 3–4 on what changed after it.
-- `/sip:ship`: don't re-review commits one by one; look only for cross-commit issues (step 4).
+- `/jod:commit`: if `/jod:task review` already ran on this exact diff in this session and nothing changed since, don't review again; run only steps 3–4 on what changed after it.
+- `/jod:ship`: don't re-review commits one by one; look only for cross-commit issues (step 4).
 
 ## 1. Triage by risk
 List the changed files and mark them **HIGH** when they touch:
@@ -33,7 +33,7 @@ Read HIGH files line by line as an attacker would, as a second instance or a con
 
 ## 4. Against the plan, and across commits
 - **Check against the plan.** When there's an approved plan (saved to the scratchpad in the plan phase), give a **fresh** subagent the plan and the diff: is every item done, and every listed edge case tested? It reports gaps only.
-- **Across the whole release (`/sip:ship`):**
+- **Across the whole release (`/jod:ship`):**
   - interactions between commits
   - leftovers (debug code, TODOs, stray files)
   - half-finished work

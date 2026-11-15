@@ -1,6 +1,6 @@
 # Follow the existing patterns
 
-New code should look like it was written by whoever wrote the code next to it. Before writing anything, find how this repo already does the same kind of thing and copy that, instead of inventing a new way. The project's own rules live in its conventions docs (listed in `.claude/sip.md`, or `CLAUDE.md`/`AGENTS.md`/`CONTRIBUTING.md`). This file explains *how to find the right example to copy*.
+New code should look like it was written by whoever wrote the code next to it. Before writing anything, find how this repo already does the same kind of thing and copy that, instead of inventing a new way. The project's own rules live in its conventions docs (listed in `.claude/jod.md`, or `CLAUDE.md`/`AGENTS.md`/`CONTRIBUTING.md`). This file explains *how to find the right example to copy*.
 
 ## 1. Find the closest examples (always 2–3, never 0)
 For each thing you're about to create (page, component, dialog/form, table/list, hook, store, route, DTO/schema, service, job, migration, CLI command, SDK method, test), find its nearest siblings:

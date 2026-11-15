@@ -1,15 +1,15 @@
 ---
 name: engineering
-description: Sip's engineering standards and the project's profile. Use when adding or changing a feature, endpoint, schema, job, permission, price or user-facing behaviour, before reviewing code, or before claiming any change is complete. Covers architecture boundaries, scalability, reliability, security, following existing code patterns, how to review, and how to verify.
+description: Jod's engineering standards and the project's profile. Use when adding or changing a feature, endpoint, schema, job, permission, price or user-facing behaviour, before reviewing code, or before claiming any change is complete. Covers architecture boundaries, scalability, reliability, security, following existing code patterns, how to review, and how to verify.
 when_to_use: Building or changing code in a repo, reviewing a diff, or about to say "done".
 ---
 
-# Engineering standards (Sip)
+# Engineering standards (Jod)
 
 ## 1. Load the project profile
-Read `.claude/sip.md` in the repo. It holds everything specific to this project: the layers/surfaces to change in order, the verify commands, branches, the dev-server and database rules, the high-risk areas, the conventions docs and the gotchas. **Where the profile and this plugin disagree, the profile wins.**
+Read `.claude/jod.md` in the repo. It holds everything specific to this project: the layers/surfaces to change in order, the verify commands, branches, the dev-server and database rules, the high-risk areas, the conventions docs and the gotchas. **Where the profile and this plugin disagree, the profile wins.**
 
-No profile? Say so and offer `/sip:setup` (it generates one by reading the repo). Until then, use `CLAUDE.md`/`AGENTS.md`/`CONTRIBUTING.md` and the package scripts, and ask before anything risky.
+No profile? Say so and offer `/jod:setup` (it generates one by reading the repo). Until then, use `CLAUDE.md`/`AGENTS.md`/`CONTRIBUTING.md` and the package scripts, and ask before anything risky.
 
 ## 2. The standards
 - [principles.md](principles.md): how to build it right (boundaries, self-documenting code, scalability, reliability, security, operability).
@@ -24,7 +24,7 @@ A change isn't done until every layer/surface listed in the profile has it (API,
 The command you ran **in this turn**, its exit code and the counts. "Should work", "probably", an earlier run, or a subagent saying it passed is not evidence: re-run it. Lint passing doesn't prove a typecheck; a typecheck doesn't prove behaviour; unit tests don't prove the e2e.
 
 ## 5. Never, unless the user says so in this conversation
-- Commit, push, merge or deploy outside `/sip:commit` and `/sip:ship`.
+- Commit, push, merge or deploy outside `/jod:commit` and `/jod:ship`.
 - Write to a shared or production database, send real emails/posts/payments, or call paid external services.
 - Start dev servers when the profile says the user runs them.
 - Edit generated code or vendored UI primitives the profile marks as off-limits.

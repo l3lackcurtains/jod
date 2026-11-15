@@ -1,8 +1,8 @@
-# Sip
+# Jod
 
 An engineering workflow plugin for [Claude Code](https://claude.com/claude-code), for small teams of senior engineers who want speed **and** quality.
 
-*Sip* (सीप) is Nepali for skill or craftsmanship. Every change goes through plan, build, test, review and check, then commit and ship. Five standards are built in:
+*Jod* (जोड) is Nepali for joining and assembling: putting the parts together so they hold. Every change goes through plan, build, test, review and check, then commit and ship. Five standards are built in:
 
 - **Architectural boundaries:** layers that each do one job, modules that talk through their public services, one source of truth for shared code.
 - **Scalability:** stateless services, indexes, capped pagination, async jobs, timeouts.
@@ -15,17 +15,17 @@ Big-team ceremony (sign-offs, templates, design docs for small changes, coverage
 ## Install
 
 ```
-/plugin marketplace add l3lackcurtains/sip
-/plugin install sip@sip
+/plugin marketplace add l3lackcurtains/jod
+/plugin install jod@jod
 ```
 
 Then, in each repo:
 
 ```
-/sip:setup
+/jod:setup
 ```
 
-This reads the codebase and writes `.claude/sip.md`, a short **project profile**:
+This reads the codebase and writes `.claude/jod.md`, a short **project profile**:
 - the layers to change, in build order
 - the verify commands
 - the branches and release mode (local merge or PR)
@@ -41,12 +41,12 @@ Commit the profile; it's the only project-specific part.
 
 | Command | What it does |
 |---|---|
-| `/sip:task <task>` | Full loop: plan (waits for your OK) → build → test → review → check → done. Small changes take a fast path. |
-| `/sip:task plan\|build\|test\|review\|check\|done …` | Run one phase on its own |
-| `/sip:fix-bug <symptom>` | Reproduce, trace the root cause backward, write a regression test that fails first, fix, hunt the same bug across the repo, verify |
-| `/sip:commit` | Step 1: review the uncommitted diff, verify, commit in logical groups, push the work branch |
-| `/sip:ship` | Step 2: final review across commits, the full gate and a deploy audit, then merge or open a PR, and return to the work branch |
-| `/sip:setup [refresh]` | Create or update the project profile |
+| `/jod:task <task>` | Full loop: plan (waits for your OK) → build → test → review → check → done. Small changes take a fast path. |
+| `/jod:task plan\|build\|test\|review\|check\|done …` | Run one phase on its own |
+| `/jod:fix-bug <symptom>` | Reproduce, trace the root cause backward, write a regression test that fails first, fix, hunt the same bug across the repo, verify |
+| `/jod:commit` | Step 1: review the uncommitted diff, verify, commit in logical groups, push the work branch |
+| `/jod:ship` | Step 2: final review across commits, the full gate and a deploy audit, then merge or open a PR, and return to the work branch |
+| `/jod:setup [refresh]` | Create or update the project profile |
 
 The `engineering` skill loads automatically when Claude builds or reviews code. It holds the standards:
 - [principles](skills/engineering/principles.md): how to build it right

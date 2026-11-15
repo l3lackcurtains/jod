@@ -1,6 +1,6 @@
-# Sip profile: <project name>
+# Jod profile: <project name>
 
-<!-- Read by every Sip skill. Keep it short, specific and true. Link to docs instead of copying them. -->
+<!-- Read by every Jod skill. Keep it short, specific and true. Link to docs instead of copying them. -->
 
 ## Stack
 <one line per app/package: path, framework, language, test runner>
@@ -21,7 +21,7 @@ Conventions docs: <CLAUDE.md, docs/…>. Package manager: <pnpm 9, only>.
 |---|---|---|---|
 | <api> | <cmd> | <cmd> (full: <cmd>, ~<time>) | <lint: changed files only, no --fix> |
 
-Full gate (`/sip:ship`):
+Full gate (`/jod:ship`):
 ```
 <install --frozen-lockfile>
 <build shared/codegen>
