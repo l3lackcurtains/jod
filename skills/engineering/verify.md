@@ -9,7 +9,7 @@ The commands come from the profile (`.claude/jod.md` → "Verify commands"). Wit
    - typecheck or compile;
    - run the affected tests.
 
-   Run the full suite of each touched package once, at the end (`/jod:task done`, `/jod:commit`), not on every step.
+   Run the full suite of each touched package **once**: in `/jod:task done`, or in `/jod:commit` if `done` didn't already run it on this exact diff in this session. Not on every step.
 4. **Lint only the files you changed**, without auto-fix. Fix only the errors on lines you changed; errors on other lines were already there.
 5. **On failure, fix the cause, not the test.** Change a test only when it encodes behaviour the change intentionally replaces, and say so.
 

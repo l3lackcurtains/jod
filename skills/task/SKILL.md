@@ -25,17 +25,13 @@ Arguments: `$ARGUMENTS`
 | `done` | [phases/done.md](phases/done.md) | Final run, docs, summary; hands over to `/jod:commit` |
 
 ## Rules for the full loop
-1. **Read before starting:**
-   - `.claude/jod.md` (the project profile; missing → offer `/jod:setup`)
-   - [principles.md](../engineering/principles.md) (build it right)
-   - [patterns.md](../engineering/patterns.md) (copy the codebase)
-   - [review.md](../engineering/review.md) (how we review)
-   - [verify.md](../engineering/verify.md) (what counts as proof).
-2. **Wait for the plan's OK.** The plan phase ends by stopping for the user's OK; don't build before it.
-   - **Fast path:** a small change (≤3 files, no schema, API contract, permission, money/data-integrity or security change) gets a 3-line plan and goes straight to build.
+1. **Before starting,** read `.claude/jod.md` (the project profile; missing → offer `/jod:setup`) and the `engineering` skill (stay on the road, stop-and-ask, evidence).
+   - Each phase opens the guide it needs when it reaches it: [patterns.md](../engineering/patterns.md) and [principles.md](../engineering/principles.md) in plan and build, [verify.md](../engineering/verify.md) in test and done, [review.md](../engineering/review.md) in review.
+   - Don't load them all up front.
+2. **Wait for the plan's OK.** The plan phase ends by stopping for the user's OK; don't build before it. Small changes take the fast path defined in [plan.md](phases/plan.md).
 3. **Build big work step by step** (A, B, C…), each one shippable. After building a step, run test → review → check. If any of them changes code, go round again.
    - **Restart instead of grinding.** After 2 failed rounds on the same problem, write a handoff into the plan file: what was tried, what each attempt showed, and the current best hypothesis. Then recommend `/clear` and a fresh `/jod:task build <slug>`. Don't make a third attempt in a polluted context.
-   - **Drift alarm** (engineering §2): files outside the plan, about 2× the planned size, or an unplanned migration → stop and check with the user.
+   - The drift alarm (`engineering` §2) can stop any step; the build checkpoint checks it.
 4. **Never commit, push or merge here.** `done` hands over to `/jod:commit`; `/jod:ship` releases.
 5. **Post one short line per phase**, e.g. "tests: 1078 passed", "review: 3 fixed, 1 skipped".
 
@@ -48,7 +44,7 @@ Step A
 - [ ] review: fixed / skipped
 - [ ] check: what was seen live
 - [ ] done
-Round: 1 / 3
+Failed rounds: 0 (at 2: hand off and restart)
 ```
 
 ## Current state

@@ -13,20 +13,25 @@ No profile? Say so and offer `/jod:setup` (it generates one by reading the repo)
 
 ## 2. Stay on the road
 Jod is for **established projects that already work**. The job is to extend them the way they're built, not to redesign them.
-- **Scope:** do what was asked and planned. Anything else you notice gets a one-line note under "Noticed, not done" in the report.
+- **Scope:** do what was asked and planned, nothing more.
 - **Architecture and conventions:** extend the existing design. Changing a boundary, a data model, a core pattern or a public contract is a decision for the user: stop and ask.
 - **No new dependencies, services, patterns or abstractions** unless the plan says why the current stack can't do it.
 - **No rewrites.** Change the smallest unit that solves the problem. Cleanup ("tidying") goes in its own commit, before the behaviour change, never mixed in.
 - **Protect what users rely on:** public APIs, data, URLs, CLI flags, file formats. Add, don't break.
 - **Pin before you change:** before touching code with no tests, write a characterization test that records what it does today, then change it.
-- **Noticed, not fixed:** existing behaviour that looks wrong but isn't part of the task gets recorded and raised, not fixed on the side. Drive-by tidying is drift too.
+- **Noticed, not done:** a bug, smell or cleanup outside the task gets one line in the report's "Noticed, not done", not a fix on the side. Drive-by tidying is drift too.
 - **Stop and ask** when:
   - the plan turns out to be wrong;
   - a step needs a different approach than agreed;
   - you'd add a dependency or a second way of doing something the repo already does;
   - you'd change a public contract or existing data;
   - you'd touch a High-risk or Hands-off area the plan didn't name;
-  - the drift alarm fires: files outside the plan's scope fence, a lockfile or manifest change, a new folder or kind of file, about 2× the planned size, or an unplanned migration.
+  - the **drift alarm** fires (the build checkpoint checks it after every step):
+    - a file outside the plan's scope fence changed;
+    - a lockfile or manifest changed without a planned dependency;
+    - a new folder or kind of file appeared;
+    - the change is about 2× the planned size;
+    - an unplanned migration or public contract change appeared.
 
   Say what you found, give two options with a recommendation, and wait. Improvising past a surprise is how work derails.
 

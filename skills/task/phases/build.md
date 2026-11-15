@@ -22,22 +22,14 @@ Goal: the approved plan (or the current step) implemented on every layer, tests 
    - no secrets in logs
 
    Test the failure, permission and duplicate paths, not only the happy path.
-5. **Stay on the road** (engineering §2).
+5. **Stay on the road** (`engineering` §2).
    - Touch only the planned files.
-   - Tidying the code first is fine, but as a separate change before the behaviour change, never mixed in.
+   - Tidying goes in as its own step before the behaviour change, never mixed in.
    - No new dependencies, patterns or abstractions that the plan didn't justify.
-   - If you hit the drift alarm (files outside the plan, about 2× the size, an unplanned migration), stop and ask.
 6. **Edit safely.**
    - Read before writing; use Edit for existing files; never write over a file you haven't read.
    - Keep the file's line endings.
    - Respect the profile's "Hands-off" list.
 7. **Make the new tests pass.**
-8. **Checkpoint.** Run `git diff --stat` and `git status --short` and compare them with the plan's scope fence. Stop and ask if:
-   - a file outside the fence changed;
-   - a lockfile or manifest changed without a planned dependency;
-   - a new folder or a new kind of file appeared;
-   - the diff is more than about 2× the plan;
-   - a public type, DTO, route or schema changed that the plan didn't name.
-
-   Otherwise tick the step in the plan file and hand over to the test phase.
+8. **Checkpoint.** Run `git diff --stat` and `git status --short`, and compare them with the plan's scope fence using the drift alarm list (`engineering` §2). If any item fires, stop and ask. Otherwise tick the step in the plan file and hand over to the test phase.
 9. **One status line:** what was built per layer, which layers were skipped and why, and which existing files the new code is modelled on.

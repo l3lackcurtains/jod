@@ -2,6 +2,8 @@
 
 Goal: a plan the user approves before any code is written.
 
+**Fast path:** a small change (≤3 files; no schema, public contract, permission, money/data-integrity or security change) gets a 3-line plan (what, files, how it's checked) and goes straight to build without waiting. Everything else follows the steps below.
+
 1. **Understand the ask.** Restate it in one sentence. For a roadmap or issue id, read its spec and acceptance criteria. If something decides the design (policy, pricing, permissions, user-visible behaviour) and can't be found in the code, ask with AskUserQuestion: at most 3 questions, each with a recommended option. Don't ask what the code can answer.
 2. **Explore.** Find the code the change touches: Grep/Glob, or one Explore agent for broad sweeps. Note the current behaviour, and any gaps or bugs you notice on the way.
 3. **Study the existing patterns** ([patterns.md](../../engineering/patterns.md)). For each new file, read 2–3 of its closest siblings and note:
@@ -35,5 +37,3 @@ Goal: a plan the user approves before any code is written.
    - **Risks,** and anything outside code (vendor settings, prices, DNS, compliance).
    - **No placeholders:** each step names its files and how it's checked. Not "handle edge cases" or "add validation"; say which ones.
 6. **Stop.** Ask "Build it?" (or "Build step A?") and wait. Once it's approved, save it to `.claude/plans/<slug>.md` (keep `.claude/plans/` out of git) with the step checklist. Tick steps as they land and append handoff notes. The review checks the diff against it, and `/jod:task build <slug>` resumes from it in a fresh session.
-
-**Small change** (≤3 files, no schema, API contract, permission, money/data-integrity or security change): state the plan in 3 lines and build without waiting.

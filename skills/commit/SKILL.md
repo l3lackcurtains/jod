@@ -25,7 +25,10 @@ Step 1 of 2: `/jod:commit` keeps the work branch clean and reviewed; `/jod:ship`
 3. **Review properly** with [review.md](../engineering/review.md): risk triage, a calibrated review, then the pattern, principles, silent-failure, test and surface checks.
    - If `/jod:task review` already covered this exact diff in this session, review only what changed since (review.md §0).
    - Fix what's real, with a regression test per bug. Skip the rest with a one-line reason.
-4. **Verify** ([verify.md](../engineering/verify.md) "Per change"): typecheck and the full suites of every touched package, rebuilding shared or generated code first. Lint only the changed files, without auto-fix. **Never commit red.**
+4. **Verify** ([verify.md](../engineering/verify.md) "Per change"): typecheck and the full suites of every touched package, rebuilding shared or generated code first.
+   - Skip the suites if `/jod:task done` ran them on this exact diff in this session and nothing changed since; say so.
+   - Lint only the changed files, without auto-fix.
+   - **Never commit red.**
 5. **Overwrite check.** Run `git diff --numstat`. A file with big deletions and few additions may have been rewritten instead of edited, especially tests. Compare it with `git show HEAD:<file>` and restore anything lost.
 6. **Stage explicitly** (never `git add -A` or `git add .`).
    - Never stage: env files (except examples), secrets, worktrees, scratch or debug files, build output, plus anything on the profile's never-stage list.
