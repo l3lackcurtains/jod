@@ -47,10 +47,11 @@ The rules below apply in every mode. In `new`, "the plan justifies it" is usuall
 - [patterns.md](patterns.md): look like the code next to you; reuse before create; when to extract.
 - [review.md](review.md): how we review (risk triage, calibrated findings, silent failures, tests that bite).
 - [verify.md](verify.md): what counts as proof.
+- [impact.md](impact.md): find everything a change touches, and prove each place was covered.
 - [report.md](report.md): how each command reports, in the shape that fits its job (an incident note for a fix, release notes and a runbook for a ship, a commit log for a commit).
 
 ## 4. Every surface
-A change isn't done until every layer/surface listed in the profile has it (API, UI, SDKs, CLI, docs, marketing site, internal docs, whatever this repo has). Walk the list and say which ones **don't** apply and why.
+A change isn't done until **everything that depends on it** has changed too: every layer or surface the profile lists (API, UI, SDKs, CLI, MCP, docs, marketing site, internal docs, whatever this repo has), plus tests, fixtures, stored data and clients already in use. [impact.md](impact.md) says how to find them: name what changes, search the whole repo, think past the search, write the impact map, then prove coverage.
 
 ## 5. Done means evidence
 The command you ran **in this turn**, its exit code and the counts. "Should work", "probably", an earlier run, or a subagent saying it passed is not evidence: re-run it. Lint passing doesn't prove a typecheck; a typecheck doesn't prove behaviour; unit tests don't prove the e2e.

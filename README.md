@@ -9,7 +9,7 @@ An engineering workflow plugin for [Claude Code](https://claude.com/claude-code)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)
 ![Agent Skills](https://img.shields.io/badge/Agent%20Skills-6-success)
-![Version](https://img.shields.io/badge/version-1.8.0-orange)
+![Version](https://img.shields.io/badge/version-1.9.0-orange)
 
 </div>
 
@@ -74,6 +74,7 @@ jod puts the habits of small, high-output teams into the agent instead:
   - Each plan has a *scope fence*.
   - A drift alarm checks after every build step.
   - At any surprise, Claude stops and asks with two options and a recommendation instead of improvising.
+- **Change it everywhere.** Each plan maps the change's impact across every app, package, SDK, CLI, doc, test and piece of stored data. Before "done", the searches run again, and any place the change missed fails the check.
 - **Look like the codebase.** Before writing a file, study its 2–3 closest siblings, reuse before you create, and extract only when something would be duplicated.
 - **Build it right, in proportion.** Simplicity first, then boundaries, scalability, reliability and security, each applied where it matters. A payment flow gets idempotency; an admin toggle doesn't.
 - **Evidence, not vibes.** "Done" means a command run in this turn, with its exit code and counts. Review is calibrated: risk triage, findings it would bet on, and checks for silent failures and gamed tests.
@@ -126,6 +127,7 @@ The **`engineering`** skill loads automatically whenever Claude builds or review
 | [patterns.md](skills/engineering/patterns.md) | finding the closest examples, reusing before creating, when to extract, legacy patterns |
 | [review.md](skills/engineering/review.md) | risk triage, calibrated findings, drift, silent failures, gamed tests, plan gaps |
 | [verify.md](skills/engineering/verify.md) | the checks per change, the full gate, what counts as proof |
+| [impact.md](skills/engineering/impact.md) | find everything a change touches (every app, client, doc, test, stored data, clients in the wild), then prove each place was covered |
 | [report.md](skills/engineering/report.md) | how each command reports, in the shape that fits its job: an incident note for a fix, release notes and a runbook for a ship, a commit log for a commit |
 
 ## A task, end to end

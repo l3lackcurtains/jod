@@ -32,7 +32,9 @@ A screenshot path: Read the image. Rule out environment problems first: a miscon
 2. Fix the cause, not the symptom, with the smallest change. No refactor or redesign in a bug fix; propose it separately. See the test pass.
 3. Revert the fix once and confirm the test goes red again.
 
-## 4. Hunt the pattern
+## 4. Hunt the pattern, and cover the fix
+If the fix changes a contract (a format, a field, a message, a behaviour), also follow [impact.md](../engineering/impact.md) so every consumer gets it.
+
 - **Start narrow:** a search that matches exactly this bug.
 - **Widen one element at a time:** other fields, other modules or vendors, null and empty cases, other roles or portals.
 - **Search the whole repo,** not just this module. Stop widening when most hits are false positives.

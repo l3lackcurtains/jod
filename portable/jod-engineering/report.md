@@ -25,10 +25,13 @@ What the user now has, by layer, then the proof:
 ## ✅ CSV export for invoices
 Admins and accountants can export the invoice list as CSV, streamed and capped at 50k rows.
 
-| Layer | What changed |
-|---|---|
-| API | `GET /invoices/export` with the `invoices.export` permission, tenant-scoped |
-| Web | "Export" button on the invoices table |
+| Surface | What changed | Status |
+|---|---|---|
+| API | `GET /invoices/export` with the `invoices.export` permission, tenant-scoped | ✅ |
+| Web | "Export" button on the invoices table | ✅ |
+| SDK / CLI | `invoices.export()` / `invoices export --csv` | ✅ |
+| Docs | API reference + SDK page | ✅ |
+| Landing | none (searched "export", "CSV") | n/a |
 
 **Proof:** api 312 passed · web 88 passed · checked live as admin (works) and viewer (403)
 **Fixed on the way:** the export ignored the tenant filter on archived invoices (+ regression test)

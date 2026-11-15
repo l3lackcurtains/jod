@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.0
+- **Impact and coverage** (`engineering/impact.md`). Each plan builds an impact map:
+  - name what changes, search the whole repo for it, and think past the search (stored data, clients in the wild, other repos, outside the code);
+  - list surface → files → change;
+  - build covers every row; review and done re-run the searches; the done report shows a coverage table.
+- **`/jod:fix`:** a fix that changes a contract follows the same impact map.
+
 ## 1.8.0
 - **Steps sized to the work:** plans split into as many steps as the work needs, each a coherent, verifiable piece with its goal, files and check.
 - **Run mode:** after planning, `/jod:task` asks "run all steps" (the default) or "step by step". With no answer (headless run, dismissed question), it runs all steps. Each step goes build → test → review → check, with a numbered status line.
