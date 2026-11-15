@@ -28,7 +28,7 @@ Arguments: `$ARGUMENTS`
 1. **Before starting,** read `.claude/jod.md` (the project profile; missing → offer `/jod:setup`) and the `engineering` skill (stay on the road, stop-and-ask, evidence).
    - Each phase opens the guide it needs when it reaches it: [patterns.md](../engineering/patterns.md) and [principles.md](../engineering/principles.md) in plan and build, [verify.md](../engineering/verify.md) in test and done, [review.md](../engineering/review.md) in review.
    - Don't load them all up front.
-2. **Wait for the plan's OK.** The plan phase ends by stopping for the user's OK; don't build before it. Small changes take the fast path defined in [plan.md](phases/plan.md).
+2. **Wait for the plan's OK** when [plan.md](phases/plan.md) says to (it follows the profile's "Plan approval"); don't build before it.
 3. **Build big work step by step** (A, B, C…), each one shippable. After building a step, run test → review → check. If any of them changes code, go round again.
    - **Restart instead of grinding.** After 2 failed rounds on the same problem, write a handoff into the plan file: what was tried, what each attempt showed, and the current best hypothesis. Then recommend `/clear` and a fresh `/jod:task build <slug>`. Don't make a third attempt in a polluted context.
    - The drift alarm (`engineering` §2) can stop any step; the build checkpoint checks it.
@@ -38,7 +38,7 @@ Arguments: `$ARGUMENTS`
 Copy this checklist and keep it updated:
 ```
 Step A
-- [ ] plan (approved / fast path)
+- [ ] plan (approved / no wait needed)
 - [ ] build
 - [ ] test: counts
 - [ ] review: fixed / skipped

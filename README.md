@@ -1,6 +1,11 @@
 # Jod
 
-An engineering workflow plugin for [Claude Code](https://claude.com/claude-code), for **established projects** run by a few highly effective engineers: move fast without derailing from the architecture, conventions and scope the project already has.
+An engineering workflow plugin for [Claude Code](https://claude.com/claude-code), for projects run by a few highly effective engineers: move fast without derailing from the architecture, conventions and scope the project has, or is setting.
+
+`/jod:setup` reads your stack and existing patterns and asks how you want to work. A project runs in one of three modes:
+- **established:** settled patterns, followed strictly;
+- **growing:** patterns followed, with planned improvements;
+- **new:** conventions get decided and recorded as you build.
 
 *Jod* (जोड) is Nepali for joining and assembling: putting the parts together so they hold. Every change goes through plan, build, test, review and check, then commit and ship. Five standards are built in:
 
@@ -34,7 +39,7 @@ Then, in each repo:
 /jod:setup
 ```
 
-This reads the codebase and writes `.claude/jod.md`, a short **project profile**:
+This scans the codebase and shows what it found. It then asks how you want to work: the mode, branch and release flow, safety rules, how strict plan approval and testing should be, and which pattern is current wherever the repo does one thing two ways. Finally it writes `.claude/jod.md`, a short **project profile**:
 - the layers to change, in build order
 - the verify commands
 - the branches and release mode (local merge or PR)
@@ -50,7 +55,7 @@ Commit the profile; it's the only project-specific part.
 
 | Command | What it does |
 |---|---|
-| `/jod:task <task>` | Full loop: plan (waits for your OK) → build → test → review → check → done. Small changes take a fast path. |
+| `/jod:task <task>` | Full loop: plan (waits for your OK, per the profile's plan-approval setting) → build → test → review → check → done. Small changes take a fast path. |
 | `/jod:task plan\|build\|test\|review\|check\|done …` | Run one phase on its own |
 | `/jod:fix-bug <symptom>` | Reproduce, trace the root cause backward, write a regression test that fails first, fix, hunt the same bug across the repo, verify |
 | `/jod:commit` | Step 1: review the uncommitted diff, verify, commit in logical groups, push the work branch |

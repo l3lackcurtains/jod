@@ -1,6 +1,6 @@
 ---
 name: engineering
-description: Jod's engineering standards and the project's profile, for established projects: stay in scope, follow the existing architecture and conventions, build it right, verify with evidence. Use when adding or changing a feature, endpoint, schema, job, permission, price or user-facing behaviour, before reviewing code, or before claiming any change is complete. Covers architecture boundaries, scalability, reliability, security, following existing code patterns, how to review, and how to verify.
+description: Jod's engineering standards and the project's profile, for new, growing or established projects: stay in scope, follow (or set) the project's architecture and conventions, build it right, verify with evidence. Use when adding or changing a feature, endpoint, schema, job, permission, price or user-facing behaviour, before reviewing code, or before claiming any change is complete. Covers architecture boundaries, scalability, reliability, security, following existing code patterns, how to review, and how to verify.
 when_to_use: Building or changing code in a repo, reviewing a diff, or about to say "done".
 ---
 
@@ -12,10 +12,18 @@ Read `.claude/jod.md` in the repo. It holds everything specific to this project:
 No profile? Say so and offer `/jod:setup` (it generates one by reading the repo). Until then, use `CLAUDE.md`/`AGENTS.md`/`CONTRIBUTING.md` and the package scripts, and ask before anything risky.
 
 ## 2. Stay on the road
-Jod is for **established projects that already work**. The job is to extend them the way they're built, not to redesign them.
+The profile's **Mode** sets how strict this is:
+
+| Mode | Existing patterns | New pattern, dependency or convention |
+|---|---|---|
+| `established` | Follow strictly | The user's decision: stop and ask |
+| `growing` | Follow them; improvements as their own planned step | Allowed when the plan justifies it; record it in the profile's Conventions |
+| `new` | Few exist; reuse what does | Pick the stack's standard, boring option; ask when the choice is hard to undo; record it in Conventions |
+
+The rules below apply in every mode. In `new`, "the plan justifies it" is usually enough. No profile? Treat the repo as `established` if it has real history and consistent patterns, otherwise as `growing`.
 - **Scope:** do what was asked and planned, nothing more.
 - **Architecture and conventions:** extend the existing design. Changing a boundary, a data model, a core pattern or a public contract is a decision for the user: stop and ask.
-- **No new dependencies, services, patterns or abstractions** unless the plan says why the current stack can't do it.
+- **No new dependencies, services, patterns or abstractions** unless the plan says why the current stack can't do it (and, in `established`, the user agrees).
 - **No rewrites.** Change the smallest unit that solves the problem. Cleanup ("tidying") goes in its own commit, before the behaviour change, never mixed in.
 - **Protect what users rely on:** public APIs, data, URLs, CLI flags, file formats. Add, don't break.
 - **Pin before you change:** before touching code with no tests, write a characterization test that records what it does today, then change it.
@@ -23,7 +31,7 @@ Jod is for **established projects that already work**. The job is to extend them
 - **Stop and ask** when:
   - the plan turns out to be wrong;
   - a step needs a different approach than agreed;
-  - you'd add a dependency or a second way of doing something the repo already does;
+  - you'd add a second way of doing something the repo already does, or (in `established`) any new dependency or pattern;
   - you'd change a public contract or existing data;
   - you'd touch a High-risk or Hands-off area the plan didn't name;
   - the **drift alarm** fires (the build checkpoint checks it after every step):

@@ -2,6 +2,11 @@
 
 <!-- Read by every Jod skill. Keep it short, specific and true. Link to docs instead of copying them. -->
 
+## How we work
+- Mode: `<established | growing | new>`. <one line why, e.g. "3 years, 1,200 commits, consistent patterns">
+- Plan approval: `<always | fast path for small changes | multi-step work only>`.
+- Tests: `<test-first where it pays | tests after, same change | logic and bugs only>`.
+
 ## Stack
 <one line per app/package: path, framework, language, test runner>
 
@@ -61,6 +66,11 @@ Full gate (`/jod:ship`):
 - <billing/webhooks: paths>
 - <money/stock/transactions: paths>
 - <personal/medical data, compliance: rules that apply>
+
+## Conventions
+<!-- Decided ways of doing things. New ones are added as they're decided (mode `new`/`growing`). -->
+- <forms: @tanstack/react-form + Zod. Legacy, don't copy: react-hook-form in `old/…`>
+- <tests: next to the source, `*.spec.ts`>
 
 ## Reference implementations
 <!-- The best existing example of each kind; new code copies these. -->

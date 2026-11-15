@@ -2,7 +2,7 @@
 
 Goal: the approved plan (or the current step) implemented on every layer, tests first.
 
-1. **Pin, then test first.** If you'll change code that has no tests, first write characterization tests: call it, assert whatever it returns today (even if it's odd), name each test after what the code does, and see them pass. They stay green through the change, except for the behaviour the plan changes on purpose. Surprising results get raised, not "fixed". Then write the tests for the new behaviour, in the location and style the profile and the sibling tests use, and see them fail for the right reason, not with a setup error.
+1. **Pin, then test** (timing per the profile's "Tests"; test-first is the default). If you'll change code that has no tests, first write characterization tests: call it, assert whatever it returns today (even if it's odd), name each test after what the code does, and see them pass. They stay green through the change, except for the behaviour the plan changes on purpose. Surprising results get raised, not "fixed". Then write the tests for the new behaviour, in the location and style the profile and the sibling tests use, and see them fail for the right reason, not with a setup error.
 2. **Implement in the profile's layer order.**
    - Rebuild shared and generated code (shared packages, codegen) as soon as its source changes, before compiling the code that uses it.
    - If existing data needs it, add a migration or backfill script.
@@ -10,6 +10,7 @@ Goal: the approved plan (or the current step) implemented on every layer, tests 
    - Open the model file next to the one you're writing and match its folder, naming, structure, UI pieces, classes, states and permission handling.
    - Grep before creating anything: reuse what exists. When something would now be duplicated, extract it and update the old callers.
    - No plan (`/jod:task build` alone)? Do the pattern study first.
+   - A convention set by this change (mode `new`/`growing`): add its line to the profile's Conventions now, so the next file follows it.
 4. **Build it right** ([principles.md](../../engineering/principles.md)). Implement the plan's Engineering decisions now, not "later":
    - thin entry points
    - tenant-scoped queries

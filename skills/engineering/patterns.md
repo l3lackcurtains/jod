@@ -8,6 +8,10 @@ For each thing you're about to create (page, component, dialog/form, table/list,
 - **Same kind elsewhere:** Glob by naming convention (`**/*-dialog.*`, `**/use-*.*`, `**/*.controller.*`, `**/*_service.py`, …), or Grep a distinctive call (`useMutation`, `@Controller`, `router.get`, `DialogTrigger`).
 - **The profile's "Reference implementations"**, if it lists them.
 
+**No sibling yet** (common in mode `new`): use the profile's Conventions. If it has none for this kind of thing, pick the stack's standard, boring option. Ask the user if the choice is hard to undo (data model, auth, state management, folder structure). Then propose a Conventions line, so the next file follows the first.
+
+**Skip anything the profile marks "legacy: don't copy"**, even when it's the closest sibling.
+
 Read the examples fully. When two disagree, prefer the most recently written one (`git log -1 --format=%cs -- <file>`), and propose a profile line ("X is the current way, Y is legacy") so the next session doesn't decide it again, differently.
 
 ## 2. Write down the pattern before coding
