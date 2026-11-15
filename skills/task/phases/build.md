@@ -33,4 +33,4 @@ Goal: the approved plan (or the current step) implemented on every layer, tests 
    - Respect the profile's "Hands-off" list.
 7. **Make the new tests pass.**
 8. **Checkpoint.** Run `git diff --stat` and `git status --short`, and compare them with the plan's scope fence using the drift alarm list (`engineering` §2). If any item fires, stop and ask. Otherwise tick the step in the plan file and hand over to the test phase.
-9. **One status line:** what was built per layer, which layers were skipped and why, and which existing files the new code is modelled on.
+9. **One status line** ([report.md](../../engineering/report.md)), e.g. `✅ build · 4 files, inside the fence · modelled on orders-export.ts`: what was built per layer, which layers were skipped and why, and which existing files the new code is modelled on.

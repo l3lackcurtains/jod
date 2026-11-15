@@ -66,10 +66,11 @@ git checkout development
 - **Never** force-push, open a PR, commit on `main` directly, or merge any branch other than `development` into it.
 
 ## Report
-- Final review (fixed/skipped + why)
-- Gate table with counts, including the production check: runtime, what was started, and the smoke results
-- Merge commit `hash`
-- **Back on `development`**
-- Post-release steps (migrations in order, env vars, settings), repeated from the audit
-- **Rollback plan**, and anything one-way
-- **Post-deploy check:** for each change, the log line, endpoint or screen that proves it works in production, and what a failure looks like
+Report as a release verdict and runbook ([report.md](../engineering/report.md) → `/jod:ship`):
+- **Heading:** released, with the merge `hash`, or blocked.
+- **Gate:** a table of check → result with counts, including the production check (the runtime, what was started, and the smoke results).
+- **Review:** findings fixed or skipped, one line each.
+- **After deploy:** numbered steps in order (migrations, env vars, settings).
+- **Rollback:** how to undo the release, and anything one-way.
+- **Verify in production:** per change, how to see it works and what a failure looks like.
+- **Next:** deploy, and confirm you're back on `development`.

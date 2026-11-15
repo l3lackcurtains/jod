@@ -41,13 +41,12 @@ A screenshot path: Read the image. Rule out environment problems first: a miscon
 ## 5. Verify
 Typecheck, plus the full suites of the touched packages (exact counts) and e2e for the affected flow if the project has it. Then re-check live where the bug was visible.
 
-Report:
-- cause (one line)
-- fix
-- other places fixed
-- tests (counts)
-- live check result
-- anything the user must do outside code (a data fix, reconnecting an account, a setting)
-- **Learn:** if the bug came from a rule the code doesn't show, propose one Gotchas line for the profile (or a hook if the same rule was broken before). Apply it only on the user's yes.
-
-Not committed: suggest `/jod:commit`, then `/jod:ship` to release.
+Report as an incident note ([report.md](../engineering/report.md) → `/jod:fix`), in this order:
+- **Symptom:** what the user saw.
+- **Cause:** one line, with `path:line`.
+- **Fix:** what changed.
+- **Same bug elsewhere:** what was fixed, and what was left (with why).
+- **Proof:** the regression test failing without the fix, the suite counts, and the live check.
+- **Needs you:** anything outside code (a data fix, reconnecting an account, a setting).
+- **Learn:** if the bug came from a rule the code doesn't show, propose one Gotchas line for the profile (or a hook, if the same rule was broken before). Apply it only on the user's yes.
+- **Next:** `/jod:commit` (not committed yet).

@@ -48,6 +48,7 @@ The rules below apply in every mode. In `new`, "the plan justifies it" is usuall
 - [patterns.md](patterns.md): look like the code next to you; reuse before create; when to extract.
 - [review.md](review.md): how we review (risk triage, calibrated findings, silent failures, tests that bite).
 - [verify.md](verify.md): what counts as proof.
+- [report.md](report.md): how each command reports, in the shape that fits its job (an incident note for a fix, release notes and a runbook for a ship, a commit log for a commit).
 
 ## 4. Every surface
 A change isn't done until every layer/surface listed in the profile has it (API, UI, SDKs, CLI, docs, marketing site, internal docs, whatever this repo has). Walk the list and say which ones **don't** apply and why.

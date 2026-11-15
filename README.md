@@ -9,7 +9,7 @@ An engineering workflow plugin for [Claude Code](https://claude.com/claude-code)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)
 ![Agent Skills](https://img.shields.io/badge/Agent%20Skills-6-success)
-![Version](https://img.shields.io/badge/version-1.6.1-orange)
+![Version](https://img.shields.io/badge/version-1.7.0-orange)
 
 </div>
 
@@ -126,6 +126,7 @@ The **`engineering`** skill loads automatically whenever Claude builds or review
 | [patterns.md](skills/engineering/patterns.md) | finding the closest examples, reusing before creating, when to extract, legacy patterns |
 | [review.md](skills/engineering/review.md) | risk triage, calibrated findings, drift, silent failures, gamed tests, plan gaps |
 | [verify.md](skills/engineering/verify.md) | the checks per change, the full gate, what counts as proof |
+| [report.md](skills/engineering/report.md) | how each command reports, in the shape that fits its job: an incident note for a fix, release notes and a runbook for a ship, a commit log for a commit |
 
 ## A task, end to end
 

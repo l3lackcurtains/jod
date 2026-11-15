@@ -10,4 +10,4 @@ Goal: see the change working in the real app, not just in tests.
    - For a CLI or library: run the real command or a small script against it.
 3. **Verify data when the UI isn't enough.** Use a read-only query. If the profile marks the database as shared or production, never write to it without the user's explicit yes.
 4. **Ask first for side effects:** real posts, emails, payments, external webhooks, anything a customer would see.
-5. **Clean up** the tabs and processes you opened. Report what you saw: what worked, exact errors, what wasn't checked and why. A bug found here loops back to build and test.
+5. **Clean up** the tabs and processes you opened. Report a table of flow / role → ✅ worked, ❌ the exact error, or ⏭️ not checked (why). A bug found here loops back to build and test.

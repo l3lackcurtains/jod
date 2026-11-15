@@ -12,10 +12,11 @@ Goal: prove it's finished, record it, hand over.
 
    If the same rule was broken twice, propose a hook instead. Show the diff to the profile, and apply it only on the user's yes.
 5. **Close the plan:** tick the last step in `.claude/plans/<slug>.md`, and delete the file once it's all done.
-6. **Summary for the user** (short, in this order):
-   - what works now, by layer
-   - bugs found and fixed on the way
-   - checks with exact counts, and what was and wasn't seen live
-   - **Noticed, not done:** things outside scope, worth a later task
-   - anything outside code: env vars, migrations or backfills to run, vendor settings, deploy timing
-   - not committed: suggest `/jod:commit`, then `/jod:ship` when it's time to release.
+6. **Report** as a feature summary ([report.md](../../engineering/report.md) → `/jod:task` done):
+   - **Heading:** what the user now has, plus one sentence.
+   - **Layers:** a table of layer → what changed.
+   - **Proof:** exact counts, and what was and wasn't seen live.
+   - **Fixed on the way:** bugs found during the task.
+   - **Noticed, not done:** things outside scope, worth a later task.
+   - **Needs you:** env vars, migrations or backfills to run, vendor settings, deploy timing.
+   - **Next:** `/jod:commit` (not committed yet).

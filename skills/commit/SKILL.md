@@ -46,8 +46,8 @@ Step 1 of 2: `/jod:commit` keeps `development` clean and reviewed; `/jod:ship` (
    - Push `development` unless `no-push`. Never force-push. Never open a PR. **Never touch `main` here.**
 
 ## Report
-- Review: finding → fixed / skipped (why)
-- Checks with exact counts
-- Commits (`hash subject`), pushed or not
-- Uncommitted changes left alone (not yours)
-- What's waiting for release (`git log --oneline main..development`), and "Ready for a new task, or `/jod:ship` to release."
+Report as a commit log ([report.md](../engineering/report.md) → `/jod:commit`):
+- **The commits:** a table of hash · subject, and whether they were pushed.
+- **One line each:** the review (fixed / open) and the checks (exact counts).
+- **Left alone:** uncommitted changes that aren't yours.
+- **Next:** `/jod:ship`, with the number of commits waiting (`git log --oneline main..development`).

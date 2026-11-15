@@ -92,7 +92,12 @@ With `refresh`:
 - Show a summary of what changed.
 
 ## 5. Report and guards
-Show the profile, and list the `TODO (confirm)` lines.
+Report as a profile summary ([report.md](../engineering/report.md) → `/jod:setup`):
+- **Found:** the stack, the production runtime and the size of the codebase.
+- **You chose:** the answers from step 3.
+- **To confirm:** the `TODO (confirm)` lines.
+- **Guards offered:** see below.
+- **Next:** `/jod:task <your first task>`.
 
 Then offer the hard guards as ready `.claude/settings.json` snippets. Keep the set small: only rules with zero exceptions.
 - `permissions.deny` for edits to the Hands-off paths, e.g. `Edit(/apps/web/src/components/ui/**)`;

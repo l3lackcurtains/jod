@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.7.0
+- **Clear, purpose-fit reports** (`engineering/report.md`). Each command reports in the shape that fits its job:
+  - `/jod:fix`: an incident note;
+  - `/jod:ship`: a release verdict and runbook;
+  - `/jod:commit`: a commit log;
+  - `/jod:setup`: a profile summary;
+  - `/jod:task` done: a feature summary;
+  - each `/jod:task` phase: one status line.
+- **Shared basics:** outcome first, exact numbers, one `Next:` line.
+
 ## 1.6.0
 - **One branch flow.** Work lands on `development`, and side branches merge into it via `/jod:commit`. Only `/jod:ship` touches `main`. No PRs: the `pr` release mode is gone.
 - **Production check in `/jod:ship`.** It builds from a clean checkout and runs the release the way production does (direct process, Docker Compose, Kubernetes, serverless) with production-like config. It smoke-tests, checks the shutdown, then tears down. Anything it can't verify blocks the release.
