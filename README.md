@@ -57,7 +57,7 @@ Commit the profile; it's the only project-specific part.
 |---|---|
 | `/jod:task <task>` | Full loop: plan (waits for your OK, per the profile's plan-approval setting) → build → test → review → check → done. Small changes take a fast path. |
 | `/jod:task plan\|build\|test\|review\|check\|done …` | Run one phase on its own |
-| `/jod:fix-bug <symptom>` | Reproduce, trace the root cause backward, write a regression test that fails first, fix, hunt the same bug across the repo, verify |
+| `/jod:fix <symptom>` | Reproduce, trace the root cause backward, write a regression test that fails first, fix, hunt the same bug across the repo, verify |
 | `/jod:commit` | Step 1: review the uncommitted diff, verify, commit in logical groups, push the work branch |
 | `/jod:ship` | Step 2: final review across commits, the full gate and a deploy audit, then merge or open a PR, and return to the work branch |
 | `/jod:setup [refresh]` | Create or update the project profile |

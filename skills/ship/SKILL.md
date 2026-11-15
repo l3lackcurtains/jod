@@ -48,7 +48,7 @@ Run every check and collect the results; don't stop at the first failure. Use th
    - fail-open defaults: grep for `env.X || '…'` / `?? '…'` on secrets, auth, CORS or URLs. They must fail at startup when missing.
    - **rollback:** how to undo this release (revert the merge? redeploy the previous image?). Flag anything one-way: migrations that can't be reversed, data backfills, external side effects.
 
-**Verdict:** a table of each check → pass/fail (with counts or the first error), then **RELEASE** or **BLOCK**. On BLOCK: list the fixes needed, offer `/jod:fix-bug`, and stop.
+**Verdict:** a table of each check → pass/fail (with counts or the first error), then **RELEASE** or **BLOCK**. On BLOCK: list the fixes needed, offer `/jod:fix`, and stop.
 
 ## 4. Release (on RELEASE, unless `verdict-only`)
 If the profile says the release deploys, or asks for a timing confirmation, show the commits, the deploy audit and the post-deploy steps, and ask "Release to production now?". Proceed only on a yes. Otherwise, running `/jod:ship` is the go-ahead.
