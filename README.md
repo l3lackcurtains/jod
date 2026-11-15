@@ -15,20 +15,36 @@ An engineering workflow plugin for [Claude Code](https://claude.com/claude-code)
 
 ---
 
-**Claude Code** (plugin):
+## Install
+
+### Claude Code
+
+Run inside Claude Code:
+
 ```
 /plugin marketplace add l3lackcurtains/jod
 /plugin install jod@jod
 ```
 
-**Codex, Cursor, OpenCode, GitHub Copilot, Gemini CLI, ZCode** (portable [Agent Skills](https://agentskills.io)):
+### Codex, Cursor, OpenCode, GitHub Copilot, Gemini CLI, ZCode
+
+These tools get jod as portable [Agent Skills](https://agentskills.io).
+
+**macOS / Linux / Git Bash:**
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/l3lackcurtains/jod/main/install.sh | bash -s -- all
 ```
+
+**Windows PowerShell:**
+
 ```powershell
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/l3lackcurtains/jod/main/install.ps1))) -Targets all
 ```
-More options are under [Other AI tools](#other-ai-tools).
+
+To install for a single tool or into one project only, see [Other AI tools](#other-ai-tools).
+
+## Commands at a glance
 
 ```
 /jod:setup        → scan the stack + patterns, ask how you work, write the profile
