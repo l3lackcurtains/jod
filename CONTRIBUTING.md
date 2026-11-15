@@ -25,3 +25,10 @@ Then run `/jod:setup` and a small `/jod:task` in a real repo, and describe what 
 
 ## Releasing
 Bump `version` in `.claude-plugin/plugin.json`, add a `CHANGELOG.md` entry, then tag `vX.Y.Z`.
+
+## Portable skills
+`portable/` is generated, so edit `skills/` only. Then run:
+```
+node scripts/build-portable.mjs
+```
+CI fails if `portable/` is out of date.

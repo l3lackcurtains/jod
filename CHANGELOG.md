@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0
+- **Works with other AI tools.** `portable/` holds the same skills in plain Agent Skills format (`jod-task`, `jod-fix`, …). Installers (`install.sh`, `install.ps1`) cover Codex, Cursor, OpenCode, GitHub Copilot, Gemini CLI and ZCode, globally or per project.
+- **Easier to read.** The "How it works" diagram now runs top to bottom, with a line per step.
+- **CI** checks that `portable/` is in sync with `skills/`.
+
 ## 1.4.0
 - **Open-source release:** a new README (why, how it works, an end-to-end example), example profiles, CONTRIBUTING, issue templates.
 

@@ -1,0 +1,14 @@
+name: check
+on: [push, pull_request]
+jobs:
+  portable:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: portable/ matches skills/
+        run: node scripts/build-portable.mjs --check
+      - name: installer works
+        run: HOME=$(mktemp -d) bash install.sh all && ls ~/.agents/skills

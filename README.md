@@ -9,16 +9,26 @@ An engineering workflow plugin for [Claude Code](https://claude.com/claude-code)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)
 ![Agent Skills](https://img.shields.io/badge/Agent%20Skills-6-success)
-![Version](https://img.shields.io/badge/version-1.4.0-orange)
+![Version](https://img.shields.io/badge/version-1.5.0-orange)
 
 </div>
 
 ---
 
+**Claude Code** (plugin):
 ```
 /plugin marketplace add l3lackcurtains/jod
 /plugin install jod@jod
 ```
+
+**Codex, Cursor, OpenCode, GitHub Copilot, Gemini CLI, ZCode** (portable [Agent Skills](https://agentskills.io)):
+```bash
+curl -fsSL https://raw.githubusercontent.com/l3lackcurtains/jod/main/install.sh | bash -s -- all
+```
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/l3lackcurtains/jod/main/install.ps1))) -Targets all
+```
+More options are under [Other AI tools](#other-ai-tools).
 
 ```
 /jod:setup        → scan the stack + patterns, ask how you work, write the profile
@@ -56,14 +66,20 @@ jod puts the habits of small, high-output teams into the agent instead:
 ## How it works
 
 ```mermaid
-flowchart LR
-    S["/jod:setup<br/>profile"] --> P[plan]
-    P -->|OK, or the fast path| B[build]
-    B --> C{checkpoint<br/>in scope?}
-    C -->|drift| Q[stop & ask]
-    C -->|ok| T[test] --> R[review] --> K[check live] --> D[done]
-    R -->|fixes| T
-    D --> CM["/jod:commit"] --> SH["/jod:ship"]
+flowchart TD
+    S["⚙️ /jod:setup<br/>scan the repo, ask how you work → .claude/jod.md"]
+    S --> P["📝 plan<br/>appetite · scope fence · patterns to copy · engineering decisions"]
+    P -->|"your OK (or the fast path for small changes)"| B["🔨 build<br/>tests first · copy the closest siblings · stay in the fence"]
+    B --> C{"🚧 checkpoint<br/>still inside the scope fence?"}
+    C -->|"drift: files outside the fence, new dependency, 2× the size"| Q["✋ stop and ask<br/>two options + a recommendation"]
+    Q --> B
+    C -->|yes| T["🧪 test<br/>affected tests + typecheck"]
+    T --> R["🔍 review<br/>risk triage · drift · silent failures · gamed tests"]
+    R -->|"fixes"| T
+    R --> K["👀 check<br/>see it working, as each role"]
+    K --> D["✅ done<br/>full suites once · lessons into the profile"]
+    D --> CM["📦 /jod:commit<br/>logical commits on the work branch"]
+    CM --> SH["🚀 /jod:ship<br/>full gate · deploy audit · rollback plan → merge or PR"]
 ```
 
 - **One profile per repo.** `/jod:setup` scans your stack, conventions, CI, branches, environment and existing patterns, shows you what it found, and asks how you want to work. It then writes `.claude/jod.md`. Everything project-specific lives there; the plugin itself stays generic.
@@ -128,6 +144,31 @@ done    Profile: + "CSV exports stream through lib/csv.ts". Suggest /jod:commit.
 - **Reference implementations** to copy, **hands-off code**, and **gotchas**
 
 See the examples: [an established monorepo](examples/established-monorepo.md) and [a new API](examples/new-api.md). Commit your profile; it's documentation your teammates' agents can use too.
+
+## Other AI tools
+
+jod is written in the open [Agent Skills](https://agentskills.io) format. `portable/` holds the same skills for tools other than Claude Code:
+- skills are named `jod-task`, `jod-fix`, `jod-commit`, `jod-ship`, `jod-setup` and `jod-engineering`;
+- Claude-only syntax is rewritten.
+
+It's generated from `skills/` by `scripts/build-portable.mjs`.
+
+| Target | Installs to | Read by |
+|---|---|---|
+| `agents` (default) | `~/.agents/skills` | Codex, Cursor, OpenCode, GitHub Copilot, Gemini CLI |
+| `zcode` | `~/.zcode/skills` | ZCode |
+| `claude` | `~/.claude/skills` | Claude Code without the plugin; also OpenCode and Cursor |
+| `cursor` · `opencode` · `copilot` · `gemini` | each tool's own folder | that tool only |
+| `all` | `agents` + `zcode` | |
+
+```bash
+bash install.sh agents zcode        # from a clone; or pipe it from curl as above
+bash install.sh agents --project    # into the current repo (.agents/skills) instead of your home folder
+```
+
+Then invoke the skills the way your tool does: `/jod-setup` or `/jod-task …`, or ask "use the jod-task skill to …". The project profile stays at `.claude/jod.md` in every tool.
+
+Install for one family of tools only, because tools that read several folders would see jod twice. Claude Code users should stick to the plugin.
 
 ## Design choices
 
