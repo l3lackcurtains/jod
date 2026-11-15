@@ -53,13 +53,13 @@ Full gate (`/jod:ship`):
 ## Local environment
 - Dev servers: `<the user runs them; never start them>` / `<Claude may start: commands, ports>`.
 - Database: `<local / SHARED or PRODUCTION: reads only, writes need an explicit yes>`. How to run a read-only check: `<…>`.
-- Queues/cache: `<local Redis on …; never point dev at production's>`.
+- Queues/cache: `<local instance on …; never point dev at production's>`.
 - Manual check: `<URLs, test accounts/roles, browser tool>`.
 - Feedback tools: `<API log file / how to tail>`, `<how to see sent emails / queued jobs locally>`. If a check needs the user every time, propose a small script that does it.
 
 ## Parallel sessions
 - Worktree setup: `<.worktreeinclude: .env files>`, `<install cmd>`.
-- Shared between sessions: `<ports, DB, Redis>`. Run in parallel only on separate areas; never two sessions running dev servers or migrations.
+- Shared between sessions: `<ports, database, cache/queue>`. Run in parallel only on separate areas; never two sessions running dev servers or migrations.
 
 ## Architecture to keep
 <!-- Extend these; changing one is a decision for the user. -->
@@ -76,7 +76,7 @@ Full gate (`/jod:ship`):
 
 ## Conventions
 <!-- Decided ways of doing things. New ones are added as they're decided (mode `new`/`growing`). -->
-- <forms: @tanstack/react-form + Zod. Legacy, don't copy: react-hook-form in `old/…`>
+- <forms: library A + schema validation. Legacy, don't copy: library B in `old/…`>
 - <tests: next to the source, `*.spec.ts`>
 
 ## Reference implementations

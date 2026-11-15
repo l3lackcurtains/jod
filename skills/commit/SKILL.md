@@ -1,6 +1,6 @@
 ---
 name: commit
-description: Step 1 of 2. Review the uncommitted changes properly, fix what holds up, verify, commit in logical groups to development (merging any side branch into development) and push, so the tree is clean and ready for a new task or /jod:ship. Never touches main.
+description: "Step 1 of 2. Review the uncommitted changes properly, fix what holds up, verify, commit in logical groups to development (merging any side branch into development) and push, so the tree is clean and ready for a new task or /jod:ship. Never touches main."
 argument-hint: "[no-push]"
 disable-model-invocation: true
 ---

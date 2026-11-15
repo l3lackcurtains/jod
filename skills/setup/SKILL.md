@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Create or refresh this repo's Jod profile (.claude/jod.md). Scans the stack and existing patterns, shows what it found, asks how you want to work (mode, workflow, safety, rigor, which patterns are canonical), then writes the profile every Jod skill follows. Works for new, growing and established projects.
+description: "Create or refresh this repo's Jod profile (.claude/jod.md). Scans the stack and existing patterns, shows what it found, asks how you want to work (mode, workflow, safety, rigor, which patterns are canonical), then writes the profile every Jod skill follows. Works for new, growing and established projects."
 argument-hint: "[refresh]"
 disable-model-invocation: true
 ---
@@ -24,7 +24,7 @@ Gather facts quietly. Use one Explore agent for a large monorepo.
   - branches (`git branch -a`) and the default branch;
   - the commit style (`git log --oneline -20`);
   - whether `development` exists, and what's on `main` but not on it;
-  - how production runs: a direct process (`Procfile`, pm2 `ecosystem.config.*`, systemd units), Docker Compose (the production compose file), Kubernetes (`k8s/`, `kustomization.yaml`, `Chart.yaml`), or serverless/static (`vercel.json`, `netlify.toml`, `serverless.yml`, `fly.toml`); plus the health endpoints, the production start command and the production env example;
+  - how production runs: a direct process (a process-manager config or service unit), containers (Dockerfiles and a production compose file), Kubernetes (manifests or charts), or a serverless/static host (that host's config file); plus the health endpoints, the production start command and the production env example. Read this from the files in the repo, without assuming any particular host;
   - CI/CD: does pushing `main` deploy?
 - **Environment:**
   - the env example files: does local dev point at a shared or production database, queue or cache? (Never print secret values);
@@ -76,7 +76,7 @@ Use AskUserQuestion: at most 2 rounds of up to 4 questions each.
   - **Tests:** test-first where it pays (recommended) / tests after, in the same change / only for logic and bugs.
 
 **Round 2: patterns.** Ask only when needed:
-- **Inconsistencies you found:** which one is canonical? Example: "Forms use both react-hook-form (12 files) and @tanstack/react-form (30 files). Which is the current way?" The other one becomes "legacy: don't copy".
+- **Inconsistencies you found:** which one is canonical? Example: "Forms use two different libraries (A in 12 files, B in 30 files). Which is the current way?" The other one becomes "legacy: don't copy".
 - **Mode `new`:** the conventions that matter for this stack and aren't decided yet. Offer the stack's standard choices. Examples: test location (next to the source / `__tests__/`); folder structure (by feature / by type); validation and data-fetching libraries; error-response shape.
 
 ## 4. Write `.claude/jod.md`

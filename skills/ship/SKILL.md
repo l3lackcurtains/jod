@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Step 2 of 2, and the only thing that touches main. Final cross-commit review of everything on development, the full gate, a production-readiness check that runs the release the way production does (direct, Docker Compose, Kubernetes…), then merge development into main and return to development.
+description: "Step 2 of 2, and the only thing that touches main. Final cross-commit review of everything on development, the full gate, a production-readiness check that runs the release the way production does (direct, Docker Compose, Kubernetes…), then merge development into main and return to development."
 argument-hint: "[verdict-only]"
 disable-model-invocation: true
 ---
@@ -19,7 +19,7 @@ Step 2 of 2. `/jod:commit` (step 1) reviews work and commits it to `development`
 ## 1. Preconditions
 - **Branch:** you must be on `development`. On any other branch, stop: side branches go into `development` first (`/jod:commit` does that).
 - **Uncommitted changes:** stop and say "run `/jod:commit` first". Don't commit them here.
-- **In sync:** run `git fetch`. `development` must be pushed and level with `origin/development`. `main` must not have commits that `development` lacks (`git log development..origin/main`); if it does, stop and report them: someone touched `main` directly.
+- **In sync:** run `git fetch`. `development` must be pushed and level with `origin/development`. `main` must not have commits that `development` lacks, apart from earlier release merges (`git log --no-merges development..origin/main` must be empty). If it has any, stop and report them: someone touched `main` directly.
 - **Something to ship:** if nothing is waiting (`git log main..development`), say so and stop.
 
 ## 2. Final review
