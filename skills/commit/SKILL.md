@@ -1,6 +1,6 @@
 ---
 name: commit
-description: Step 1 of 2. Review the uncommitted changes on the work branch properly, fix what holds up, verify, commit in logical groups and push, so the tree is clean and ready for a new task or /jod:ship.
+description: Step 1 of 2. Review the uncommitted changes properly, fix what holds up, verify, commit in logical groups to development (merging any side branch into development) and push, so the tree is clean and ready for a new task or /jod:ship. Never touches main.
 argument-hint: "[no-push]"
 disable-model-invocation: true
 ---
@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Options: `$ARGUMENTS` (`no-push` = commit but don't push)
 
-Step 1 of 2: `/jod:commit` keeps the work branch clean and reviewed; `/jod:ship` (step 2) releases it. The branch names, commit style and never-stage list come from `.claude/jod.md`.
+Step 1 of 2: `/jod:commit` keeps `development` clean and reviewed; `/jod:ship` (step 2) is the only thing that releases it to `main`. No PRs. The branch names (defaults `development` and `main`), commit style and never-stage list come from `.claude/jod.md`.
 
 ## Context
 - Branch: !`git branch --show-current`
@@ -18,7 +18,11 @@ Step 1 of 2: `/jod:commit` keeps the work branch clean and reviewed; `/jod:ship`
 - Size: !`git diff --stat | tail -1 || true`
 
 ## Steps
-1. **Branch.** Check you're on the profile's work branch (or a feature branch, if that's the project's flow). On the release branch, stop and ask. Nothing uncommitted? Say "nothing to commit; ready for a new task or `/jod:ship`" and stop.
+1. **Branch.** Work lands on `development`.
+   - **On `development`:** continue.
+   - **On `main`:** never commit there. Move the uncommitted work with `git stash`, `git checkout development`, `git stash pop`, then continue. If `development` doesn't exist yet, ask, then create it from `main` (`git checkout -b development main && git push -u origin development`).
+   - **On a side branch** (an experiment, a spike, a worktree): commit there as below, then merge it into `development` in step 8. Never into `main`.
+   - **Nothing uncommitted** (and no side branch waiting to merge): say "nothing to commit; ready for a new task or `/jod:ship`" and stop.
 2. **Know the change.**
    - Read the full diff (`git diff`, plus `git status` for new files) and group it into logical units, one per feature or fix.
    - Changes you didn't make in this session aren't yours (another session's work in progress, or accidental edits): list them and ask before including them.
@@ -37,11 +41,13 @@ Step 1 of 2: `/jod:commit` keeps the work branch clean and reviewed; `/jod:ship`
    - A refactor or rename goes in its own commit, before the feature.
    - Tests go in the same commit as the logic they cover.
    - Never leave a commit that doesn't build.
-8. **Push** the branch unless `no-push`. Never force-push. Never touch the release branch here.
+8. **Land on `development`.**
+   - On a side branch: `git checkout development && git pull --ff-only`, then `git merge --no-ff <branch>`. Resolve conflicts here; if they're beyond trivial, stop and ask. Re-run the affected tests after the merge, then delete the side branch, locally and on the remote if it was pushed.
+   - Push `development` unless `no-push`. Never force-push. Never open a PR. **Never touch `main` here.**
 
 ## Report
 - Review: finding → fixed / skipped (why)
 - Checks with exact counts
 - Commits (`hash subject`), pushed or not
 - Uncommitted changes left alone (not yours)
-- What's waiting for release (`git log --oneline <release>..<work>`), and "Ready for a new task, or `/jod:ship` to release."
+- What's waiting for release (`git log --oneline main..development`), and "Ready for a new task, or `/jod:ship` to release."

@@ -31,7 +31,14 @@
 Full gate: `uv sync --frozen && uv run pyright && uv run pytest && uv run ruff check .`
 
 ## Branches and release
-- Trunk: commit to `main`; release mode `merge`. Nothing deploys yet.
+- Work on `development`; only `/jod:ship` merges it into `main`. Nothing deploys automatically yet.
+
+## Production
+- Runtime: Docker Compose on a VPS. Definition: `deploy/compose.prod.yml`.
+- Start command: `uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2` (the container's CMD).
+- Health: `GET /healthz` on :8000. Smoke: `GET /trails?limit=1`.
+- Production env example: `.env.production.example`.
+- Migrations: `alembic upgrade head` runs in the container entrypoint before uvicorn starts.
 
 ## Local environment
 - Claude may start `uv run fastapi dev` (:8000).

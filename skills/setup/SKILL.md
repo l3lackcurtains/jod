@@ -23,8 +23,9 @@ Gather facts quietly. Use one Explore agent for a large monorepo.
 - **Git and release:**
   - branches (`git branch -a`) and the default branch;
   - the commit style (`git log --oneline -20`);
-  - PRs (`gh pr list --state merged --limit 5`) or local merges;
-  - deploy config (Dockerfiles, compose files, host config).
+  - whether `development` exists, and what's on `main` but not on it;
+  - how production runs: a direct process (`Procfile`, pm2 `ecosystem.config.*`, systemd units), Docker Compose (the production compose file), Kubernetes (`k8s/`, `kustomization.yaml`, `Chart.yaml`), or serverless/static (`vercel.json`, `netlify.toml`, `serverless.yml`, `fly.toml`); plus the health endpoints, the production start command and the production env example;
+  - CI/CD: does pushing `main` deploy?
 - **Environment:**
   - the env example files: does local dev point at a shared or production database, queue or cache? (Never print secret values);
   - dev ports and scripts;
@@ -64,11 +65,12 @@ Use AskUserQuestion: at most 2 rounds of up to 4 questions each.
   - `established`: the patterns are settled; follow them strictly, and treat any new pattern or dependency as the user's decision.
   - `growing`: follow existing patterns. Improvements are allowed as their own planned step, and new conventions are recorded once decided.
   - `new`: few patterns exist yet. Choose the standard, boring option for this stack, ask when the choice matters, and record each convention in the profile so later work follows it.
-- **Workflow:** the work branch and release mode, shaped by the branches and PR history you saw. Examples: "`development` → local merge to `main`", "feature branches → PR to `main`", "trunk: commit to `main`".
+- **Branches:** Jod's flow is fixed: work on `development`, side branches merge into `development`, and only `/jod:ship` merges `development` into `main`. No PRs. Ask only if the repo uses other names (`dev`, `master`), or if `development` doesn't exist yet (offer to create it from `main`).
+- **Production:** confirm how production runs and how to smoke-test it locally (health URL, one key request). Ask whether Claude may use a cluster context for server-side dry runs (Kubernetes only).
 - **Safety:**
   - may Claude start dev servers?
   - is the local database shared or production (then read-only)?
-  - does pushing the release branch deploy (then confirm the timing first)?
+  - does pushing `main` deploy (then confirm the timing first)?
 - **Rigor:**
   - **Plan approval:** always / fast path for small changes (recommended) / only for multi-step work.
   - **Tests:** test-first where it pays (recommended) / tests after, in the same change / only for logic and bugs.
@@ -94,7 +96,7 @@ Show the profile, and list the `TODO (confirm)` lines.
 
 Then offer the hard guards as ready `.claude/settings.json` snippets. Keep the set small: only rules with zero exceptions.
 - `permissions.deny` for edits to the Hands-off paths, e.g. `Edit(/apps/web/src/components/ui/**)`;
-- deny `Bash(git push --force:*)`, `Bash(git add -A:*)` and the wrong package managers;
+- deny `Bash(git push --force:*)`, `Bash(git add -A:*)`, `Bash(gh pr create:*)`, and the wrong package managers;
 - optionally, ask before edits to the lockfile and manifests, so dependency changes are always deliberate;
 - deny dev-server commands if the user runs them;
 - optionally, a Stop hook that runs the fastest typecheck, only if it takes under ~20 s.

@@ -9,7 +9,7 @@ An engineering workflow plugin for [Claude Code](https://claude.com/claude-code)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)
 ![Agent Skills](https://img.shields.io/badge/Agent%20Skills-6-success)
-![Version](https://img.shields.io/badge/version-1.5.0-orange)
+![Version](https://img.shields.io/badge/version-1.6.0-orange)
 
 </div>
 
@@ -35,7 +35,7 @@ More options are under [Other AI tools](#other-ai-tools).
 /jod:task <task>  → plan → build → test → review → check → done, with a drift alarm
 /jod:fix <bug>    → reproduce → root cause → failing test → fix → hunt the same bug
 /jod:commit       → calibrated review → verify → commit in logical groups → push
-/jod:ship         → cross-commit review → full gate + deploy audit → merge or PR
+/jod:ship         → cross-commit review → full gate → production check → development into main
 ```
 
 ---
@@ -78,8 +78,8 @@ flowchart TD
     R -->|"fixes"| T
     R --> K["👀 check<br/>see it working, as each role"]
     K --> D["✅ done<br/>full suites once · lessons into the profile"]
-    D --> CM["📦 /jod:commit<br/>logical commits on the work branch"]
-    CM --> SH["🚀 /jod:ship<br/>full gate · deploy audit · rollback plan → merge or PR"]
+    D --> CM["📦 /jod:commit<br/>logical commits on development"]
+    CM --> SH["🚀 /jod:ship<br/>full gate · production check · rollback plan → development into main"]
 ```
 
 - **One profile per repo.** `/jod:setup` scans your stack, conventions, CI, branches, environment and existing patterns, shows you what it found, and asks how you want to work. It then writes `.claude/jod.md`. Everything project-specific lives there; the plugin itself stays generic.
@@ -99,8 +99,8 @@ flowchart TD
 | `/jod:task <task>` | The full loop: plan → build → test → review → check → done |
 | `/jod:task plan\|build\|test\|review\|check\|done …` | Run one phase on its own; `build <slug>` resumes a saved plan in a fresh session |
 | `/jod:fix <symptom>` | Reproduce, trace the root cause backward, write a regression test that fails first, fix, hunt the same bug across the repo, verify |
-| `/jod:commit` | Step 1: review the uncommitted diff, verify, commit in logical groups, push the work branch |
-| `/jod:ship` | Step 2: review across commits, run the full gate and a deploy audit (rollback plan, one-way changes), then merge or open a PR |
+| `/jod:commit` | Step 1: review the uncommitted diff, verify, commit in logical groups to `development` (merging any side branch into it), push. Never touches `main` |
+| `/jod:ship` | Step 2, and the only way into `main`: review across commits, the full gate, a production check (runs the release as production does: direct, Compose, Kubernetes…), a deploy audit with a rollback plan, then merge `development` into `main` |
 
 The **`engineering`** skill loads automatically whenever Claude builds or reviews code. It holds the standards:
 
@@ -138,7 +138,8 @@ done    Profile: + "CSV exports stream through lib/csv.ts". Suggest /jod:commit.
 - **Conventions:** the current way of doing each thing, plus what's legacy and must not be copied
 - **Stack, and the layers or surfaces** to change, in build order
 - **Verify commands,** and the full gate
-- **Branches and release:** merge or PR, whether a push deploys, what never gets staged
+- **Branches and release:** the branch names, whether pushing `main` deploys, what never gets staged
+- **Production:** the runtime (direct, Compose, Kubernetes, serverless), the start command, the health check, smoke requests, migrations
 - **Local environment:** dev servers, a shared or production database, how the agent can check its own work
 - **High-risk areas,** reviewed line by line
 - **Reference implementations** to copy, **hands-off code**, and **gotchas**
@@ -169,6 +170,19 @@ bash install.sh agents --project    # into the current repo (.agents/skills) ins
 Then invoke the skills the way your tool does: `/jod-setup` or `/jod-task …`, or ask "use the jod-task skill to …". The project profile stays at `.claude/jod.md` in every tool.
 
 Install for one family of tools only, because tools that read several folders would see jod twice. Claude Code users should stick to the plugin.
+
+## Branches
+
+One flow, on purpose:
+
+```
+side branch ──merge──▶ development ──/jod:ship──▶ main ──▶ production
+                 (/jod:commit)       (the only way in)
+```
+
+- All work lands on `development`. A side branch (a spike, a worktree) gets merged into `development` by `/jod:commit`.
+- Nothing is ever committed directly to `main`, and there are no PRs. `/jod:ship` is the only thing that merges `development` into `main`.
+- Before merging, `/jod:ship` proves the release runs **the way production runs it**, whether that's a direct process, Docker Compose, Kubernetes or serverless. It builds from a clean checkout with production-like config, starts the app, smoke-tests it and shuts it down. If any of that can't be verified, it blocks.
 
 ## Design choices
 

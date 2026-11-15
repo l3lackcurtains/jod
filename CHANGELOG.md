@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0
+- **One branch flow.** Work lands on `development`, and side branches merge into it via `/jod:commit`. Only `/jod:ship` touches `main`. No PRs: the `pr` release mode is gone.
+- **Production check in `/jod:ship`.** It builds from a clean checkout and runs the release the way production does (direct process, Docker Compose, Kubernetes, serverless) with production-like config. It smoke-tests, checks the shutdown, then tears down. Anything it can't verify blocks the release.
+- **Profile gains a "Production" section:** runtime, start command, health check, smoke requests, migrations. Setup detects these.
+
 ## 1.5.0
 - **Works with other AI tools.** `portable/` holds the same skills in plain Agent Skills format (`jod-task`, `jod-fix`, …). Installers (`install.sh`, `install.ps1`) cover Codex, Cursor, OpenCode, GitHub Copilot, Gemini CLI and ZCode, globally or per project.
 - **Easier to read.** The "How it works" diagram now runs top to bottom, with a line per step.

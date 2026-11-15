@@ -35,8 +35,16 @@
 Full gate: `pnpm install --frozen-lockfile && pnpm turbo typecheck test build --continue`
 
 ## Branches and release
-- Work on feature branches; release mode `pr` to `main`. CI deploys on merge, so confirm timing.
+- Work on `development`; only `/jod:ship` merges it into `main`. CI deploys on push to `main`, so confirm timing.
 - Commit style: `feat(scope): …`. Never stage `.env*`.
+
+## Production
+- Runtime: Kubernetes. Definition: `k8s/overlays/prod` (kustomize). Images built by CI from `apps/*/Dockerfile`.
+- Start command: the Deployment's `node dist/main.js` (api) and `node server.js` (web, Next.js standalone).
+- Health: api `GET /health` (:4000), web `GET /api/health` (:3000). Smoke: `GET /invoices?limit=1` with the seed admin token.
+- Production env example: `apps/api/.env.production.example`.
+- Migrations: the `prisma-migrate` Job runs before the rollout.
+- Cluster access for dry runs: none (`kubectl apply --dry-run=client` + kubeconform).
 
 ## Local environment
 - Claude may start the dev servers (`pnpm dev`; web :3000, API :4000).
