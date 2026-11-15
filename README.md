@@ -86,21 +86,29 @@ jod puts the habits of small, high-output teams into the agent instead:
 ## How it works
 
 ```mermaid
-flowchart TD
-    S["⚙️ /jod:setup<br/>scan the repo, ask how you work → .claude/jod.md"]
-    S --> P["📝 plan<br/>appetite · scope fence · patterns to copy · engineering decisions"]
-    P -->|"run all steps (default, also if you don't answer) or step by step"| B["🔨 build, one step at a time<br/>tests first · copy the closest siblings · stay in the fence"]
-    B --> C{"🚧 checkpoint<br/>still inside the scope fence?"}
-    C -->|"drift: files outside the fence, new dependency, 2× the size"| Q["✋ stop and ask<br/>two options + a recommendation"]
-    Q --> B
-    C -->|yes| T["🧪 test<br/>affected tests + typecheck"]
-    T --> R["🔍 review<br/>risk triage · drift · silent failures · gamed tests"]
-    R -->|"fixes"| T
-    R --> K["👀 check<br/>see it working, as each role"]
-    K --> D["✅ done<br/>full suites once · lessons into the profile"]
-    D --> CM["📦 /jod:commit<br/>logical commits on development"]
-    CM --> SH["🚀 /jod:ship<br/>full gate · production check · rollback plan → development into main"]
+flowchart LR
+    subgraph each ["🔁 each step"]
+        direction LR
+        B["🔨 build"] --> C{"🚧 in the<br/>fence?"}
+        C -- yes --> T["🧪 test"] --> R["🔍 review"] --> K["👀 check"]
+        C -. drift .-> Q["✋ ask"] -.-> B
+        R -. fixes .-> T
+    end
+    S["⚙️ setup"] --> P["📝 plan"] --> B
+    K --> D["✅ done"] --> CM["📦 commit"] --> SH["🚀 ship"]
+    CL["🧹 cleanup"] -. on a rhythm .-> CM
 ```
+
+| Stage | What happens |
+|---|---|
+| ⚙️ **setup** | Scan the repo, ask how you work, write `.claude/jod.md`. |
+| 📝 **plan** | Appetite, scope fence, patterns to copy, impact map. Then run all steps (the default) or go step by step. |
+| 🔨 **build** → 🚧 | Tests first, copying the closest siblings. The checkpoint stops on drift (files outside the fence, a new dependency, 2× the size) and asks with two options and a recommendation. |
+| 🧪 🔍 👀 **test · review · check** | Affected tests and typecheck → risk-triaged review (drift, silent failures, gamed tests, comments) → see it working, as each role. Fixes loop back to test. |
+| ✅ **done** | Full suites once, coverage re-checked, lessons into the profile. |
+| 📦 **commit** | Logical commits on `development`. |
+| 🚀 **ship** | Release cleanup, full gate, production check, rollback plan, then `development` into `main`. |
+| 🧹 **cleanup** | On the cadence you chose: dead code, stale comments, orphaned files, asking before anything goes. |
 
 - **One profile per repo.** `/jod:setup` scans your stack, conventions, CI, branches, environment and existing patterns, shows you what it found, and asks how you want to work. It then writes `.claude/jod.md`. Everything project-specific lives there; the plugin itself stays generic.
 - **Three modes**, chosen during setup:
