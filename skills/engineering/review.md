@@ -14,7 +14,7 @@ List the changed files and mark them **HIGH** when they touch:
 Read HIGH files line by line as an attacker would, as a second instance or a concurrent user, and as a retried request or job. If the diff **removes** a guard, a validation, a tenant filter, a transaction, an audit call or a limit check, run `git log -S '<removed code>'` to see why it was there, and justify the removal or put it back.
 
 ## 2. Independent review
-- **Run a code-review pass** on the diff: the `code-review` skill if available, or a fresh subagent given only the diff and the standards. Its scope is correctness, security, data integrity and missed surfaces; style is out of scope.
+- **Scale it by risk.** Run an independent code-review pass (the `code-review` skill, or a fresh subagent given only the diff and the standards) when the diff has a HIGH file or more than ~200 changed lines. Otherwise our own checks (§3) are enough. Its scope is correctness, security, data integrity and missed surfaces; style is out of scope.
 - **Keep only findings you'd bet on (confidence ≥80).** Before fixing one, confirm it in the code.
 - **Don't build robustness nobody needs (YAGNI).** If a finding suggests a "more robust" feature, Grep for real callers first. No callers means skip it.
 
@@ -28,6 +28,12 @@ Read HIGH files line by line as an attacker would, as a second instance or a con
   - a swallowed transaction error
   - retries that end without marking the job failed
   - a client mutation without error handling
+- **Drift.**
+  - **Scope:** anything in the diff that isn't in the plan or the ask: remove it or justify it.
+  - **New design:** new dependencies, patterns, abstractions or config options: is each one justified in the plan?
+  - **Mixed changes:** is a tidy or refactor mixed into the behaviour change? Split it.
+  - **Contracts:** did a public contract (API field, URL, flag, format) change?
+- **Gamed tests.** Grep the added lines for `.skip`, `.only`, `xit`, `@ts-ignore`, `eslint-disable`, `as any`. Check `git diff` for deleted test cases, loosened assertions, enlarged snapshots, and mocks of the code under test.
 - **Tests that bite.** Would each new test fail if the code broke? Name the change that would turn it red. A test that only mirrors the implementation doesn't count.
 - **Every surface.** Is every layer listed in the profile updated, or explicitly not applicable?
 

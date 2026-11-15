@@ -8,7 +8,7 @@ For each thing you're about to create (page, component, dialog/form, table/list,
 - **Same kind elsewhere:** Glob by naming convention (`**/*-dialog.*`, `**/use-*.*`, `**/*.controller.*`, `**/*_service.py`, …), or Grep a distinctive call (`useMutation`, `@Controller`, `router.get`, `DialogTrigger`).
 - **The profile's "Reference implementations"**, if it lists them.
 
-Read the examples fully. When two disagree, prefer the most recently written one (`git log -1 --format=%cs -- <file>`), and mention the inconsistency.
+Read the examples fully. When two disagree, prefer the most recently written one (`git log -1 --format=%cs -- <file>`), and propose a profile line ("X is the current way, Y is legacy") so the next session doesn't decide it again, differently.
 
 ## 2. Write down the pattern before coding
 In the plan, add a short **"Patterns to follow"** list. For each new file, note what the siblings do:
@@ -27,6 +27,7 @@ In the plan, add a short **"Patterns to follow"** list. For each new file, note 
 - **Use it** if it fits. If it does 80% of what you need, extend it carefully with an optional prop, parameter or variant rather than forking a copy.
 - **Extract** when the same markup or logic would now exist in a second or third place. Put it next to its users: the feature folder for feature-only code, the shared folder for app-wide code, a lib/util for pure helpers, a service in the owning module for server logic. Then update the old callers.
 - **Don't** extract something used only once, and don't create a parallel version of something that already exists.
+- **No new dependency, helper library or pattern** when the repo already has a way. If you think one is needed, write how the current code would do it and why that's too costly, then stop and ask. "We could, but it's harder" means use what's there.
 
 ## 4. Check before you finish
 Diff your new files against the examples you chose. Anything different (folder, naming, structure, styling, states, permission handling) needs a reason; otherwise change it to match. In the summary, name the examples you followed, e.g. "Built like `invite-dialog.tsx` and `members-table.tsx`".

@@ -46,6 +46,7 @@ Run every check and collect the results; don't stop at the first failure. Use th
    - outside-code steps: vendor dashboards, prices, app settings, DNS
    - compliance items
    - fail-open defaults: grep for `env.X || '…'` / `?? '…'` on secrets, auth, CORS or URLs. They must fail at startup when missing.
+   - **rollback:** how to undo this release (revert the merge? redeploy the previous image?). Flag anything one-way: migrations that can't be reversed, data backfills, external side effects.
 
 **Verdict:** a table of each check → pass/fail (with counts or the first error), then **RELEASE** or **BLOCK**. On BLOCK: list the fixes needed, offer `/jod:fix-bug`, and stop.
 
@@ -71,3 +72,5 @@ Never force-push.
 - Merge commit `hash`, or the PR URL
 - **Back on `<work>`**
 - Post-release steps (migrations, env vars, settings), repeated from the audit
+- **Rollback plan**, and anything one-way
+- **Post-deploy check:** for each change, the log line, endpoint or screen that proves it works in production, and what a failure looks like

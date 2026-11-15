@@ -4,6 +4,13 @@ Every task is built to these, not just "make it work". [patterns.md](patterns.md
 
 Apply what's relevant: a copy change doesn't need a scalability plan, but every new endpoint, query, job, form, money or data flow does.
 
+## 0. Simplicity (the counterweight to everything below)
+- Do the simple thing first: the smallest change that solves today's problem. No abstraction, option or config for a case nobody has yet.
+- Use the boring, existing stack. No new dependency, service or datastore until you've written how the current stack would do it and why that's too costly. "We could, but it's harder" means use the current stack.
+- Apply the rest of this file in proportion. An internal admin toggle doesn't need idempotency keys and a recovery sweeper; a payment does.
+- Delete what the change makes dead (Grep for callers first).
+- **Review asks:** Could this be half the code? Is anything here for a future that may never come?
+
 ## 1. Architectural boundaries
 - **Rule:**
   - Each module or feature owns its data and logic, with layers that each do one job:
@@ -15,6 +22,7 @@ Apply what's relevant: a copy change doesn't need a scalability plan, but every 
   - Shared constants and types have one source of truth (a shared package or module), never copied.
   - UI: pages compose components → components call hooks/stores → hooks call the one API client. No business rules in templates.
   - Clients (SDKs, CLIs, other apps) use the public API only.
+  - **Change, don't rewrite.** Extend the existing code in place. If a module truly needs replacing, do it incrementally: the new path sits beside the old one, callers move one at a time with each step shippable, and the old path is deleted at the end. A big-bang rewrite needs the user's explicit OK.
 - **Review asks:** Is logic in the wrong layer (a fat controller, a UI computing what the API should)? Is there a new cross-module import of another module's internals? Is there a duplicated constant or type?
 
 ## 2. Self-documenting code
@@ -80,7 +88,7 @@ Apply what's relevant: a copy change doesn't need a scalability plan, but every 
 - **Review asks:** Can tenant A read or change tenant B's data? Can a low role do a high role's action? Can an attacker make the server fetch an internal URL? Is any secret logged or defaulted?
 
 ## 6. Operability
-- Log meaningful events with context (tenant id, entity id, job id, request id), without secrets or personal data.
+- Log meaningful events with context (tenant id, entity id, job id, request id), without secrets or personal data. Every new path logs one line you can search for in production.
 - Schema and API changes are backward compatible:
   - new fields have defaults, or ship with a backfill script, noted for the release;
   - never remove or rename a field that external clients use without a deprecation path.

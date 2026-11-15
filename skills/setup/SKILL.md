@@ -27,6 +27,8 @@ The profile is how the rest of Jod stays project-agnostic: every skill reads `.c
 - **Hands-off code:** generated folders (`gen/`, `__generated__`, codegen config) and vendored UI primitives.
 - **Reference implementations:** the best existing example of each kind of thing: one module or endpoint, one list endpoint with pagination, one job or queue processor, one form dialog, one table/list view, one hook.
 - **High-risk areas:** auth, permissions, payments or billing, money or stock, personal data, webhooks, crypto, outbound fetches.
+- **Architecture to keep:** the core decisions the codebase is built on, which a change must extend rather than replace. Examples: the module layout, data access and state management patterns, API style, auth model, and "no ORM"-style choices visible in the code or docs.
+- **Feedback tools:** where the logs go locally, how to see sent emails and queued jobs, and test accounts per role.
 
 ## 2. Ask only what the repo can't tell you
 Use AskUserQuestion, at most 4 questions, each with a recommended option. Typical questions:
@@ -39,9 +41,18 @@ Use AskUserQuestion, at most 4 questions, each with a recommended option. Typica
 ## 3. Write `.claude/jod.md`
 Start from [template.md](template.md). Keep it short and specific. Every line should be something Claude couldn't have guessed. Link to existing docs instead of copying them.
 
-With `refresh`: read the existing profile first, keep what the user wrote, and update only what the repo shows has changed. Show a summary of what changed.
+With `refresh`: read the existing profile first, keep what the user wrote, and update only what the repo shows has changed. Check that each Reference implementation still exists and is still the newest of its kind, and flag the ones that aren't. Show a summary of what changed.
 
-## 4. Report
-Show the profile and list the `TODO (confirm)` lines. Then suggest the optional hard guards, as deny rules or hooks in `.claude/settings.json`, for rules that must never be broken (e.g. edits to vendored UI, a force push, the wrong package manager). Only add them if the user says yes.
+## 4. Report and guards
+Show the profile and list the `TODO (confirm)` lines.
+
+Then offer the hard guards as ready `.claude/settings.json` snippets. Keep the set small: only rules with zero exceptions.
+- `permissions.deny` for edits to the profile's Hands-off paths, e.g. `Edit(/apps/web/src/components/ui/**)`;
+- deny `Bash(git push --force:*)`, `Bash(git add -A:*)`, and the wrong package managers;
+- optionally, ask before edits to the lockfile and manifests, so dependency changes are always deliberate;
+- deny dev-server commands if the user runs them;
+- optional: a Stop hook that runs the fastest typecheck, only if it takes under ~20 s.
+
+Add them only if the user says yes. Also suggest adding `.claude/plans/` to `.gitignore`.
 
 Don't commit the profile; `/jod:commit` will.

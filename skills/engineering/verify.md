@@ -7,8 +7,9 @@ The commands come from the profile (`.claude/jod.md` → "Verify commands"). Wit
 2. **Build what depends on it.** Rebuild shared or generated code first (shared packages, OpenAPI/GraphQL codegen, ORM clients) when its source changed.
 3. **Check each touched package.** For each:
    - typecheck or compile;
-   - run the affected tests;
-   - then run the full suite of that package.
+   - run the affected tests.
+
+   Run the full suite of each touched package once, at the end (`/jod:task done`, `/jod:commit`), not on every step.
 4. **Lint only the files you changed**, without auto-fix. Fix only the errors on lines you changed; errors on other lines were already there.
 5. **On failure, fix the cause, not the test.** Change a test only when it encodes behaviour the change intentionally replaces, and say so.
 

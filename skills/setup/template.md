@@ -43,6 +43,17 @@ Full gate (`/jod:ship`):
 - Database: `<local / SHARED or PRODUCTION: reads only, writes need an explicit yes>`. How to run a read-only check: `<…>`.
 - Queues/cache: `<local Redis on …; never point dev at production's>`.
 - Manual check: `<URLs, test accounts/roles, browser tool>`.
+- Feedback tools: `<API log file / how to tail>`, `<how to see sent emails / queued jobs locally>`. If a check needs the user every time, propose a small script that does it.
+
+## Parallel sessions
+- Worktree setup: `<.worktreeinclude: .env files>`, `<install cmd>`.
+- Shared between sessions: `<ports, DB, Redis>`. Run in parallel only on separate areas; never two sessions running dev servers or migrations.
+
+## Architecture to keep
+<!-- Extend these; changing one is a decision for the user. -->
+- <module layout / layering>
+- <data access, state management, API style, auth model>
+- <deliberate choices: "no ORM", "no global state", "server components by default", …>
 
 ## High-risk areas
 <!-- Reviewed line by line, as an attacker would. -->

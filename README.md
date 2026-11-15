@@ -1,14 +1,23 @@
 # Jod
 
-An engineering workflow plugin for [Claude Code](https://claude.com/claude-code), for small teams of senior engineers who want speed **and** quality.
+An engineering workflow plugin for [Claude Code](https://claude.com/claude-code), for **established projects** run by a few highly effective engineers: move fast without derailing from the architecture, conventions and scope the project already has.
 
 *Jod* (जोड) is Nepali for joining and assembling: putting the parts together so they hold. Every change goes through plan, build, test, review and check, then commit and ship. Five standards are built in:
 
+- **Staying on the road:**
+  - stay in scope; extend the existing architecture, no redesign;
+  - no new dependencies, patterns or rewrites without a reason;
+  - characterization tests before changing untested code;
+  - tidy changes kept separate from behaviour changes;
+  - a drift alarm when a change outgrows its plan.
+- **Simplicity:** the simple, boring thing first; apply the other standards in proportion.
 - **Architectural boundaries:** layers that each do one job, modules that talk through their public services, one source of truth for shared code.
 - **Scalability:** stateless services, indexes, capped pagination, async jobs, timeouts.
 - **Reliability:** graceful errors, transactions, idempotency, retries, tests that actually fail when the code breaks.
 - **Security:** tenant scoping, authorisation, input validation, SSRF protection, secrets, rate limits.
 - **Following existing patterns:** copy the closest existing code, reuse before you create, extract only when something would be duplicated.
+
+Plans have an appetite and a cut line, and are saved to `.claude/plans/` so work can resume in a fresh session. A stuck session hands off and restarts instead of grinding on. Lessons go back into the profile, and rules broken twice become hooks. Releases come with a rollback plan and a post-deploy check.
 
 Big-team ceremony (sign-offs, templates, design docs for small changes, coverage targets) is left out on purpose.
 
@@ -61,6 +70,9 @@ The workflow draws on:
 - [obra/superpowers](https://github.com/obra/superpowers): evidence before claiming done, root-cause tracing, test-driven development, plans without placeholders
 - [Trail of Bits skills](https://github.com/trailofbits/skills): risk triage of a diff, hunting variants of a bug, insecure defaults
 - Google's [engineering practices](https://google.github.io/eng-practices/): what to look for in a review, small changes
+- Michael Feathers, *Working Effectively with Legacy Code* (characterization tests), and Kent Beck, [*Tidy First?*](https://tidyfirst.substack.com/) and [augmented coding](https://newsletter.kentbeck.com/p/augmented-coding-beyond-the-vibes)
+- 37signals [Shape Up](https://basecamp.com/shapeup) (appetite, fixed time with flexible scope), [Choose Boring Technology](https://mcfunley.com/choose-boring-technology), Instagram's "do the simple thing first"
+- Mitchell Hashimoto, Armin Ronacher, Harper Reed and Geoffrey Huntley on agentic coding: learning loops, feedback tools agents can run themselves, spec files that survive sessions
 
 ## License
 
