@@ -1,6 +1,6 @@
 ---
 name: task
-description: Do a task (feature, improvement, roadmap item) end to end — plan, build, test, review, manual check, done — with engineering principles and existing patterns enforced. Run all phases, or one sub-command on its own.
+description: "Do a task (feature, improvement, roadmap item) end to end — plan, build, test, review, manual check, done — with engineering principles and existing patterns enforced. Run all phases, or one sub-command on its own."
 argument-hint: "[plan|build|test|review|check|done] <task description, roadmap id or notes>"
 disable-model-invocation: true
 ---

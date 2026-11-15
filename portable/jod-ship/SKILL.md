@@ -1,6 +1,6 @@
 ---
 name: jod-ship
-description: Step 2 of 2, and the only thing that touches main. Final cross-commit review of everything on development, the full gate, a production-readiness check that runs the release the way production does (direct, Docker Compose, Kubernetes…), then merge development into main and return to development.
+description: "Step 2 of 2, and the only thing that touches main. Final cross-commit review of everything on development, the full gate, a production-readiness check that runs the release the way production does (direct, Docker Compose, Kubernetes…), then merge development into main and return to development."
 disable-model-invocation: true
 ---
 

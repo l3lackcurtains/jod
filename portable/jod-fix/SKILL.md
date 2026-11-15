@@ -1,6 +1,6 @@
 ---
 name: jod-fix
-description: Fix a bug properly — reproduce, trace the root cause backward, regression test that fails first, fix, hunt the same bug across the repo, verify live.
+description: "Fix a bug properly — reproduce, trace the root cause backward, regression test that fails first, fix, hunt the same bug across the repo, verify live."
 disable-model-invocation: true
 ---
 

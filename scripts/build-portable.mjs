@@ -54,6 +54,27 @@ function walk(dir) {
   })
 }
 
+// Frontmatter guard: an unquoted value containing ": " or " #" breaks YAML, and the
+// skill then loads with no metadata at all (silently). Quote such values.
+const fmErrors = []
+for (const s of skills) {
+  const text = readFileSync(join(src, s, 'SKILL.md'), 'utf8').replace(/\r\n/g, '\n')
+  const fm = text.match(/^---\n([\s\S]*?)\n---\n/)
+  if (!fm) { fmErrors.push(`${s}/SKILL.md: missing frontmatter`); continue }
+  for (const line of fm[1].split('\n')) {
+    const m = line.match(/^([\w-]+): (.*)$/)
+    if (!m) continue
+    const v = m[2]
+    if (/^["']/.test(v)) continue
+    if (v.includes(': ') || v.includes(' #') || /^[&*!|>%@`{[]/.test(v)) fmErrors.push(`${s}/SKILL.md: quote the value of "${m[1]}"`)
+  }
+  if (!/^name: /m.test(fm[1]) || !/^description: /m.test(fm[1])) fmErrors.push(`${s}/SKILL.md: needs name and description`)
+}
+if (fmErrors.length) {
+  console.error('Frontmatter problems:\n  ' + fmErrors.join('\n  '))
+  process.exit(1)
+}
+
 const files = new Map()
 for (const s of skills) {
   for (const file of walk(join(src, s))) {

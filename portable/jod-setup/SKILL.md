@@ -1,6 +1,6 @@
 ---
 name: jod-setup
-description: Create or refresh this repo's Jod profile (.claude/jod.md). Scans the stack and existing patterns, shows what it found, asks how you want to work (mode, workflow, safety, rigor, which patterns are canonical), then writes the profile every Jod skill follows. Works for new, growing and established projects.
+description: "Create or refresh this repo's Jod profile (.claude/jod.md). Scans the stack and existing patterns, shows what it found, asks how you want to work (mode, workflow, safety, rigor, which patterns are canonical), then writes the profile every Jod skill follows. Works for new, growing and established projects."
 disable-model-invocation: true
 ---
 

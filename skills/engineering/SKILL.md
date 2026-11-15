@@ -1,7 +1,7 @@
 ---
 name: engineering
-description: Jod's engineering standards and the project's profile, for new, growing or established projects: stay in scope, follow (or set) the project's architecture and conventions, build it right, verify with evidence. Use when adding or changing a feature, endpoint, schema, job, permission, price or user-facing behaviour, before reviewing code, or before claiming any change is complete. Covers architecture boundaries, scalability, reliability, security, following existing code patterns, how to review, and how to verify.
-when_to_use: Building or changing code in a repo, reviewing a diff, or about to say "done".
+description: "Jod's engineering standards and the project's profile, for new, growing or established projects: stay in scope, follow (or set) the project's architecture and conventions, build it right, verify with evidence. Use when adding or changing a feature, endpoint, schema, job, permission, price or user-facing behaviour, before reviewing code, or before claiming any change is complete. Covers architecture boundaries, scalability, reliability, security, following existing code patterns, how to review, and how to verify."
+when_to_use: "Building or changing code in a repo, reviewing a diff, or about to say \"done\"."
 ---
 
 # Engineering standards (Jod)
