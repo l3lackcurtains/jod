@@ -72,7 +72,7 @@ Use AskUserQuestion: at most 2 rounds of up to 4 questions each.
   - is the local database shared or production (then read-only)?
   - does pushing `main` deploy (then confirm the timing first)?
 - **Rigor:**
-  - **Plan approval:** always / fast path for small changes (recommended) / only for multi-step work.
+  - **Plan approval:** always / fast path for small changes (recommended) / only for multi-step work. Once a plan is approved, `/jod:task` asks whether to run all its steps or go step by step; no answer means run all.
   - **Tests:** test-first where it pays (recommended) / tests after, in the same change / only for logic and bugs.
 
 **Round 2: patterns.** Ask only when needed:

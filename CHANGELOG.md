@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.0
+- **Steps sized to the work:** plans split into as many steps as the work needs, each a coherent, verifiable piece with its goal, files and check.
+- **Run mode:** after planning, `/jod:task` asks "run all steps" (the default) or "step by step". With no answer (headless run, dismissed question), it runs all steps. Each step goes build → test → review → check, with a numbered status line.
+
 ## 1.7.0
 - **Clear, purpose-fit reports** (`engineering/report.md`). Each command reports in the shape that fits its job:
   - `/jod:fix`: an incident note;

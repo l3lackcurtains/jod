@@ -16,7 +16,7 @@ Arguments: the user's request
 
 | Sub-command | Phase file | What it does |
 |---|---|---|
-| `plan` | [phases/plan.md](phases/plan.md) | Explore, study patterns, decide engineering, show a plan, **wait for OK** |
+| `plan` | [phases/plan.md](phases/plan.md) | Explore, study patterns, split the work into steps, then ask: run all steps, or step by step (no answer → run all) |
 | `build` | [phases/build.md](phases/build.md) | Tests first, then every layer, following patterns and principles |
 | `test` | [phases/test.md](phases/test.md) | Typecheck + tests of touched packages until green |
 | `review` | [phases/review.md](phases/review.md) | Calibrated review, fix what holds up |
@@ -28,7 +28,7 @@ Arguments: the user's request
    - Each phase opens the guide it needs when it reaches it: [patterns.md](../jod-engineering/patterns.md) and [principles.md](../jod-engineering/principles.md) in plan and build, [verify.md](../jod-engineering/verify.md) in test and done, [review.md](../jod-engineering/review.md) in review.
    - Don't load them all up front.
 2. **Wait for the plan's OK** when [plan.md](phases/plan.md) says to (it follows the profile's "Plan approval"); don't build before it.
-3. **Build big work step by step** (A, B, C…), each one shippable. After building a step, run test → review → check. If any of them changes code, go round again.
+3. **Work through the plan's steps in the chosen mode:** "run all steps" (the default) or "step by step", which pauses for "next" after each step. Each step goes build → test → review → check; if any of them changes code, go round again for that step. Then post its status line and tick it in the plan file. When every step is done, run `done` once.
    - **Restart instead of grinding.** After 2 failed rounds on the same problem, write a handoff into the plan file: what was tried, what each attempt showed, and the current best hypothesis. Then recommend `/clear` and a fresh `/jod-task build <slug>`. Don't make a third attempt in a polluted context.
    - The drift alarm (`jod-engineering` §2) can stop any step; the build checkpoint checks it.
 4. **Never commit, push or merge here.** Work happens on `development` (or a side branch that `/jod-commit` merges into it). `done` hands over to `/jod-commit`; only `/jod-ship` touches `main`.
@@ -36,14 +36,12 @@ Arguments: the user's request
 
 Copy this checklist and keep it updated:
 ```
-Step A
-- [ ] plan (approved / no wait needed)
-- [ ] build
-- [ ] test: counts
-- [ ] review: fixed / skipped
-- [ ] check: what was seen live
+Plan: approved / no wait needed · Mode: run all steps | step by step
+- [ ] 1. <step goal>: build · test · review · check
+- [ ] 2. <step goal>: build · test · review · check
+- [ ] … (as many as the plan has)
 - [ ] done
-Failed rounds: 0 (at 2: hand off and restart)
+Failed rounds on the current step: 0 (at 2: hand off and restart)
 ```
 
 ## Current state
