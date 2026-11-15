@@ -29,9 +29,16 @@ Apply what's relevant: a copy change doesn't need a scalability plan, but every 
 - **Rule:**
   - **Names:** names a reader can trust: boolean prefixes per the repo's convention, units in names (`timeoutMs`, `amountCents`), named constants for limits and magic values.
   - **Types:** types at every boundary (request/response, DTOs, public functions); no `any` or untyped dicts crossing a boundary.
-  - **Comments:** only for the *why* a reader can't see: a vendor quirk, a race, a business or legal rule (cite it).
+  - **Comments:** only for the *why* a reader can't see in the code: a vendor quirk, a race, a business or legal rule (name the rule itself, e.g. "invoices are kept for 7 years by law"). Write them about the code as it is now, for someone who has never seen the plan. Never:
+    - tracker, plan or ticket ids, step labels or review rounds ("roadmap 3.1", "step B", "PROJ-123", "fix for #42"): they belong in the commit message and the docs;
+    - history ("added for…", "was X, now Y", "new:", "moved from…"): git keeps history;
+    - comments that restate the code, author or date stamps, decorative banners;
+    - commented-out code (delete it; git has it);
+    - a TODO without an owner or an issue.
+
+    The same rules apply to test names and to doc comments that ship as API docs.
   - **Public API docs:** API schema/docs (OpenAPI, docstrings) updated with the code.
-- **Review asks:** Would a new teammate understand this without asking? Any `any`, magic value, misleading name, or unexplained rule?
+- **Review asks:** Would a new teammate understand this without asking? Any `any`, magic value, misleading name, or unexplained rule? Any comment with a tracker id, history, restated code or commented-out code?
 
 ## 3. Scalability
 - **Stateless services.** No per-instance memory state that must be shared: no in-memory caches, locks, counters or sessions. Shared state goes in the database, cache or queue. Scheduled work must be safe with several instances: dedupe with a stable job id or a distributed lock.

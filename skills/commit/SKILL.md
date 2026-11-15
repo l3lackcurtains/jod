@@ -50,4 +50,5 @@ Report as a commit log ([report.md](../engineering/report.md) → `/jod:commit`)
 - **The commits:** a table of hash · subject, and whether they were pushed.
 - **One line each:** the review (fixed / open) and the checks (exact counts).
 - **Left alone:** uncommitted changes that aren't yours.
+- **Cleanup:** the cleanup reminder line, if cleanup is due ([cleanup](../cleanup/SKILL.md) §5).
 - **Next:** `/jod:ship`, with the number of commits waiting (`git log --oneline main..development`).

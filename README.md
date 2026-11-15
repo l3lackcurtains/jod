@@ -8,8 +8,8 @@ An engineering workflow plugin for [Claude Code](https://claude.com/claude-code)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)
-![Agent Skills](https://img.shields.io/badge/Agent%20Skills-6-success)
-![Version](https://img.shields.io/badge/version-1.9.0-orange)
+![Agent Skills](https://img.shields.io/badge/Agent%20Skills-7-success)
+![Version](https://img.shields.io/badge/version-1.10.0-orange)
 
 </div>
 
@@ -50,8 +50,9 @@ To install for a single tool or into one project only, see [Other AI tools](#oth
 /jod:setup        → scan the stack + patterns, ask how you work, write the profile
 /jod:task <task>  → plan → build → test → review → check → done, with a drift alarm
 /jod:fix <bug>    → reproduce → root cause → failing test → fix → hunt the same bug
+/jod:cleanup      → scan → ask what to remove → remove in behaviour-neutral groups → record
 /jod:commit       → calibrated review → verify → commit in logical groups → push
-/jod:ship         → cross-commit review → full gate → production check → development into main
+/jod:ship         → cross-commit review → release cleanup → full gate → production check → development into main
 ```
 
 ---
@@ -78,6 +79,8 @@ jod puts the habits of small, high-output teams into the agent instead:
 - **Look like the codebase.** Before writing a file, study its 2–3 closest siblings, reuse before you create, and extract only when something would be duplicated.
 - **Build it right, in proportion.** Simplicity first, then boundaries, scalability, reliability and security, each applied where it matters. A payment flow gets idempotency; an admin toggle doesn't.
 - **Evidence, not vibes.** "Done" means a command run in this turn, with its exit code and counts. Review is calibrated: risk triage, findings it would bet on, and checks for silent failures and gamed tests.
+- **Comments that age well.** Comments explain the *why*, never a ticket id, a plan step or the change history; review checks every added line.
+- **Clean up on a rhythm.** `/jod:cleanup` removes dead code, stale comments and orphaned files in its own commits, with proof nothing changed, and the other commands remind you when it's due.
 - **Learn.** Corrections become one-line additions to the project profile. A rule broken twice becomes a hook.
 
 ## How it works
@@ -116,8 +119,9 @@ flowchart TD
 | `/jod:task <task>` | The full loop: plan (split into as many steps as the work needs) → you choose "run all steps" or "step by step" (no answer means run all) → each step goes build → test → review → check → done |
 | `/jod:task plan\|build\|test\|review\|check\|done …` | Run one phase on its own; `build <slug>` resumes a saved plan in a fresh session |
 | `/jod:fix <symptom>` | Reproduce, trace the root cause backward, write a regression test that fails first, fix, hunt the same bug across the repo, verify |
+| `/jod:cleanup [area] [kind]` | Find bad comments, unused code, unused files, dependencies and config; ask what to remove; remove it in behaviour-neutral groups with before/after test counts; record the date. The task, commit and ship reports remind you when the cadence chosen in setup has passed |
 | `/jod:commit` | Step 1: review the uncommitted diff, verify, commit in logical groups to `development` (merging any side branch into it), push. Never touches `main` |
-| `/jod:ship` | Step 2, and the only way into `main`: review across commits, the full gate, a production check (runs the release as production does: direct, Compose, Kubernetes…), a deploy audit with a rollback plan, then merge `development` into `main` |
+| `/jod:ship` | Step 2, and the only way into `main`: review across commits, a release cleanup of what those commits add or leave behind (asks first), the full gate, a production check (runs the release as production does: direct, Compose, Kubernetes…), a deploy audit with a rollback plan, then merge `development` into `main` |
 
 The **`engineering`** skill loads automatically whenever Claude builds or reviews code. It holds the standards:
 

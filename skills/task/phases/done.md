@@ -19,4 +19,5 @@ Goal: prove it's finished, record it, hand over.
    - **Fixed on the way:** bugs found during the task.
    - **Noticed, not done:** things outside scope, worth a later task.
    - **Needs you:** env vars, migrations or backfills to run, vendor settings, deploy timing.
+   - **Cleanup:** the cleanup reminder line, if cleanup is due ([cleanup](../../cleanup/SKILL.md) §5).
    - **Next:** `/jod:commit` (not committed yet).

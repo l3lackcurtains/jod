@@ -60,6 +60,9 @@ Full gate: `pnpm install --frozen-lockfile && pnpm turbo typecheck test build --
 - Idempotent webhook handler: `billing/stripe-webhook.service.ts`
 - Form dialog: `apps/web/src/components/invoices/create-invoice-dialog.tsx`
 
+## Cleanup
+- Cadence: `every 2 weeks`. Last: `never`.
+
 ## Hands-off
 - `apps/web/src/components/ui/` (shadcn), `apps/web/src/gen/`
 

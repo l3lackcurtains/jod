@@ -33,6 +33,7 @@ Read HIGH files line by line as an attacker would, as a second instance or a con
   - **New design:** new dependencies, patterns, abstractions or config options: is each one justified in the plan?
   - **Mixed changes:** is a tidy or refactor mixed into the behaviour change? Split it.
   - **Contracts:** did a public contract (API field, URL, flag, format) change?
+- **Comments** ([principles.md](principles.md) §2). Grep the added lines (code, test names, API doc comments) for tracker or plan ids, step labels, history wording and commented-out code. Reword to the *why* or delete.
 - **Gamed tests.** Grep the added lines for `.skip`, `.only`, `xit`, `@ts-ignore`, `eslint-disable`, `as any`. Check `git diff` for deleted test cases, loosened assertions, enlarged snapshots, and mocks of the code under test.
 - **Tests that bite.** Would each new test fail if the code broke? Name the change that would turn it red. A test that only mirrors the implementation doesn't count.
 - **Coverage** ([impact.md](impact.md) §5). Re-run the impact searches. Any hit on the old value or name outside intentional compatibility code needs fixing or a reason. Is every row of the impact map done with evidence, or explicitly n/a? Is every layer the profile lists covered?

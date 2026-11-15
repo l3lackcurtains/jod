@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.10.0
+- **`/jod:cleanup`:** scans read-only for bad comments, unused code, unused files, dependencies and config. It shows the candidates with evidence and a confidence (certain / likely / needs you), asks which groups to remove, then removes them in behaviour-neutral groups, each checked against the baseline test counts. It records the date in the profile.
+- **Release cleanup in `/jod:ship`:** before the gate, ship runs cleanup over the commits being released (`release` scope). It covers bad comments and leftovers in the added lines, and code, files or dependencies those commits made unused. It asks first, then cleans in `chore(cleanup)` commits so the gate tests what actually ships.
+- **Cleanup reminders:** setup asks for a cadence (every 2 weeks / after each release / on request). The `/jod:task` done, `/jod:commit` and `/jod:ship` reports add one line when a cleanup is due. A reminder never runs or blocks anything.
+- **Comment rules** (`engineering/principles.md` §2): comments explain the *why* in plain words, about the code as it is now. No tracker, plan or ticket ids, step labels, change history, restated code, commented-out code or ownerless TODOs, including in test names and API doc comments. Review greps the added lines for them.
+- **Profile:** a new Cleanup section (cadence, last run, a Keep list of things that look unused but aren't). Setup reports the cleanup debt it sees.
+
 ## 1.9.0
 - **Impact and coverage** (`engineering/impact.md`). Each plan builds an impact map:
   - name what changes, search the whole repo for it, and think past the search (stored data, clients in the wild, other repos, outside the code);

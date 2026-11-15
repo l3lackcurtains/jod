@@ -30,6 +30,12 @@ Step 2 of 2. `/jod-commit` (step 1) reviews work and commits it to `development`
 - **Skip the review** only if every waiting commit is docs- or config-only; say so.
 - **Real findings:** fix them on `development` (a regression test per bug), commit with `fix(scope): …`, push, then continue. Skip the rest with a reason.
 
+## 2b. Release cleanup
+Before the gate, so the gate tests what actually ships: run [cleanup](../jod-cleanup/SKILL.md) with the `release` scope over the commits waiting. It lists what the release adds or leaves behind (bad comments, debug leftovers, commented-out code, code and files these commits made unused), and asks which to clean.
+- **Cleaned:** one `chore(cleanup): …` commit per kind on `development`, pushed, then continue to the gate.
+- **Skipped or declined:** continue, and list the open items in the report.
+- **`verdict-only`:** list the candidates; change nothing.
+
 ## 3. Gate
 Run every check and collect the results; don't stop at the first failure.
 1. **Code gate** ([verify.md](../jod-engineering/verify.md) "Full gate"):
@@ -69,7 +75,9 @@ Report as a release verdict and runbook ([report.md](../jod-engineering/report.m
 - **Heading:** released, with the merge `hash`, or blocked.
 - **Gate:** a table of check → result with counts, including the production check (the runtime, what was started, and the smoke results).
 - **Review:** findings fixed or skipped, one line each.
+- **Release cleanup:** what was cleaned (lines, per kind) and what was left open.
 - **After deploy:** numbered steps in order (migrations, env vars, settings).
 - **Rollback:** how to undo the release, and anything one-way.
 - **Verify in production:** per change, how to see it works and what a failure looks like.
+- **Cleanup:** the cleanup reminder line, if cleanup is due ([cleanup](../jod-cleanup/SKILL.md) §5).
 - **Next:** deploy, and confirm you're back on `development`.

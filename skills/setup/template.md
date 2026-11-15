@@ -90,6 +90,11 @@ Full gate (`/jod:ship`):
 - Data hook: <path>
 - Shared UI building blocks: <paths>
 
+## Cleanup
+<!-- /jod:cleanup reads and updates this. -->
+- Cadence: `<every 2 weeks | after each release | on request>`. Last: `<YYYY-MM-DD (scope) | never>`.
+- Keep (looks unused, isn't): `<path or name: why>`
+
 ## Hands-off
 - <vendored UI primitives path: never edit, fix at call sites>
 - <generated code path: regenerate with <cmd>>

@@ -33,6 +33,7 @@ Gather facts quietly. Use one Explore agent for a large monorepo.
   - how to see sent emails and queued jobs locally.
 - **Testing:** the frameworks, where tests live, and any e2e setup (seeded DB, replica set, emulators).
 - **Hands-off:** generated code, vendored UI primitives.
+- **Cleanup debt:** a rough count of tracker ids or history in comments, commented-out code, TODOs without an owner, and obviously orphaned files. Report it; don't fix it here.
 - **Patterns in use.** For each kind of thing (module or endpoint, validation, data access, error handling, list pagination, jobs, forms, tables, data hooks, state, styling, tests), find the best example. Note where the repo does the same thing two different ways, e.g. two form libraries, or two styles of data fetching.
 - **High-risk areas:** auth, permissions, payments or billing, money or stock, personal data, webhooks, crypto, outbound fetches.
 - **Maturity signals:**
@@ -74,6 +75,7 @@ Use AskUserQuestion: at most 2 rounds of up to 4 questions each.
 - **Rigor:**
   - **Plan approval:** always / fast path for small changes (recommended) / only for multi-step work. Once a plan is approved, `/jod:task` asks whether to run all its steps or go step by step; no answer means run all.
   - **Tests:** test-first where it pays (recommended) / tests after, in the same change / only for logic and bugs.
+- **Cleanup cadence:** every 2 weeks (recommended for active repos) / after each release / only when I ask. It drives the reminder in the task, commit and ship reports ([cleanup](../cleanup/SKILL.md) §5). Mention the cleanup debt you found.
 
 **Round 2: patterns.** Ask only when needed:
 - **Inconsistencies you found:** which one is canonical? Example: "Forms use two different libraries (A in 12 files, B in 30 files). Which is the current way?" The other one becomes "legacy: don't copy".

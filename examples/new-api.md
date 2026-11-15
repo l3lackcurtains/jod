@@ -49,3 +49,6 @@ Full gate: `uv sync --frozen && uv run pyright && uv run pytest && uv run ruff c
 
 ## Reference implementations
 - Feature: `app/trails/` (the first full feature; copy it)
+
+## Cleanup
+- Cadence: `after each release`. Last: `never`.

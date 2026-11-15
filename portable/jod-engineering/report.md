@@ -39,6 +39,23 @@ Admins and accountants can export the invoice list as CSV, streamed and capped a
 **Next:** `/jod-commit`
 ```
 
+### `/jod-cleanup`: a cleanup log
+What left the codebase, what stayed and why, and the proof nothing changed:
+```markdown
+## ✅ Cleanup: apps/api (comments, unused code)
+−1,240 lines across 86 files; behaviour unchanged.
+
+| Kind | Removed | Kept |
+|---|---|---|
+| Comments | 212 tracker ids reworded to the why, 31 commented-out blocks | 4 TODOs with an owner |
+| Unused code | 18 exports, 3 components | `legacyExport()`: public route (needs you) |
+| Files | 6 | `scripts/backfill-x.ts`: still to run in production |
+
+**Proof:** api 1,498 → 1,481 passed (17 tests of removed code) · tsc ok · web build ok
+**Profile:** Last cleanup 2026-11-15 · Keep + `scripts/backfill-*`
+**Next:** `/jod-commit` (one commit per kind)
+```
+
 ### `/jod-fix`: an incident note
 A story in order, so the cause is clear:
 ```markdown
