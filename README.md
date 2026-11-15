@@ -1,17 +1,32 @@
+<div align="center">
+
 # jod
 
-**An engineering workflow for Claude Code that keeps AI-written changes on the road.** It plans, builds, tests, reviews, verifies and ships the way a small team of senior engineers would: in scope, in the codebase's own style, with evidence that it works.
+### जोड — put the parts together so they hold
+
+An engineering workflow plugin for [Claude Code](https://claude.com/claude-code). **It plans, builds, tests, reviews, verifies and ships the way a small team of senior engineers would: in scope, in your codebase's own style, with evidence that it works. It adapts to new, growing or established projects.**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)
+![Agent Skills](https://img.shields.io/badge/Agent%20Skills-6-success)
+![Version](https://img.shields.io/badge/version-1.4.0-orange)
+
+</div>
+
+---
 
 ```
 /plugin marketplace add l3lackcurtains/jod
 /plugin install jod@jod
-/jod:setup
 ```
 
-*Jod* (जोड) is Nepali for joining and assembling: putting the parts together so they hold.
-
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)
+```
+/jod:setup        → scan the stack + patterns, ask how you work, write the profile
+/jod:task <task>  → plan → build → test → review → check → done, with a drift alarm
+/jod:fix <bug>    → reproduce → root cause → failing test → fix → hunt the same bug
+/jod:commit       → calibrated review → verify → commit in logical groups → push
+/jod:ship         → cross-commit review → full gate + deploy audit → merge or PR
+```
 
 ---
 
