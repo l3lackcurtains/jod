@@ -10,7 +10,7 @@
 //   - folders and `name:` get a `jod-` prefix (generic names like `task` would clash)
 //   - `/jod:<skill>` commands become `/jod-<skill>`; links follow the renamed folders
 //   - Claude Code-only syntax is rewritten: `$ARGUMENTS`, inline !`cmd` context,
-//     and the `argument-hint` / `when_to_use` frontmatter keys
+//     and the `argument-hint` / `user-invocable` frontmatter keys
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, rmSync, statSync, existsSync } from 'node:fs'
 import { join, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -28,7 +28,7 @@ function transform(text) {
   t = t.replace(/^---\n([\s\S]*?)\n---\n/, (_, fm) => {
     const lines = fm
       .split('\n')
-      .filter((l) => !/^(argument-hint|when_to_use):/.test(l))
+      .filter((l) => !/^(argument-hint|user-invocable):/.test(l))
       .map((l) => l.replace(/^name: (\S+)$/, (_m, n) => `name: jod-${n}`))
     return `---\n${lines.join('\n')}\n---\n`
   })
@@ -67,31 +67,62 @@ function walk(dir) {
   })
 }
 
-// Frontmatter guard: an unquoted value containing ": " or " #" breaks YAML, and the
-// skill then loads with no metadata at all (silently). Quote such values.
-const fmErrors = []
+// Skill lint (Agent Skills spec + skill-creator guidance). Any problem fails the build.
+//   - frontmatter parses: an unquoted value containing ": " or " #" breaks YAML, and the
+//     skill then loads with no metadata at all (silently). Quote such values.
+//   - name and description present; name matches the folder, lowercase-hyphen, <= 64 chars
+//   - description <= 1024 chars (the spec's limit; it is the trigger, so it must fit)
+//   - no `when_to_use`: it is Claude Code-only, so portable/ would lose it; put it in description
+//   - SKILL.md body under 500 lines; longer guides go in references/
+//   - a reference file over 300 lines needs a table of contents
+//   - every relative Markdown link points at a file that exists
+const problems = []
+const isEval = (rel) => rel.split(/[\\/]/)[0] === 'evals'
 for (const s of skills) {
   const text = readFileSync(join(src, s, 'SKILL.md'), 'utf8').replace(/\r\n/g, '\n')
   const fm = text.match(/^---\n([\s\S]*?)\n---\n/)
-  if (!fm) { fmErrors.push(`${s}/SKILL.md: missing frontmatter`); continue }
+  if (!fm) { problems.push(`${s}/SKILL.md: missing frontmatter`); continue }
+  const meta = {}
   for (const line of fm[1].split('\n')) {
     const m = line.match(/^([\w-]+): (.*)$/)
     if (!m) continue
     const v = m[2]
+    meta[m[1]] = v.replace(/^"(.*)"$/, '$1').replace(/\\"/g, '"')
     if (/^["']/.test(v)) continue
-    if (v.includes(': ') || v.includes(' #') || /^[&*!|>%@`{[]/.test(v)) fmErrors.push(`${s}/SKILL.md: quote the value of "${m[1]}"`)
+    if (v.includes(': ') || v.includes(' #') || /^[&*!|>%@`{[]/.test(v)) problems.push(`${s}/SKILL.md: quote the value of "${m[1]}"`)
   }
-  if (!/^name: /m.test(fm[1]) || !/^description: /m.test(fm[1])) fmErrors.push(`${s}/SKILL.md: needs name and description`)
+  if (!meta.name || !meta.description) problems.push(`${s}/SKILL.md: needs name and description`)
+  if (meta.name && meta.name !== s) problems.push(`${s}/SKILL.md: name "${meta.name}" must match the folder name`)
+  if (meta.name && !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(meta.name)) problems.push(`${s}/SKILL.md: name must be lowercase letters, digits and hyphens`)
+  if (meta.name && meta.name.length > 60) problems.push(`${s}/SKILL.md: name too long once prefixed with jod-`)
+  if ('when_to_use' in meta) problems.push(`${s}/SKILL.md: move when_to_use into description (other tools ignore it)`)
+  if (meta.description && meta.description.length > 1024) problems.push(`${s}/SKILL.md: description is ${meta.description.length} chars (max 1024)`)
+  const lines = text.split('\n').length
+  if (lines > 500) problems.push(`${s}/SKILL.md: ${lines} lines (keep under 500; move detail to references/)`)
+
+  for (const file of walk(join(src, s))) {
+    const rel = relative(join(src, s), file)
+    if (!file.endsWith('.md') || isEval(rel)) continue
+    const body = readFileSync(file, 'utf8')
+    if (rel.startsWith('references') && body.split('\n').length > 300 && !/^#+ (Contents|Table of contents)/im.test(body))
+      problems.push(`${s}/${rel}: over 300 lines; add a "## Contents" section`)
+    for (const [, target] of body.matchAll(/\]\(([^)#\s]+)(?:#[^)]*)?\)/g)) {
+      if (/^[a-z]+:/i.test(target)) continue // http:, mailto:
+      if (!existsSync(join(dirname(file), target))) problems.push(`${s}/${rel}: broken link ${target}`)
+    }
+  }
 }
-if (fmErrors.length) {
-  console.error('Frontmatter problems:\n  ' + fmErrors.join('\n  '))
+if (problems.length) {
+  console.error('Skill problems:\n  ' + problems.join('\n  '))
   process.exit(1)
 }
 
+// evals/ are for developing jod (skill-creator / `claude plugin eval`), not for users.
 const files = new Map()
 for (const s of skills) {
   for (const file of walk(join(src, s))) {
     const rel = relative(join(src, s), file)
+    if (isEval(rel)) continue
     files.set(join(out, `jod-${s}`, rel), transform(readFileSync(file, 'utf8')))
   }
 }

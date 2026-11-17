@@ -3,15 +3,26 @@
 The commands come from the profile (`.claude/jod.md` → "Verify commands"). Without a profile, read the package scripts (`package.json`, `pyproject.toml`, `Makefile`, `go.mod`, `Cargo.toml`, CI workflow files) and use what CI runs.
 
 ## Run the least that proves it
-- **Three sizes of test run:** *focused* (one test file or test name, while writing code: the profile's focused command), *affected* (the touched packages' related tests, per step), *full* (every suite of the touched packages, once per change). Use the smallest one that proves the claim you're making. A profile without a focused command (made before it had one): work it out from the test runner, and propose adding it to the profile.
-- **Don't re-run a pass.** A command that passed in this session counts as evidence until a file it covers changes (check with `git status`/`git diff`). After a change, re-run only the commands that cover the changed files.
+- **Three sizes of test run:** use the smallest one that proves the claim you're making.
+  - *focused*: one test file or test name, while writing code (the profile's focused command).
+  - *related*: the tests that import the changed files, once per step. Use the runner's own mode, not a whole folder: `jest --findRelatedTests <files>`, `vitest related <files> --run`, `pytest <the test files for the changed modules>`, `go test` on the touched packages only, `cargo test -p <crate>`. The profile's "Related tests" command, when it has one.
+  - *full*: every suite of the touched packages, once per change.
+
+  A profile without a focused or related command (made before it had one): work it out from the test runner, and propose adding it to the profile.
+- **Don't re-run a pass.** A command that passed in this session counts as evidence until a file it covers changes (check with `git status`/`git diff`). After a change, re-run only the commands that cover the changed files. The same goes for builds and codegen: rebuild only when their sources changed since the last run.
+
+## Typecheck fast
+A full typecheck of a big project takes about a minute, and re-running it after every edit was the second-largest cost in real sessions. So:
+- **Once per step,** after its edits, not after each edit. While writing, the focused test is the feedback loop.
+- **Watch mode when the tool allows it:** start the profile's watch typecheck once in the background (e.g. `tsc --noEmit --watch --preserveWatchOutput`, `cargo watch -x check`) and read its latest output after the step's edits, instead of starting a cold compile. Stop it when the task ends.
+- **Otherwise incremental:** `tsc --noEmit --incremental` (or `tsc -b` for project references), `mypy` with its cache, `go vet` on the touched packages. Only the touched package, unless the change crosses packages.
 
 ## Per change (`/jod-task test`, `/jod-commit`)
 1. **Work out what you touched.** List the touched packages or apps from `git status --short` and `git diff --stat`.
 2. **Build what depends on it.** Rebuild shared or generated code first (shared packages, OpenAPI/GraphQL codegen, ORM clients) when its source changed.
 3. **Check each touched package.** For each:
-   - typecheck or compile;
-   - run the affected tests.
+   - typecheck or compile (the fast way, above);
+   - run the related tests.
 
    Run the full suite of each touched package **once**: in `/jod-task done`, or in `/jod-commit` if `done` didn't already run it on this exact diff in this session. Not on every step.
 4. **Lint only the files you changed**, without auto-fix. Fix only the errors on lines you changed; errors on other lines were already there.

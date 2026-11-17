@@ -22,11 +22,11 @@ Conventions docs: <CLAUDE.md, docs/…>. Package manager: <pnpm 9, only>.
 6. <public docs, marketing site, internal docs/roadmap to update>
 
 ## Verify commands
-| Package | Typecheck/compile | Focused test (one file) | Tests | Notes |
-|---|---|---|---|---|
-| <api> | <cmd> | <cmd path/to/file.spec.ts> | <cmd> (full: <cmd>, ~<time>) | <lint: changed files only, no --fix> |
+| Package | Typecheck (fast: watch or incremental) | Focused test (one file) | Related tests (changed files) | Full tests | Notes |
+|---|---|---|---|---|---|
+| <api> | <watch: tsc --noEmit --watch --preserveWatchOutput · once: tsc --noEmit --incremental> | <cmd path/to/file.spec.ts> | <jest --findRelatedTests <files>> | <cmd>, ~<time> | <lint: changed files only, no --fix> |
 
-Full gate (`/jod-ship`):
+Full gate (`/jod:ship`):
 ```
 <install --frozen-lockfile>
 <build shared/codegen>
@@ -37,7 +37,7 @@ Full gate (`/jod-ship`):
 ```
 
 ## Branches and release
-- Work on `<development>`; side branches merge into it. Only `/jod-ship` merges it into `<main>` (local `--no-ff`, no PRs).
+- Work on `<development>`; side branches merge into it. Only `/jod:ship` merges it into `<main>` (local `--no-ff`, no PRs).
 - Pushing `main` deploys: `<yes, via CI → host / no, deployed manually>`. Confirm timing before release: `<yes/no>`.
 
 ## Production
@@ -62,7 +62,7 @@ Full gate (`/jod-ship`):
 - Shared between sessions: `<ports, database, cache/queue>`. Run in parallel only on separate areas; never two sessions running dev servers or migrations.
 
 ## Agents
-<!-- Specialist agents that build or review work in an area (engineering/agents.md). Empty: jod picks from what's available. -->
+<!-- Specialist agents that build or review work in an area (engineering/references/agents.md). Empty: jod picks from what's available. -->
 - <apps/api → nestjs-developer>
 - <migrations, slow queries → postgres-pro>
 - <review of auth/billing → security-auditor>
@@ -98,7 +98,7 @@ Full gate (`/jod-ship`):
 - Shared UI building blocks: <paths>
 
 ## Cleanup
-<!-- /jod-cleanup reads and updates this. -->
+<!-- /jod:cleanup reads and updates this. -->
 - Cadence: `<every 2 weeks | after each release | on request>`. Last: `<YYYY-MM-DD (scope) | never>`.
 - Keep (looks unused, isn't): `<path or name: why>`
 

@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: setup-profile-from-repo
+expected_outcome: |
+  A .claude/jod.md profile is written from evidence in the repo: the node:test stack, npm test
+  as the suite and a focused node --test command, src/*.js with tests alongside, integer-cents
+  money, with anything unconfirmed marked TODO (confirm) rather than invented.
+context:
+  scaffold_script: place-files.sh

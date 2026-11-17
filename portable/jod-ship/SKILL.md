@@ -23,10 +23,10 @@ Step 2 of 2. `/jod-commit` (step 1) reviews work and commits it to `development`
 
 ## 2. Final review
 - **List what's being released:** the commits waiting, and the roadmap items or issues they cover.
-- **Review the combined diff** `main...development` with [review.md](../jod-engineering/review.md), limited to what per-commit reviews miss:
+- **Review the combined diff** `main...development` with [review.md](../jod-engineering/references/review.md), limited to what per-commit reviews miss:
   - risk triage of HIGH files (§1);
   - cross-commit issues (§4): interactions, leftovers, half-finished work, backfills, breaking API fields, permission changes;
-  - [principles](../jod-engineering/principles.md) gaps that only show across the release: missing indexes, unscoped queries, non-idempotent writes, schema changes that break existing data.
+  - [principles](../jod-engineering/references/principles.md) gaps that only show across the release: missing indexes, unscoped queries, non-idempotent writes, schema changes that break existing data.
 - **Skip the review** only if every waiting commit is docs- or config-only; say so.
 - **Real findings:** fix them on `development` (a regression test per bug), commit with `fix(scope): …`, push, then continue. Skip the rest with a reason.
 
@@ -38,13 +38,13 @@ Before the gate, so the gate tests what actually ships: run [cleanup](../jod-cle
 
 ## 3. Gate
 Run every check and collect the results; don't stop at the first failure.
-1. **Code gate** ([verify.md](../jod-engineering/verify.md) "Full gate"):
+1. **Code gate** ([verify.md](../jod-engineering/references/verify.md) "Full gate"):
    - clean install against the lockfile;
    - typecheck;
    - all test suites (exact counts) plus e2e for changed areas;
    - production builds;
    - lint of the changed files.
-2. **Production check** ([verify.md](../jod-engineering/verify.md) "Production check"): build and run the release **the way the profile says production runs it** (direct process, Docker Compose, Kubernetes, serverless…), from a clean checkout, with production-like config. Smoke-test it, then tear it down. This runs locally only; it never deploys anything.
+2. **Production check** ([verify.md](../jod-engineering/references/verify.md) "Production check"): build and run the release **the way the profile says production runs it** (direct process, Docker Compose, Kubernetes, serverless…), from a clean checkout, with production-like config. Smoke-test it, then tear it down. This runs locally only; it never deploys anything.
 3. **Deploy audit** of `git diff main...development`:
    - **Env vars:** are new ones in the production env example? Are they set on the server? Does each fail at startup when missing, rather than falling back? (Grep for `env.X || '…'` / `?? '…'` on secrets, auth, CORS and URLs.)
    - **Dependencies:** changes, and anything imported at runtime but installed only for development.
@@ -71,7 +71,7 @@ git checkout development
 - **Never** force-push, open a PR, commit on `main` directly, or merge any branch other than `development` into it.
 
 ## Report
-Report as a release verdict and runbook ([report.md](../jod-engineering/report.md) → `/jod-ship`):
+Report as a release verdict and runbook ([report.md](../jod-engineering/references/report.md) → `/jod-ship`):
 - **Heading:** released, with the merge `hash`, or blocked.
 - **Gate:** a table of check → result with counts, including the production check (the runtime, what was started, and the smoke results).
 - **Review:** findings fixed or skipped, one line each.

@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.13.0
+Faster `/jod:task`, from measuring three real sessions (where the time went: test runs, scripted edits, full typechecks, browser clicking, rebuilds) and from how superpowers, compound-engineering, BMAD and gstack keep their loops fast.
+- **Quick lane:** `/jod:task` sizes the task once, up front. About 3 files, one code layer and no risk surface (schema, contract, permissions, money, auth, deleting data) gets a 3-line plan, no question, no plan file, no impact table, one related-tests run and a short done report. It escalates to the full loop the moment it grows. Proof stays: a test that failed first, and a run you saw pass.
+- **Edits through the edit tool:** "keep the file's line endings" had Claude writing python/sed edit scripts in the shell (~18 s and often a permission prompt each, against ~3 s). Edit keeps line endings, so the rule now says to use it.
+- **Related tests, not folders:** a step runs the runner's related mode (`jest --findRelatedTests`, `vitest related`, …) instead of whole module folders.
+- **Typecheck fast** (`verify.md`): once per step, not per edit; watch mode in the background when the tool allows it, otherwise incremental. Builds and codegen re-run only when their sources changed.
+- **Cheapest live check:** a request or script for API, CLI and data changes; for UI, a scripted browser run of the flow rather than exploratory clicking.
+- **Fewer questions:** a plan question must change what gets built; reversible details are decided and listed under "Decided" for the user to overrule.
+- **Setup** records each package's related-tests command and its watch or incremental typecheck in the profile.
+
+## 1.12.0
+- **Standard skill layout:** `engineering`'s guides move to `skills/engineering/references/`, and setup's profile template to `skills/setup/assets/template.md`. Links in every skill, the README and `portable/` follow.
+- **`engineering` description:** it now opens with what it covers and when to use it ("whenever building or changing code… even when no jod command was run"), and the old `when_to_use` text is folded in, so the portable build no longer drops it.
+- **Skill lint** in `scripts/build-portable.mjs` (and CI): the name matches the folder, the description is at most 1024 characters, SKILL.md is under 500 lines, long references have contents, every relative link resolves, and `when_to_use` is rejected (other tools ignore it; it belongs in the description).
+- **Evals:** test cases for `task`, `fix`, `setup` and `engineering` in `skills/<name>/evals/` (the skill-creator / `claude plugin eval` format), each on a small fixture repo with graded behaviours. They are left out of `portable/`. CONTRIBUTING describes the layout and the development loop.
+
+## 1.11.3
+- **`engineering` is conventions, not a command:** it is hidden from the slash menu (`user-invocable: false`), and its description and opening line say there is nothing to run, so tools such as OpenCode no longer treat `jod-engineering` as a command. The jod commands still read it, and it still loads automatically when building or reviewing code.
+
 ## 1.11.2
 - **Git while working** (`engineering` §2): `/jod:task` and `/jod:fix` (including the doubt pass) use git freely to look and isolate (diff, log, blame, bisect, stash, temporary worktrees), leaving the working tree exactly as they found it. Only commits, pushes, merges and branch changes stay with `/jod:commit` and `/jod:ship`.
 

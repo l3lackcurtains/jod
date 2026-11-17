@@ -30,7 +30,8 @@ Gather facts quietly. Use one Explore agent for a large monorepo.
   - dev ports and scripts;
   - where logs go;
   - how to see sent emails and queued jobs locally.
-- **Testing:** the frameworks, where tests live, and any e2e setup (seeded DB, replica set, emulators). Find the command that runs a single test file or test name in each package (a checked-in wrapper or script if there is one; don't assume `npm test`), and how long the full suite takes.
+- **Testing:** the frameworks, where tests live, and any e2e setup (seeded DB, replica set, emulators). Find the command that runs a single test file or test name in each package (a checked-in wrapper or script if there is one; don't assume `npm test`), the runner's related-tests mode (`jest --findRelatedTests`, `vitest related`, …), and how long the full suite takes.
+- **Fast typecheck:** the watch or incremental form of each package's typecheck (`tsc --watch`/`--incremental`, `tsc -b`, `cargo watch`), and roughly how long a cold run takes. Every task's speed depends on these commands, so time them.
 - **Hands-off:** generated code, vendored UI primitives.
 - **Specialist agents** (if the tool can start subagents): the agent types available, read from their descriptions. Map each one that fits to the area it would own (`apps/api → nestjs-developer`, `migrations → postgres-pro`); leave out generic ones. Show the mapping in step 2 so the user can correct it.
 - **Cleanup debt:** a rough count of tracker ids or history in comments, commented-out code, TODOs without an owner, and obviously orphaned files. Report it; don't fix it here.
@@ -83,7 +84,7 @@ Ask the user: at most 2 rounds of up to 4 questions each.
 - **Mode `new`:** the conventions that matter for this stack and aren't decided yet. Offer the stack's standard choices. Examples: test location (next to the source / `__tests__/`); folder structure (by feature / by type); validation and data-fetching libraries; error-response shape.
 
 ## 4. Write `.claude/jod.md`
-Start from [template.md](template.md).
+Start from [assets/template.md](assets/template.md).
 - **Put in:** the facts from step 1 and the answers from step 3.
 - **Mark inconsistent patterns:** "current" and "legacy: don't copy".
 - **Keep it short:** every line is something Claude couldn't guess. Link to existing docs instead of copying them.
@@ -95,7 +96,7 @@ With `refresh`:
 - Show a summary of what changed.
 
 ## 5. Report and guards
-Report as a profile summary ([report.md](../jod-engineering/report.md) → `/jod-setup`):
+Report as a profile summary ([report.md](../jod-engineering/references/report.md) → `/jod-setup`):
 - **Found:** the stack, the production runtime and the size of the codebase.
 - **You chose:** the answers from step 3.
 - **To confirm:** the `TODO (confirm)` lines.

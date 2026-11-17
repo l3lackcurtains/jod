@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: task-small-feature-follows-patterns
+expected_outcome: |
+  A quick task (3 files, one layer, no risk surface): sized as quick in one line, a 3-line plan, then itemCount is added to src/cart.js as a
+  named export in the existing style, with tests in src/cart.test.js written to fail first, the
+  README updated (the profile lists it as a surface), the suite green, a done report that ends
+  with Next: /jod:commit, and no commit, no new files and no fix of the unrelated discount bug.
+context:
+  scaffold_script: place-files.sh

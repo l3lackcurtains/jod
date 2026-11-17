@@ -2,10 +2,12 @@
 
 Goal: prove it's finished, record it, hand over.
 
+**A quick task** does steps 1, 3 and 6 only: the final run (the full suite of the one touched package, unless the related run already covered every test in it), docs it touches, and a short report (heading, proof, noticed, next). No coverage re-search, since it had no impact table.
+
 No "check pending" may be left; the last step's check covered them.
 
-1. **Final run:** the full suites of every touched package, plus the typecheck/build of every touched app, with exact counts (see [verify.md](../../jod-engineering/verify.md)).
-2. **Coverage:** re-run the impact map's searches ([impact.md](../../jod-engineering/impact.md) §5). Each row must be done (with evidence), n/a, or left with a reason, and every layer the profile lists must appear. Then check the whole plan: every step ticked, every item done, every listed edge case tested.
+1. **Final run:** the full suites of every touched package, plus the typecheck/build of every touched app, with exact counts (see [verify.md](../../jod-engineering/references/verify.md)).
+2. **Coverage:** re-run the impact map's searches ([impact.md](../../jod-engineering/references/impact.md) §5). Each row must be done (with evidence), n/a, or left with a reason, and every layer the profile lists must appear. Then check the whole plan: every step ticked, every item done, every listed edge case tested.
 3. **Record it:** if the project already keeps a roadmap, changelog or permissions doc (per the profile), update it in the existing style (never start a new doc for it unless the user asks): what shipped, edge cases, tests added, and what's still open.
 4. **Learn.** Propose one line for the profile (Gotchas or Reference implementations) if:
    - the user corrected you;
@@ -14,7 +16,7 @@ No "check pending" may be left; the last step's check covered them.
 
    If the same rule was broken twice, propose a hook instead. Show the diff to the profile, and apply it only on the user's yes.
 5. **Close the plan:** if it was saved, tick the last step and mark it done. Keep the file for `/jod-commit`, which deletes it.
-6. **Report** as a feature summary ([report.md](../../jod-engineering/report.md) → `/jod-task` done):
+6. **Report** as a feature summary ([report.md](../../jod-engineering/references/report.md) → `/jod-task` done):
    - **Heading:** what the user now has, plus one sentence.
    - **Coverage:** the impact map as a table of surface → what changed → status (done / n/a / left, and why).
    - **Proof:** exact counts, and what was and wasn't seen live.

@@ -1,0 +1,3 @@
+# eval runs (skill-creator workspaces, claude plugin eval results)
+*-workspace/
+skills/*/evals/results/

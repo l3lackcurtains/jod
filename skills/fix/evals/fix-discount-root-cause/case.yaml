@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: fix-discount-root-cause
+expected_outcome: |
+  The bug is reproduced with a failing test before any fix, the cause is named with path:line
+  (discountPercent is used as a fraction, not divided by 100, in src/cart.js), the smallest fix
+  is made, the full suite passes, and the run reports as an incident note without committing.
+context:
+  scaffold_script: place-files.sh

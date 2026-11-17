@@ -16,7 +16,7 @@ Scope: `$ARGUMENTS` (a path or area, and/or a kind; default: the whole repo, eve
 
 Dead code, stale comments and forgotten files make every later change slower: more to read, more to search, more to keep green. Cleanup removes them on purpose, on a rhythm, instead of as drive-by tidying inside feature work. It **never changes behaviour**: it removes only what it can show is unused, and only what the user picked.
 
-Read `.claude/jod.md` (the profile: Hands-off, generated code, Conventions, the Cleanup section) and the comment rules in [principles.md](../engineering/principles.md) §2.
+Read `.claude/jod.md` (the profile: Hands-off, generated code, Conventions, the Cleanup section) and the comment rules in [principles.md](../engineering/references/principles.md) §2.
 
 ## 1. Start clean
 - **A clean tree.** Cleanup lands as its own commits, never mixed with feature work. With uncommitted changes, stop and suggest `/jod:commit` first, or ask to limit the scope to files nobody is changing.
@@ -28,7 +28,7 @@ Collect candidates with evidence. Skip the profile's Hands-off and generated pat
 
 | Kind | Look for |
 |---|---|
-| **Comments** | Anything [principles.md](../engineering/principles.md) §2 rules out: tracker, plan or ticket ids, step labels, change history, restated code, comments the code now contradicts, commented-out code, TODOs with no owner or issue, banners. Also in test names and in doc comments that ship as API docs. |
+| **Comments** | Anything [principles.md](../engineering/references/principles.md) §2 rules out: tracker, plan or ticket ids, step labels, change history, restated code, comments the code now contradicts, commented-out code, TODOs with no owner or issue, banners. Also in test names and in doc comments that ship as API docs. |
 | **Unused code** | Exports, functions, classes, components, hooks, types and constants with no callers; unreachable branches; feature flags that are always on or off; leftover debug logging. |
 | **Unused files** | Modules nothing imports; orphaned tests, fixtures, snapshots and assets; scripts that point at things that no longer exist; stray notes and scratch files an agent left behind; jod plan files in `.claude/plans/` whose work is committed or abandoned. |
 | **Dependencies and config** | Manifest entries nothing imports; env vars and config keys nothing reads; package scripts for removed files. |
@@ -64,7 +64,7 @@ One kind (or one area) per group, so each becomes its own commit.
 Change behaviour, rename or restructure, delete data or run migrations, touch Hands-off or generated paths by hand, or remove anything that is only "probably" unused.
 
 ## Report
-Report as a cleanup log ([report.md](../engineering/report.md) → `/jod:cleanup`):
+Report as a cleanup log ([report.md](../engineering/references/report.md) → `/jod:cleanup`):
 - **Heading:** what was cleaned and the net lines removed; behaviour unchanged.
 - **Table:** kind → removed → kept (needs you, or in use and why).
 - **Proof:** baseline vs after counts, typecheck and builds.

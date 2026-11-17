@@ -2,16 +2,18 @@
 
 Goal: a plan the user approves before any code is written.
 
+**A quick task** (sized in [SKILL.md](../SKILL.md)) stops here: write the 3-line plan (what, files, how it's checked) and go to build. Skip the steps below.
+
 **Approval follows the profile's "Plan approval":**
-- `always`: every plan waits for OK.
-- `fast path` (the default): a small change (≤3 files; no schema, public contract, permission, money/data-integrity or security change) gets a 3-line plan (what, files, how it's checked) and goes straight to build. Everything else waits.
+- `always`: every plan waits for OK, quick ones included.
+- `fast path` (the default): quick tasks go straight to build. Everything else waits.
 - `multi-step work only`: only plans with more than one step wait.
 
 Everything that waits follows the steps below.
 
-1. **Understand the ask.** Restate it in one sentence. For a roadmap or issue id, read its spec and acceptance criteria. If something decides the design (policy, pricing, permissions, user-visible behaviour) and can't be found in the code, ask the user: at most 3 questions, each with a recommended option. Don't ask what the code can answer.
+1. **Understand the ask.** Restate it in one sentence. For a roadmap or issue id, read its spec and acceptance criteria. If something decides the design (policy, pricing, permissions, user-visible behaviour) and can't be found in the code, ask the user: at most 3 questions, each with a recommended option, and only ones whose answer changes what gets built. Don't ask what the code can answer; decide reversible details yourself and list them under "Decided" in the plan, so the user can overrule them at approval.
 2. **Explore.** Find the code the change touches: Grep/Glob, or one Explore agent for broad sweeps. Note the current behaviour, and any gaps or bugs you notice on the way.
-3. **Study the existing patterns** ([patterns.md](../../jod-engineering/patterns.md)). For each new file, read 2–3 of its closest siblings and note:
+3. **Study the existing patterns** ([patterns.md](../../jod-engineering/references/patterns.md)). For each new file, read 2–3 of its closest siblings and note:
    - folder and filename
    - structure
    - data pattern
@@ -25,16 +27,16 @@ Everything that waits follows the steps below.
 5. **Write the plan**, short:
    - **Appetite and cut line:** how much this is worth (hours, a day, a week). List what's in, and under **Not doing** what's cut or left for later. If it won't fit, cut scope, don't stretch the time. Ship the smallest version a user can use.
    - **Fits the existing design?** Say which existing architecture and patterns it extends. If it needs a new dependency or pattern, or a change to a boundary, data model or public contract, call that out: a decision for the user in `established`, a justified choice in `growing` and `new`.
-   - **Impact map** ([impact.md](../../jod-engineering/impact.md)): name what changes, search the whole repo for it, think past the search (stored data, clients in the wild, other repos), and list every surface → files → change, including the ones that don't apply and why. This becomes the **scope fence** the drift alarm compares against. Tidying the change needs goes in as its own step first (behaviour unchanged, tests green).
+   - **Impact map** ([impact.md](../../jod-engineering/references/impact.md)): name what changes, search the whole repo for it, think past the search (stored data, clients in the wild, other repos), and list every surface → files → change, including the ones that don't apply and why. This becomes the **scope fence** the drift alarm compares against. Tidying the change needs goes in as its own step first (behaviour unchanged, tests green).
    - **Steps:** as many as the work needs, with no fixed number. Size them by the load: how many layers and files, how risky, how many separate outcomes.
      - Each step is one coherent, verifiable piece: it builds, its tests pass, and it leaves the app working. Examples: "tidy: extract the CSV writer", "API: export endpoint + permission", "web: export button".
      - For each step, give its goal, its files (inside the scope fence) and its check, and tag it:
        - **user-visible** (UI, an API response a client shows, CLI output): live check right after it ([check.md](check.md));
        - **risky** (as defined in [doubt.md](doubt.md)): a doubt pass after its tests;
-       - **built by** you or a specialist agent ([agents.md](../../jod-engineering/agents.md)).
+       - **built by** you or a specialist agent ([agents.md](../../jod-engineering/references/agents.md)).
      - A one-step plan is fine for a focused change. Split when a step would mix concerns (tidy + behaviour, API + UI + migration), or would be too big to review in one go.
      - Order them so each builds on the last: tidying and data first, then the API, the UI, and the docs. Within that, put the riskiest step as early as possible, so a wrong assumption shows up before the rest is built on it.
-   - **Engineering** ([principles.md](../../jod-engineering/principles.md)), only what applies:
+   - **Engineering** ([principles.md](../../jod-engineering/references/principles.md)), only what applies:
      - boundaries (which layer owns what)
      - indexes and pagination
      - what goes async

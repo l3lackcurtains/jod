@@ -124,23 +124,23 @@ flowchart LR
 | Command | What it does |
 |---|---|
 | `/jod:setup [refresh]` | Scan the repo, ask how you work, write or update the profile, offer hard guards (deny rules and hooks) |
-| `/jod:task <task>` | The full loop: plan (split into as many steps as the work needs) → you choose "run all steps" or "step by step" (no answer means run all) → each step goes build → test → check (a doubt pass for risky steps) → done. The full review happens in `/jod:commit` |
+| `/jod:task <task>` | Sized first: a **quick** task (≈3 files, one code layer, no schema, contract, permission or money change) gets a 3-line plan, the focused test, one related-tests run and a short report, with no questions. Anything bigger runs the full loop: plan (split into as many steps as the work needs) → you choose "run all steps" or "step by step" (no answer means run all) → each step goes build → test → check (a doubt pass for risky steps) → done. The full review happens in `/jod:commit` |
 | `/jod:task plan\|build\|test\|check\|done …` | Run one phase on its own; `build <slug>` resumes a saved plan in a fresh session |
 | `/jod:fix <symptom>` | Reproduce, trace the root cause backward, write a regression test that fails first, fix, hunt the same bug across the repo, verify |
 | `/jod:cleanup [area] [kind]` | Find bad comments, unused code, unused files, dependencies and config; ask what to remove; remove it in behaviour-neutral groups with before/after test counts; record the date. The task, commit and ship reports remind you when the cadence chosen in setup has passed |
 | `/jod:commit` | Step 1: review the uncommitted diff, verify, commit in logical groups to `development` (merging any side branch into it), push. Never touches `main` |
 | `/jod:ship` | Step 2, and the only way into `main`: review across commits, a release cleanup of what those commits add or leave behind (asks first), the full gate, a production check (runs the release as production does: direct, Compose, Kubernetes…), a deploy audit with a rollback plan, then merge `development` into `main` |
 
-The **`engineering`** skill loads automatically whenever Claude builds or reviews code. It holds the standards:
+The **`engineering`** skill is conventions, not a command: there is no `/jod:engineering`. It loads automatically whenever Claude builds or reviews code, and every jod command reads it. It holds the standards:
 
 | Guide | Covers |
 |---|---|
-| [principles.md](skills/engineering/principles.md) | simplicity, boundaries, scalability, reliability, security, operability; each section ends with the questions review asks |
-| [patterns.md](skills/engineering/patterns.md) | finding the closest examples, reusing before creating, when to extract, legacy patterns |
-| [review.md](skills/engineering/review.md) | risk triage, calibrated findings, drift, silent failures, gamed tests, plan gaps |
-| [verify.md](skills/engineering/verify.md) | the checks per change, the full gate, what counts as proof |
-| [impact.md](skills/engineering/impact.md) | find everything a change touches (every app, client, doc, test, stored data, clients in the wild), then prove each place was covered |
-| [report.md](skills/engineering/report.md) | how each command reports, in the shape that fits its job: an incident note for a fix, release notes and a runbook for a ship, a commit log for a commit |
+| [principles.md](skills/engineering/references/principles.md) | simplicity, boundaries, scalability, reliability, security, operability; each section ends with the questions review asks |
+| [patterns.md](skills/engineering/references/patterns.md) | finding the closest examples, reusing before creating, when to extract, legacy patterns |
+| [review.md](skills/engineering/references/review.md) | risk triage, calibrated findings, drift, silent failures, gamed tests, plan gaps |
+| [verify.md](skills/engineering/references/verify.md) | the checks per change, the full gate, what counts as proof |
+| [impact.md](skills/engineering/references/impact.md) | find everything a change touches (every app, client, doc, test, stored data, clients in the wild), then prove each place was covered |
+| [report.md](skills/engineering/references/report.md) | how each command reports, in the shape that fits its job: an incident note for a fix, release notes and a runbook for a ship, a commit log for a commit |
 
 ## A task, end to end
 
@@ -184,7 +184,7 @@ See the examples: [an established monorepo](examples/established-monorepo.md) an
 ## Other AI tools
 
 jod is written in the open [Agent Skills](https://agentskills.io) format. `portable/` holds the same skills for tools other than Claude Code:
-- skills are named `jod-task`, `jod-fix`, `jod-commit`, `jod-ship`, `jod-setup` and `jod-engineering`;
+- skills are named `jod-task`, `jod-fix`, `jod-cleanup`, `jod-commit`, `jod-ship` and `jod-setup` (the commands), plus `jod-engineering` (conventions the commands read, not a command to run);
 - Claude-only syntax is rewritten.
 
 It's generated from `skills/` by `scripts/build-portable.mjs`.
@@ -222,7 +222,7 @@ side branch ──merge──▶ development ──/jod:ship──▶ main ─�
 ## Design choices
 
 - **For one to three engineers.** Sign-offs, reviewer assignment, PR templates, RFCs for small changes and coverage targets are left out on purpose.
-- **Cheap by default.** Each step runs only the affected tests; the full suites run once. The full review runs once, in `/jod:commit`; during a task only risky steps get a short doubt pass, and the independent review agent runs only on high-risk or large diffs. Guides load only when a phase needs them.
+- **Cheap by default.** Small tasks take the quick lane. Edits go through the edit tool, not shell scripts. Each step runs only the tests related to the changed files and one typecheck (watch or incremental); the full suites run once. Live checks use a request or script before a browser. The full review runs once, in `/jod:commit`; during a task only risky steps get a short doubt pass, and the independent review agent runs only on high-risk or large diffs. Guides load only when a phase needs them.
 - **Restart instead of grinding.** After two failed rounds, Claude writes a handoff into the plan file and recommends a fresh session.
 - **Profile beats plugin.** When they disagree, your profile wins.
 

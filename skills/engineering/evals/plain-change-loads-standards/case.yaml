@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: plain-change-loads-standards
+expected_outcome: |
+  Without any jod command, the engineering skill loads and its standards show: the profile is
+  read, the threshold is in integer cents (5000), the function follows src/cart.js style with
+  tests next to it, the suite is run with counts, and nothing is committed or written beyond it.
+context:
+  scaffold_script: place-files.sh

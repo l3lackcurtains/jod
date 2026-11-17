@@ -15,4 +15,4 @@ jobs:
           export HOME=$(mktemp -d)
           bash install.sh all
           test -f "$HOME/.agents/skills/jod-task/SKILL.md"
-          test -f "$HOME/.zcode/skills/jod-engineering/principles.md"
+          test -f "$HOME/.zcode/skills/jod-engineering/references/principles.md"
